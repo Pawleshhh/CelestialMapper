@@ -10,8 +10,15 @@ namespace CelestialMapper.Core;
 public class DatabaseManager
 {
 
-    private static readonly string databasePath = "./stars.sqlite";
     private static readonly string dateTimeFormat = "dd/MM/yyyy HH:mm:ss";
+    private readonly string databasePath = "./stars.sqlite";
+
+    public DatabaseManager() { }
+
+    public DatabaseManager(string path)
+    {
+        this.databasePath = path;
+    }
 
     public async Task<IEnumerable<CelestialObject>> GetCelestialObjects(DateTime dateTime, GeographicCoordinates geographicCoordinates, double magnitude, Func<CelestialObject, bool>? predicate = null)
     {
@@ -69,7 +76,7 @@ public class DatabaseManager
 
     private static SqliteConnection CreateConnection()
     {
-        SqliteConnection connection = new SqliteConnection($"Data Source={databasePath}");
+        SqliteConnection connection = new SqliteConnection($"Data Source={this.databasePath}");
 
         connection.CreateFunction("skycontains",
             (double ra, double dec, string date, double latitude, double longitude) =>
