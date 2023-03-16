@@ -1,9 +1,7 @@
 ﻿using CelestialMapper.Common;
 using Microsoft.Data.Sqlite;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
+using System.Globalization;
 
 namespace CelestialMapper.Core;
 
@@ -23,30 +21,24 @@ public class DatabaseManager
     public async Task<IEnumerable<CelestialObject>> GetCelestialObjects(DateTime dateTime, GeographicCoordinates geographicCoordinates, double magnitude, Func<CelestialObject, bool>? predicate = null)
     {
         using DbConnection connection = CreateConnection();
-        try
+        connection.Open();
+
+        using DbCommand command = connection.CreateCommand();
+        var (latitude, longitude) = geographicCoordinates;
+        command.CommandText =
+            $"SELECT id, proper, ra, dec, mag FROM stars " +
+            $"WHERE skycontains(ra, dec, \"{dateTime.ToString(dateTimeFormat)}\", {latitude.ToString(CultureInfo.InvariantCulture)}, {longitude.ToString(CultureInfo.InvariantCulture)}) " +
+                $"AND mag <= {magnitude}";
+
+        using var reader = await command.ExecuteReaderAsync();
+        var result = GetCelestialObjects(reader, dateTime, geographicCoordinates);
+
+        if (predicate is null)
         {
-            connection.Open();
-
-            using DbCommand command = connection.CreateCommand();
-            var (latitude, longitude) = geographicCoordinates;
-            command.CommandText = $"SELECT id, proper, ra, dec, mag FROM stars " +
-                $"WHERE skycontains(ra, dec, {dateTime.ToString(dateTimeFormat)}, {latitude}, {longitude})" +
-                    $"AND mag <= {magnitude}";
-
-            using var reader = await command.ExecuteReaderAsync();
-            var result = GetCelestialObjects(reader, dateTime, geographicCoordinates);
-
-            if (predicate is null)
-            {
-                return await Task.FromResult(result.ToBlockingEnumerable());
-            }
-
-            return FilterCelestialObjects(result, predicate).ToBlockingEnumerable();
+            return await Task.FromResult(result.ToBlockingEnumerable());
         }
-        finally
-        {
-            connection.Close();
-        }
+
+        return FilterCelestialObjects(result, predicate).ToBlockingEnumerable();
     }
 
     private async IAsyncEnumerable<CelestialObject> GetCelestialObjects(DbDataReader reader, DateTime dateTime, GeographicCoordinates geographicCoordinates)
@@ -74,9 +66,9 @@ public class DatabaseManager
         }
     }
 
-    private static SqliteConnection CreateConnection()
+    private SqliteConnection CreateConnection()
     {
-        SqliteConnection connection = new SqliteConnection($"Data Source={this.databasePath}");
+        SqliteConnection connection = new($"Data Source={this.databasePath}");
 
         connection.CreateFunction("skycontains",
             (double ra, double dec, string date, double latitude, double longitude) =>
