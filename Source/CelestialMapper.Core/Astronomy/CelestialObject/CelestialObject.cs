@@ -2,6 +2,7 @@
 
 public record CelestialObject(
     long Id,
-    string Name, 
+    string Name,
+    EquatorialCoordinates EquatorialCoordinates,
     HorizonCoordinates HorizonCoordinates, 
     double Magnitude);
