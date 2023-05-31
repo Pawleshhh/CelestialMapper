@@ -1,5 +1,6 @@
 ﻿using CelestialMapper.Common;
 using Microsoft.Data.Sqlite;
+using PracticalAstronomy.CSharp;
 using System.Data.Common;
 using System.Globalization;
 
@@ -18,7 +19,7 @@ public class DatabaseManager
         this.databasePath = path;
     }
 
-    public async Task<IEnumerable<CelestialObject>> GetCelestialObjects(DateTime dateTime, GeographicCoordinates geographicCoordinates, double magnitude, Func<CelestialObject, bool>? predicate = null)
+    public async Task<IEnumerable<CelestialObject>> GetCelestialObjects(DateTime dateTime, Geographic geographicCoordinates, double magnitude, Func<CelestialObject, bool>? predicate = null)
     {
         using DbConnection connection = CreateConnection();
         connection.Open();
@@ -41,17 +42,27 @@ public class DatabaseManager
         return FilterCelestialObjects(result, predicate).ToBlockingEnumerable();
     }
 
-    private async IAsyncEnumerable<CelestialObject> GetCelestialObjects(DbDataReader reader, DateTime dateTime, GeographicCoordinates geographicCoordinates)
+    private async IAsyncEnumerable<CelestialObject> GetCelestialObjects(DbDataReader reader, DateTime dateTime, Geographic geographic)
     {
+        var (lat, lon) = geographic;
+
         while (await reader.ReadAsync())
         {
             var id = await reader.GetDataOrDefault(0, reader.GetInt64);
             var name = await reader.GetDataOrDefault(1, reader.GetString);
-            var equatorial = new EquatorialCoordinates(await reader.GetDataOrDefault(3, reader.GetDouble), await reader.GetDataOrDefault(2, reader.GetDouble));
-            var horizon = CoordinatesConverter.EquatorialToHorizonCoordinates(equatorial, dateTime, geographicCoordinates);
+
+            var eq = 
+                new EquatorialRightAscension(
+                    await reader.GetDataOrDefault(3, reader.GetDouble),
+                    await reader.GetDataOrDefault(2, reader.GetDouble));
+            var (ra, dec) = eq;
+
+            var horizon = PA.CoordinateSystems
+                .EquatorialToHorizon(lat, new(PA.CoordinateSystems.RightAscensionToHourAngle(dateTime, lon, ra), dec));
+
             var mag = await reader.GetDataOrDefault(4, reader.GetDouble);
 
-            yield return new(id, name ?? String.Empty, equatorial, horizon, mag);
+            yield return new(id, name ?? String.Empty, eq, horizon, mag);
         }
     }
 
@@ -75,7 +86,10 @@ public class DatabaseManager
             {
                 var dateTime = DateTime.ParseExact(date, dateTimeFormat, null);
 
-                var (alt, _) = CoordinatesConverter.EquatorialToHorizonCoordinates(new(dec, ra / 24.0 * 360.0), dateTime.ToUniversalTime(), new(latitude, longitude));
+                var (alt, _) = PA.CoordinateSystems
+                    .EquatorialToHorizon(
+                        latitude, 
+                        new(PA.CoordinateSystems.RightAscensionToHourAngle(dateTime, longitude, ra), dec));
 
                 return alt > 0.0;
             }, true);

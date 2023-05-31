@@ -1,8 +1,10 @@
-﻿namespace CelestialMapper.Core;
+﻿using PracticalAstronomy.CSharp;
+
+namespace CelestialMapper.Core;
 
 public record CelestialObject(
     long Id,
     string Name,
-    EquatorialCoordinates EquatorialCoordinates,
-    HorizonCoordinates HorizonCoordinates, 
+    EquatorialRightAscension EquatorialCoordinates,
+    Horizon HorizonCoordinates, 
     double Magnitude);
