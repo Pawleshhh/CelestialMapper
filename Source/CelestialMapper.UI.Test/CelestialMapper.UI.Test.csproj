@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -15,6 +15,12 @@
     <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
     <PackageReference Include="NUnit.Analyzers" Version="3.6.1" />
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CelestialMapper.Common\CelestialMapper.Common.csproj" />
+    <ProjectReference Include="..\CelestialMapper.Core\CelestialMapper.Core.csproj" />
+    <ProjectReference Include="..\CelestialMapper.UI\CelestialMapper.UI.csproj" />
   </ItemGroup>
 
 </Project>

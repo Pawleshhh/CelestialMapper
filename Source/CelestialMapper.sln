@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CelestialMapper.UI", "Celes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelestialMapper.Common.Test", "CelestialMapper.Common.Test\CelestialMapper.Common.Test.csproj", "{949BE693-6D44-4D0F-AB8F-3B7E3A17BD44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelestialMapper.Core.Test", "CelestialMapper.Core.Test\CelestialMapper.Core.Test.csproj", "{688436BF-66AA-44B1-BD86-7478B1ED225F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelestialMapper.UI.Test", "CelestialMapper.UI.Test\CelestialMapper.UI.Test.csproj", "{CB7E0400-A976-4170-B757-F1D333372212}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,8 +37,19 @@ Global
 		{949BE693-6D44-4D0F-AB8F-3B7E3A17BD44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{949BE693-6D44-4D0F-AB8F-3B7E3A17BD44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{949BE693-6D44-4D0F-AB8F-3B7E3A17BD44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{688436BF-66AA-44B1-BD86-7478B1ED225F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{688436BF-66AA-44B1-BD86-7478B1ED225F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{688436BF-66AA-44B1-BD86-7478B1ED225F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{688436BF-66AA-44B1-BD86-7478B1ED225F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB7E0400-A976-4170-B757-F1D333372212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB7E0400-A976-4170-B757-F1D333372212}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB7E0400-A976-4170-B757-F1D333372212}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB7E0400-A976-4170-B757-F1D333372212}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {913A2875-5705-4FE6-9CE6-3CE550EEB3A2}
 	EndGlobalSection
 EndGlobal

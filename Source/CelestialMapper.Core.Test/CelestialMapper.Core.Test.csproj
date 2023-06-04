@@ -17,4 +17,9 @@
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CelestialMapper.Common\CelestialMapper.Common.csproj" />
+    <ProjectReference Include="..\CelestialMapper.Core\CelestialMapper.Core.csproj" />
+  </ItemGroup>
+
 </Project>
