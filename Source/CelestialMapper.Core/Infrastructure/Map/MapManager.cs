@@ -28,15 +28,28 @@ public class MapManager : IMapManager
 
     #region Methods
 
-    public async Task<IMap> Generate(Geographic location, DateTime dateTime, GenerateMapSettings generateMapSettings)
+    public Task<IMap> Generate(Geographic location, DateTime dateTime, IGenerateMapSettings generateMapSettings)
     {
-        var celestialObjects = await this.celestialDatabase.GetCelestialObjects(location, dateTime, generateMapSettings);
-
-        return CreateMap(celestialObjects);
+        return Task.Run(() =>
+        {
+            var celestialObjects = this.celestialDatabase.GetCelestialObjects(
+                location, 
+                dateTime, 
+                generateMapSettings.MagnitudeRange);
+            return CreateMap(location, dateTime, generateMapSettings, celestialObjects);
+        });
     }
 
-    protected virtual IMap CreateMap(IEnumerable<CelestialObject> celestialObjects)
-        => new CelestialMap(celestialObjects);
+    protected virtual IMap CreateMap(
+        Geographic location, 
+        DateTime dateTime,
+        IGenerateMapSettings generateMapSettings,
+        IEnumerable<CelestialObject> celestialObjects)
+        => new CelestialMap(celestialObjects)
+        {
+            Location = location,
+            DateTime = dateTime
+        };
 
     #endregion
 
