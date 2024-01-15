@@ -4,15 +4,18 @@ using CelestialMapper.Core.Database.CustomFunctions;
 using CelestialMapper.Core.Infrastructure.Map;
 using PracticalAstronomy.CSharp;
 using System.Data.SQLite;
-using Dapper;
+using CSharpUtilities;
 
-namespace CelestialMapper.Core.Database;
+namespace CelestialMapper.Core.Database.SQLiteImpl;
 
-public class CelestialDatabase : ICelestialDatabase
+public class SQLiteCelestialDatabase : ICelestialDatabase
 {
 
     #region Fields
 
+    private readonly Func<int> getProcessorCount;
+
+    private readonly IDatabaseWrapper dbWrapper;
     private readonly SQLiteConnectionStringBuilder connectionBuilder;
 
     private const int ParallelThreshold = 10_000;
@@ -21,13 +24,15 @@ public class CelestialDatabase : ICelestialDatabase
 
     #region Constructors
 
-    static CelestialDatabase()
+    static SQLiteCelestialDatabase()
     {
         SQLiteFunction.RegisterFunction(typeof(SkyContainsFunction));
     }
 
-    public CelestialDatabase()
+    public SQLiteCelestialDatabase(IDatabaseWrapper dbWrapper, Func<int>? getProcessorCount = null)
     {
+        this.getProcessorCount = getProcessorCount ?? (() => Environment.ProcessorCount);
+        this.dbWrapper = dbWrapper ?? throw new ArgumentNullException(nameof(dbWrapper));
         this.connectionBuilder = CreateSQLiteConnectionStringBuilder();
     }
 
@@ -42,7 +47,7 @@ public class CelestialDatabase : ICelestialDatabase
 
     public IEnumerable<CelestialObject> GetCelestialObjects(Geographic location, DateTime dateTime, NumRange<double> magnitudeRange)
     {
-        using SQLiteConnection connection = new(this.connectionBuilder.ConnectionString);
+        using var connection = this.dbWrapper.CreateDbConnection(this.connectionBuilder);
         connection.Open();
 
         string query =
@@ -51,17 +56,15 @@ public class CelestialDatabase : ICelestialDatabase
             $"WHERE {DbColumnNames.StarsColumnNames.Magnitude} BETWEEN {magnitudeRange.Min} AND {magnitudeRange.Max}" +
             $"AND (90 - {location.Latitude} + {DbColumnNames.StarsColumnNames.Declination}) >= 0";
 
-        var rows = connection.Query<StarDataRow>(query);
+        var rows = this.dbWrapper.Query<StarDataRow>(connection, query);
 
         List<CelestialObject> celestialObjects = new();
-        void MapObject(StarDataRow row) => celestialObjects.Add(CelestialObject.FromStarDataRow(location, dateTime, row));
+        void MapObject(StarDataRow row)
+            => celestialObjects.Add(CelestialObject.FromStarDataRow(location, dateTime, row));
 
-        if (rows.Count() <= ParallelThreshold || Environment.ProcessorCount < 2)
+        if (rows.Count() <= ParallelThreshold || this.getProcessorCount() < 2)
         {
-            foreach (var row in rows)
-            {
-                MapObject(row);
-            }
+            rows.ForEach(MapObject);
         }
         else
         {
@@ -69,7 +72,7 @@ public class CelestialDatabase : ICelestialDatabase
         }
 
         connection.Close();
-
+        
         return celestialObjects;
     }
 
@@ -77,7 +80,7 @@ public class CelestialDatabase : ICelestialDatabase
 
     #region Private methods
 
-    private SQLiteConnectionStringBuilder CreateSQLiteConnectionStringBuilder()
+    private static SQLiteConnectionStringBuilder CreateSQLiteConnectionStringBuilder()
     {
         return new()
         {
