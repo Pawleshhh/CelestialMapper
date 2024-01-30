@@ -2,8 +2,14 @@
 
 namespace CelestialMapper.Common;
 
-public struct NumRange
+public class NumRange
 {
+
+    private NumRange()
+    {
+
+    }
+
     public static NumRange<T> Of<T>(T min, T max) where T : INumber<T>, IMinMaxValue<T>
         => new(min, max);
 }

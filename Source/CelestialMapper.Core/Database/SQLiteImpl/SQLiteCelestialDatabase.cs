@@ -16,6 +16,7 @@ public class SQLiteCelestialDatabase : ICelestialDatabase
     private readonly Func<int> getProcessorCount;
 
     private readonly IDatabaseWrapper dbWrapper;
+    private readonly ICelestialObjectProcessor celestialObjectProcessor;
     private readonly SQLiteConnectionStringBuilder connectionBuilder;
 
     private const int ParallelThreshold = 10_000;
@@ -29,11 +30,16 @@ public class SQLiteCelestialDatabase : ICelestialDatabase
         SQLiteFunction.RegisterFunction(typeof(SkyContainsFunction));
     }
 
-    public SQLiteCelestialDatabase(IDatabaseWrapper dbWrapper, Func<int>? getProcessorCount = null)
+    public SQLiteCelestialDatabase(
+        IDatabaseWrapper dbWrapper,
+        ICelestialObjectProcessor celestialObjectProcessor,
+        SQLiteConnectionStringBuilder? connectionStringBuilder = null,
+        Func<int>? getProcessorCount = null)
     {
-        this.getProcessorCount = getProcessorCount ?? (() => Environment.ProcessorCount);
         this.dbWrapper = dbWrapper ?? throw new ArgumentNullException(nameof(dbWrapper));
-        this.connectionBuilder = CreateSQLiteConnectionStringBuilder();
+        this.celestialObjectProcessor = celestialObjectProcessor ?? throw new ArgumentNullException(nameof(celestialObjectProcessor));
+        this.connectionBuilder = connectionStringBuilder ?? CreateSQLiteConnectionStringBuilder();
+        this.getProcessorCount = getProcessorCount ?? (() => Environment.ProcessorCount);
     }
 
     #endregion
@@ -52,9 +58,10 @@ public class SQLiteCelestialDatabase : ICelestialDatabase
 
         string query =
             $"SELECT * " +
-            $"FROM stars " +
-            $"WHERE {DbColumnNames.StarsColumnNames.Magnitude} BETWEEN {magnitudeRange.Min} AND {magnitudeRange.Max}" +
-            $"AND (90 - {location.Latitude} + {DbColumnNames.StarsColumnNames.Declination}) >= 0";
+            $"FROM {DbColumnNames.StarsColumnNames.TableName} " +
+            $"WHERE {MagnitudeCondition(magnitudeRange)} " +
+            $"AND {AboveHorizonCondition(location)} " +
+            $"AND {SkyContainsCondition(location, dateTime)}";
 
         var rows = this.dbWrapper.Query<StarDataRow>(connection, query);
 
@@ -62,14 +69,11 @@ public class SQLiteCelestialDatabase : ICelestialDatabase
         void MapObject(StarDataRow row)
             => celestialObjects.Add(CelestialObject.FromStarDataRow(location, dateTime, row));
 
-        if (rows.Count() <= ParallelThreshold || this.getProcessorCount() < 2)
-        {
-            rows.ForEach(MapObject);
-        }
-        else
-        {
-            Parallel.ForEach(rows, MapObject);
-        }
+        bool parallelProcessing = 
+            rows.Count() > ParallelThreshold 
+            && this.getProcessorCount() >= 2;
+
+        this.celestialObjectProcessor.Process(rows, MapObject, parallelProcessing);
 
         connection.Close();
         
@@ -78,7 +82,23 @@ public class SQLiteCelestialDatabase : ICelestialDatabase
 
     #endregion
 
-    #region Private methods
+        #region Private methods
+
+    private static string MagnitudeCondition(NumRange<double> magnitude)
+    {
+        return $"{DbColumnNames.StarsColumnNames.Magnitude} BETWEEN {magnitude.Min} AND {magnitude.Max}";
+    }
+
+    private static string AboveHorizonCondition(Geographic location)
+    {
+        return $"(90 - {location.Latitude} + {DbColumnNames.StarsColumnNames.Declination}) >= 0";
+    }
+
+    private static string SkyContainsCondition(Geographic location, DateTime dateTime)
+    {
+        return $"SKYCONTAINS({DbColumnNames.StarsColumnNames.RightAcension}, {DbColumnNames.StarsColumnNames.Declination}, " +
+            $"'{dateTime:dd/MM/yyyy HH:mm:ss}', {location.Latitude}, {location.Longitude})";
+    }
 
     private static SQLiteConnectionStringBuilder CreateSQLiteConnectionStringBuilder()
     {

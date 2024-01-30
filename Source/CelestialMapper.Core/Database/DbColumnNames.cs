@@ -4,6 +4,7 @@ internal static class DbColumnNames
 {
 
     public static StarsColumnNames StarsColumnNames { get; } = new(
+        "stars",
         "id",
         "hip",
         "hd",
@@ -51,6 +52,7 @@ internal static class DbColumnNames
 }
 
 record StarsColumnNames(
+    string TableName,
     string Id,
     string HipparcosId,
     string HendryDraperId,

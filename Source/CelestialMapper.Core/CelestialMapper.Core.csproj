@@ -7,11 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Database\Source\stars.sqlite" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Database\Source\stars.sqlite">
+    <Content Include="stars.sqlite">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
