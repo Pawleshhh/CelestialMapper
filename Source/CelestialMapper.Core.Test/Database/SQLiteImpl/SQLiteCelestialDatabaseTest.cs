@@ -1,6 +1,7 @@
 ﻿using CelestialMapper.Common;
 using CelestialMapper.Core.Database;
 using CelestialMapper.Core.Database.SQLiteImpl;
+using CelestialMapper.TestUtilities;
 using Moq;
 using PracticalAstronomy.CSharp;
 using System.Data.Common;
@@ -9,7 +10,7 @@ using System.Data.SQLite;
 namespace CelestialMapper.Core.Test;
 
 [TestFixture]
-internal class SQLiteCelestialDatabaseTest
+internal class SQLiteCelestialDatabaseTest : TestBase<SQLiteCelestialDatabase>
 {
 
     #region Prepare Tests
@@ -25,8 +26,7 @@ internal class SQLiteCelestialDatabaseTest
     private Mock<ICelestialObjectProcessor> celestialObjectProcessor = new();
     private int processorCount;
 
-    public Func<SQLiteCelestialDatabase> CreateSUT =>
-        () => new(
+    public override Func<SQLiteCelestialDatabase> CreateSUT => () => new(
             this.wrapper.Object,
             this.celestialObjectProcessor.Object,
             this.connectionStringBuilder,
@@ -47,6 +47,30 @@ internal class SQLiteCelestialDatabaseTest
     #endregion
 
     #region Tests
+
+    [Test]
+    public void Constructor_NullDbWrapper_ThrowsArgumentNullException()
+    {
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(
+            () => new SQLiteCelestialDatabase(
+                null!,
+                this.celestialObjectProcessor.Object,
+                null,
+                null));
+    }
+
+    [Test]
+    public void Constructor_NullCelestialObjectProcessor_ThrowsArgumentNullException()
+    {
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(
+            () => new SQLiteCelestialDatabase(
+                this.wrapper.Object,
+                null!,
+                null,
+                null));
+    }
 
     [Test]
     public void GetCelestialObjects_CreatesDbConnectionOpensAndClosesIt_Passes()
