@@ -2,6 +2,7 @@
 
 namespace CelestialMapper.Common.Test;
 
+[TestFixture]
 internal class ArrayExtensionsTest
 {
 
