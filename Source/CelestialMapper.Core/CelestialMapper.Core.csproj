@@ -6,4 +6,21 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include="stars.sqlite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CSharpUtilities" Version="1.0.0" />
+    <PackageReference Include="Dapper" Version="2.1.28" />
+    <PackageReference Include="PracticalAstronomy.CSharp" Version="1.0.0" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CelestialMapper.Common\CelestialMapper.Common.csproj" />
+  </ItemGroup>
+
 </Project>

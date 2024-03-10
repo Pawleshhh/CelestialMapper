@@ -9,11 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CelestialMapper.Core", "Cel
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CelestialMapper.UI", "CelestialMapper.UI\CelestialMapper.UI.csproj", "{7DE28C03-1FDE-4150-B311-FEF710CBC35E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelestialMapper.Common.Test", "CelestialMapper.Common.Test\CelestialMapper.Common.Test.csproj", "{949BE693-6D44-4D0F-AB8F-3B7E3A17BD44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CelestialMapper.Common.Test", "CelestialMapper.Common.Test\CelestialMapper.Common.Test.csproj", "{949BE693-6D44-4D0F-AB8F-3B7E3A17BD44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelestialMapper.Core.Test", "CelestialMapper.Core.Test\CelestialMapper.Core.Test.csproj", "{688436BF-66AA-44B1-BD86-7478B1ED225F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CelestialMapper.Core.Test", "CelestialMapper.Core.Test\CelestialMapper.Core.Test.csproj", "{688436BF-66AA-44B1-BD86-7478B1ED225F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelestialMapper.UI.Test", "CelestialMapper.UI.Test\CelestialMapper.UI.Test.csproj", "{CB7E0400-A976-4170-B757-F1D333372212}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CelestialMapper.UI.Test", "CelestialMapper.UI.Test\CelestialMapper.UI.Test.csproj", "{CB7E0400-A976-4170-B757-F1D333372212}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelestialMapper.TestUtilities", "CelestialMapper.TestUtilities\CelestialMapper.TestUtilities.csproj", "{5145D5AD-2641-4F27-B212-995EE5F28E9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{CB7E0400-A976-4170-B757-F1D333372212}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB7E0400-A976-4170-B757-F1D333372212}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB7E0400-A976-4170-B757-F1D333372212}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5145D5AD-2641-4F27-B212-995EE5F28E9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5145D5AD-2641-4F27-B212-995EE5F28E9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5145D5AD-2641-4F27-B212-995EE5F28E9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5145D5AD-2641-4F27-B212-995EE5F28E9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
