@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CelestialMapper.Common\CelestialMapper.Common.csproj" />
+    <ProjectReference Include="..\CelestialMapper.TestUtilities\CelestialMapper.TestUtilities.csproj" />
   </ItemGroup>
 
 </Project>
