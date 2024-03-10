@@ -82,7 +82,7 @@ public class SQLiteCelestialDatabase : ICelestialDatabase
 
     #endregion
 
-        #region Private methods
+    #region Private methods
 
     private static string MagnitudeCondition(NumRange<double> magnitude)
     {
