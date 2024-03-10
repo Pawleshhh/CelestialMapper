@@ -41,15 +41,17 @@ public class MapManager : IMapManager
     }
 
     protected virtual IMap CreateMap(
-        Geographic location, 
+        Geographic location,
         DateTime dateTime,
         IGenerateMapSettings generateMapSettings,
         IEnumerable<CelestialObject> celestialObjects)
-        => new CelestialMap(celestialObjects)
+    {
+        return new CelestialMap(celestialObjects)
         {
             Location = location,
             DateTime = dateTime
         };
+    }
 
     #endregion
 

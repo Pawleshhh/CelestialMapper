@@ -1,7 +1,6 @@
 ﻿using CelestialMapper.Common;
 using CelestialMapper.Core.Astronomy;
 using PracticalAstronomy.CSharp;
-using System.Data.Common;
 
 namespace CelestialMapper.Core.Database;
 
