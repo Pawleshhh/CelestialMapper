@@ -34,11 +34,11 @@ public partial class App : Application
 
     private static void LoadTheme()
     {
-        //ResourceDictionary colorsDictionary = new ResourceDictionary();
-        //colorsDictionary.Source = new Uri("/CasualBuilder.UI;component/Resources/Themes/Colors.Light.xaml", UriKind.Relative);
+        ResourceDictionary colorsDictionary = new ResourceDictionary();
+        colorsDictionary.Source = new Uri("/CelestialMapper.UI;component/Resources/Themes/Colors.Light.xaml", UriKind.Relative);
 
-        //// Add the loaded ResourceDictionary to the application's resources
-        //Application.Current.Resources.MergedDictionaries.Add(colorsDictionary);
+        // Add the loaded ResourceDictionary to the application's resources
+        Application.Current.Resources.MergedDictionaries.Add(colorsDictionary);
     }
 
     private static object GetMainViewModel()

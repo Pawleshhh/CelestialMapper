@@ -1,0 +1,39 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!--#region Margins-->
+
+    <Thickness x:Key="Margin.ExtraSmall">5</Thickness>
+    <Thickness x:Key="Margin.Small">10</Thickness>
+    <Thickness x:Key="Margin.Medium">15</Thickness>
+    <Thickness x:Key="Margin.Large">20</Thickness>
+    <Thickness x:Key="Margin.ExtraLarge">25</Thickness>
+    <Thickness x:Key="Margin.Huge">30</Thickness>
+
+    <!--#endregion-->
+
+    <!--#region Paddings-->
+
+    <Thickness x:Key="Padding.VerticalSmall.HorizontalMedium">10, 5</Thickness>
+
+    <!--#endregion-->
+
+    <!--#region Borders-->
+
+    <Thickness x:Key="Border.ExtraSmall">1</Thickness>
+    <Thickness x:Key="Border.Small">2</Thickness>
+    <Thickness x:Key="Border.Medium">3</Thickness>
+
+    <Thickness x:Key="Border.ExtraSmall.Right">0, 0, 1, 0</Thickness>
+    <Thickness x:Key="Border.Small.Right">0, 0, 2, 0</Thickness>
+    <Thickness x:Key="Border.Medium.Right">0, 0, 3, 0</Thickness>
+
+    <Thickness x:Key="Border.ExtraSmall.Bottom">0, 0, 0, 1</Thickness>
+    <Thickness x:Key="Border.Small.Bottom">0, 0, 0, 2</Thickness>
+    <Thickness x:Key="Border.Medium.Bottom">0, 0, 0, 3</Thickness>
+
+    <!--#endregion-->
+
+</ResourceDictionary>
