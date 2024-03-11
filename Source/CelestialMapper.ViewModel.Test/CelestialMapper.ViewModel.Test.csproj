@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -19,9 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CelestialMapper.Common\CelestialMapper.Common.csproj" />
-    <ProjectReference Include="..\CelestialMapper.Core\CelestialMapper.Core.csproj" />
-    <ProjectReference Include="..\CelestialMapper.UI\CelestialMapper.UI.csproj" />
+    <ProjectReference Include="..\CelestialMapper.ViewModel\CelestialMapper.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>

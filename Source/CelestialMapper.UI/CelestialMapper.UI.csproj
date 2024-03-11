@@ -7,4 +7,11 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CelestialMapper.Bootstrapper\CelestialMapper.Bootstrapper.csproj" />
+    <ProjectReference Include="..\CelestialMapper.Common\CelestialMapper.Common.csproj" />
+    <ProjectReference Include="..\CelestialMapper.Core\CelestialMapper.Core.csproj" />
+    <ProjectReference Include="..\CelestialMapper.ViewModel\CelestialMapper.ViewModel.csproj" />
+  </ItemGroup>
+
 </Project>
