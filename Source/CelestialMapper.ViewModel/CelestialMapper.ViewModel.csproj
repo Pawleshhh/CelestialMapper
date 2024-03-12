@@ -11,8 +11,4 @@
     <ProjectReference Include="..\CelestialMapper.Core\CelestialMapper.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Map\" />
-  </ItemGroup>
-
 </Project>

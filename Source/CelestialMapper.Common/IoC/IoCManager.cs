@@ -25,7 +25,7 @@ public class IoCManager : IIoCManager
         }
 
         var exportAttributes = assembly
-            .GetExportedTypes()
+            .GetTypes()
             .SelectMany(type => type.GetCustomAttributes<ExportAttribute>(false));
 
         if (exportAttributes.IsNullOrEmpty())

@@ -1,9 +1,11 @@
-﻿using CelestialMapper.Core.Astronomy;
+﻿using CelestialMapper.Common;
+using CelestialMapper.Core.Astronomy;
 using CelestialMapper.Core.Database;
 using PracticalAstronomy.CSharp;
 
 namespace CelestialMapper.Core.Infrastructure.Map;
 
+[Export(typeof(IMapManager), typeof(MapManager), IsSingleton = true, Key = nameof(MapManager))]
 public class MapManager : IMapManager
 {
 

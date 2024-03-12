@@ -4,9 +4,11 @@ using CelestialMapper.Core.Database.CustomFunctions;
 using CelestialMapper.Core.Infrastructure.Map;
 using PracticalAstronomy.CSharp;
 using System.Data.SQLite;
+using System.Globalization;
 
 namespace CelestialMapper.Core.Database.SQLiteImpl;
 
+[Export(typeof(ICelestialDatabase), typeof(SQLiteCelestialDatabase), IsSingleton = true, Key = nameof(SQLiteCelestialDatabase))]
 public class SQLiteCelestialDatabase : ICelestialDatabase
 {
 
@@ -96,7 +98,7 @@ public class SQLiteCelestialDatabase : ICelestialDatabase
     private static string SkyContainsCondition(Geographic location, DateTime dateTime)
     {
         return $"SKYCONTAINS({DbColumnNames.StarsColumnNames.RightAcension}, {DbColumnNames.StarsColumnNames.Declination}, " +
-            $"'{dateTime:dd/MM/yyyy HH:mm:ss}', {location.Latitude}, {location.Longitude})";
+            $"'{dateTime.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)}', {location.Latitude}, {location.Longitude})";
     }
 
     private static SQLiteConnectionStringBuilder CreateSQLiteConnectionStringBuilder()
