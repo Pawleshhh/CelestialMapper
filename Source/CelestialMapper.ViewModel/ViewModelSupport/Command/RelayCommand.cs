@@ -2,17 +2,28 @@
 
 using System.Windows.Input;
 
-public class RelayCommand : ICommand
+public class RelayCommand : RelayCommand<object>
 {
-    private readonly Action<object?> execute;
-    private readonly Func<object?, bool>? canExecute;
+    public RelayCommand(Action<object?> execute) : base(execute)
+    {
+    }
 
-    public RelayCommand(Action<object?> execute)
+    public RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null) : base(execute, canExecute)
+    {
+    }
+}
+
+public class RelayCommand<T> : ICommand
+{
+    private readonly Action<T?> execute;
+    private readonly Func<T?, bool>? canExecute;
+
+    public RelayCommand(Action<T?> execute)
         : this(execute, null)
     {
     }
 
-    public RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null)
+    public RelayCommand(Action<T?> execute, Func<T?, bool>? canExecute = null)
     {
         this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
         this.canExecute = canExecute;
@@ -24,11 +35,11 @@ public class RelayCommand : ICommand
 
     public bool CanExecute(object? parameter)
     {
-        return this.canExecute == null || this.canExecute(parameter);
+        return this.canExecute == null || this.canExecute((T?)parameter);
     }
 
     public void Execute(object? parameter)
     {
-        this.execute(parameter);
+        this.execute((T?)parameter);
     }
 }
