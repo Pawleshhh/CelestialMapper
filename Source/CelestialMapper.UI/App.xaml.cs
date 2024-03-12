@@ -42,5 +42,5 @@ public partial class App : Application
     }
 
     private static object GetMainViewModel()
-        => new object();
+        => ServiceProvider.ResolveViewModel<ShellViewModel>(FeatureNames.Shell);
 }

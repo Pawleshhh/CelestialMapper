@@ -8,14 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\Fonts\**" />
+    <EmbeddedResource Remove="Resources\Fonts\**" />
+    <None Remove="Resources\Fonts\**" />
+    <Page Remove="Resources\Fonts\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CelestialMapper.Bootstrapper\CelestialMapper.Bootstrapper.csproj" />
     <ProjectReference Include="..\CelestialMapper.Common\CelestialMapper.Common.csproj" />
     <ProjectReference Include="..\CelestialMapper.Core\CelestialMapper.Core.csproj" />
     <ProjectReference Include="..\CelestialMapper.ViewModel\CelestialMapper.ViewModel.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resources\Fonts\" />
   </ItemGroup>
 
 </Project>

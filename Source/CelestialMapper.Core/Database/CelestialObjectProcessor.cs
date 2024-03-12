@@ -1,4 +1,4 @@
-﻿using CSharpUtilities;
+﻿using CelestialMapper.Common;
 
 namespace CelestialMapper.Core.Database;
 

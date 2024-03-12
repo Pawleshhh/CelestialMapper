@@ -4,7 +4,6 @@ using CelestialMapper.Core.Database.CustomFunctions;
 using CelestialMapper.Core.Infrastructure.Map;
 using PracticalAstronomy.CSharp;
 using System.Data.SQLite;
-using CSharpUtilities;
 
 namespace CelestialMapper.Core.Database.SQLiteImpl;
 
