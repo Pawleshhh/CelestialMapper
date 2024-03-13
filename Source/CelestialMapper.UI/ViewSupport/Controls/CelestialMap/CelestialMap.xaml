@@ -19,94 +19,23 @@
                  />
 
         <!--  Lines  -->
-        <ItemsControl x:Name="lineItems"
-                      Height="{DynamicResource Double.Map.Diameter}"
-                      Width="{DynamicResource Double.Map.Diameter}"
-                      RenderTransformOrigin="0.5, 0.5"
-                      />
+        <Grid x:Name="gridLines"
+              Height="{DynamicResource Double.Map.Diameter}"
+              Width="{DynamicResource Double.Map.Diameter}"
+              >
 
-        <!--<Grid x:Name="linesGrid" RenderTransformOrigin="0.5, 0.5">
-            <Grid.RenderTransform>
-                <ScaleTransform ScaleX="-1" ScaleY="1" />
-            </Grid.RenderTransform>
-            <Grid.Resources>
-                <Style TargetType="Rectangle">
-                    <Setter Property="HorizontalAlignment" Value="Center" />
-                    <Setter Property="Fill" Value="#278a7d" />
-                    <Setter Property="Stroke" Value="#278a7d" />
-                    <Setter Property="StrokeThickness" Value="0.25" />
-                    <Setter Property="RenderTransformOrigin" Value="0.5, 0.5" />
-                </Style>
-            </Grid.Resources>
+            <Grid x:Name="azimuthLines"
+                  Height="{DynamicResource Double.Map.Diameter}"
+                  Width="{DynamicResource Double.Map.Diameter}"
+                  Background="{x:Null}"
+                  />
 
-            <Rectangle />
+            <Grid x:Name="altitudeLines"
+                  Height="{DynamicResource Double.Map.Diameter}"
+                  Width="{DynamicResource Double.Map.Diameter}"
+                  Background="{x:Null}"
+                  />
 
-            <Rectangle>
-                <Rectangle.RenderTransform>
-                    <RotateTransform Angle="15" />
-                </Rectangle.RenderTransform>
-            </Rectangle>
-
-            <Rectangle>
-                <Rectangle.RenderTransform>
-                    <RotateTransform Angle="30" />
-                </Rectangle.RenderTransform>
-            </Rectangle>
-
-            <Rectangle>
-                <Rectangle.RenderTransform>
-                    <RotateTransform Angle="45" />
-                </Rectangle.RenderTransform>
-            </Rectangle>
-
-            <Rectangle>
-                <Rectangle.RenderTransform>
-                    <RotateTransform Angle="60" />
-                </Rectangle.RenderTransform>
-            </Rectangle>
-
-            <Rectangle>
-                <Rectangle.RenderTransform>
-                    <RotateTransform Angle="75" />
-                </Rectangle.RenderTransform>
-            </Rectangle>
-
-            <Rectangle>
-                <Rectangle.RenderTransform>
-                    <RotateTransform Angle="90" />
-                </Rectangle.RenderTransform>
-            </Rectangle>
-
-            <Rectangle>
-                <Rectangle.RenderTransform>
-                    <RotateTransform Angle="105" />
-                </Rectangle.RenderTransform>
-            </Rectangle>
-
-            <Rectangle>
-                <Rectangle.RenderTransform>
-                    <RotateTransform Angle="120" />
-                </Rectangle.RenderTransform>
-            </Rectangle>
-
-            <Rectangle>
-                <Rectangle.RenderTransform>
-                    <RotateTransform Angle="135" />
-                </Rectangle.RenderTransform>
-            </Rectangle>
-
-            <Rectangle>
-                <Rectangle.RenderTransform>
-                    <RotateTransform Angle="150" />
-                </Rectangle.RenderTransform>
-            </Rectangle>
-
-            <Rectangle>
-                <Rectangle.RenderTransform>
-                    <RotateTransform Angle="165" />
-                </Rectangle.RenderTransform>
-            </Rectangle>
-
-        </Grid>-->
+        </Grid>
     </Grid>
 </UserControl>

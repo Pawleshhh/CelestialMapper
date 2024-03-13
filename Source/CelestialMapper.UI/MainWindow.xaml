@@ -9,6 +9,8 @@
         Title="{Binding Name}"
         d:DataContext="{d:DesignInstance Type=vm:ShellViewModel,
                                          IsDesignTimeCreatable=False}"
+        Height="920"
+        Width="1280"
         Style="{DynamicResource Style.MainWindow}"
         >
 

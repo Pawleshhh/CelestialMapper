@@ -3,6 +3,8 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     >
 
-    <sys:Double x:Key="Double.Map.Diameter">600</sys:Double>
+    <sys:Double x:Key="Double.Map.Diameter">720</sys:Double>
+    <sys:Double x:Key="Double.Map.Altitude30">400</sys:Double>
+    <sys:Double x:Key="Double.Map.Altitude60">200</sys:Double>
 
 </ResourceDictionary>

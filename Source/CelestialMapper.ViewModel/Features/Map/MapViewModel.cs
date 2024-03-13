@@ -49,7 +49,7 @@ public class MapViewModel : ViewModelBase
 
     #region Properties
 
-    public IReadOnlySet<CelestialObject> CelestialObjects => this.map.CelestialObjects;
+    public IReadOnlySet<CelestialObject> CelestialObjects => this.map?.CelestialObjects ?? new HashSet<CelestialObject>();
 
     #endregion
 
