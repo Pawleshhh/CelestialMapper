@@ -100,4 +100,17 @@ public partial class CelestialMap : UserControl
 
     #endregion
 
+    #region CelestialObjects
+
+    public IList<CelestialObject> CelestialObjects
+    {
+        get { return this.GetValue<IList<CelestialObject>>(CelestialObjectsProperty); }
+        set { SetValue(CelestialObjectsProperty, value); }
+    }
+
+    public static readonly DependencyProperty CelestialObjectsProperty =
+        Register<IList<CelestialObject>, CelestialMap>(nameof(CelestialObjects));
+
+    #endregion
+
 }

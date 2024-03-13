@@ -24,4 +24,9 @@ public readonly struct NumRange<T> where T : INumber<T>, IMinMaxValue<T>
     public NumRange(T min, T max)
         => (Min, Max) = (min, max);
 
+    public bool InRange(T value)
+    {
+        return Min <= value && Max <= value;
+    }
+
 }
