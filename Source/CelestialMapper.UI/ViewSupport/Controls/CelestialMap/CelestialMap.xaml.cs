@@ -36,7 +36,7 @@ public partial class CelestialMap : UserControl
 
     public double[] AzimuthAngles => Enumerable.Range(0, 12).Select(i => 30d * i).ToArray();
 
-    private void UpdateAltitudeLines()
+    public void UpdateAltitudeLines()
     {
         this.altitudeLines.Children.Clear();
 
@@ -68,7 +68,7 @@ public partial class CelestialMap : UserControl
         return diameter * percent;
     }
 
-    private void UpdateAzimuthLines()
+    public void UpdateAzimuthLines()
     {
         this.azimuthLines.Children.Clear();
 
@@ -80,8 +80,8 @@ public partial class CelestialMap : UserControl
         {
             var rectangle = CreateLine(lineLength);
             rectangle.RenderTransform = RenderTransformHelper.CreateTransformGroup(
-                Rotate.By(azimuthAngles[i]),
-                Translate.To(0, -lineLength / 2d - (altitude80Diameter / 2d)));
+                Translate.To(0, -lineLength / 2d - (altitude80Diameter / 2d)),
+                Rotate.By(azimuthAngles[i]));
             this.azimuthLines.Children.Add(rectangle);
         }
 
