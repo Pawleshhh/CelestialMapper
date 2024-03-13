@@ -11,5 +11,7 @@
                        d:DesignHeight="450"
                        d:DesignWidth="800"
                        >
-    <Grid />
+    <Grid>
+        <local:CelestialMap />
+    </Grid>
 </local:FeatureViewBase>
