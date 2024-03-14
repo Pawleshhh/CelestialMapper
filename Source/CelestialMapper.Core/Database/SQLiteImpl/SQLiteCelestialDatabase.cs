@@ -64,6 +64,12 @@ public class SQLiteCelestialDatabase : ICelestialDatabase
             $"AND {AboveHorizonCondition(location)} " +
             $"AND {SkyContainsCondition(location, dateTime)}";
 
+        //string query =
+        //    $"SELECT * " +
+        //    $"FROM {DbColumnNames.StarsColumnNames.TableName} " +
+        //    $"WHERE {MagnitudeCondition(magnitudeRange)} " +
+        //    $"AND {SkyContainsCondition(location, dateTime)}";
+
         var rows = this.dbWrapper.Query<StarDataRow>(connection, query);
 
         List<CelestialObject> celestialObjects = new();

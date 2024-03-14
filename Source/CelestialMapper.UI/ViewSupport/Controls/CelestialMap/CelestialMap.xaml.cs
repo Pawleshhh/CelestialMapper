@@ -146,9 +146,6 @@ public partial class CelestialMap : UserControl
             celestialObjectUI.CanvasPoint = canvasPoint;
 
             this.mapCanvas.Children.Add(celestialObjectUI);
-            //Dispatcher.Invoke(() =>
-            //{
-            //});
         }
     }
 

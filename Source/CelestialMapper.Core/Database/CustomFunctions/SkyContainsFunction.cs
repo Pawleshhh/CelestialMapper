@@ -1,4 +1,5 @@
 ﻿using System.Data.SQLite;
+using System.Globalization;
 using CelestialMapper.Common;
 
 namespace CelestialMapper.Core.Database.CustomFunctions;
@@ -15,9 +16,9 @@ internal class SkyContainsFunction : SQLiteFunction
         var lat = args.As<double>(3);
         var lon = args.As<double>(4);
 
-        var dateTime = DateTime.ParseExact(date, "dd/MM/yyyy HH:mm:ss", null);
+        var dateTime = DateTime.ParseExact(date, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
-        var hourAngle = PA.CoordinateSystems.RightAscensionToHourAngle(dateTime, lon, ra);
+        var hourAngle = PA.CoordinateSystems.RightAscensionToHourAngle(dateTime, lon, ra * 15d);
 
         var result = PA.CoordinateSystems.EquatorialToHorizon(
             lat, 
