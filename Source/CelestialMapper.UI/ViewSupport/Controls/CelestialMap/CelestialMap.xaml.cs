@@ -1,5 +1,6 @@
 ﻿namespace CelestialMapper.UI;
 
+using CelestialMapper.Core.Astronomy;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Media;
@@ -57,7 +58,7 @@ public partial class CelestialMap : UserControl
                 Height = diameter,
                 Width = diameter,
                 Fill = null,
-                Stroke = Brushes.Red
+                Stroke = Brushes.Green
             };
     }
 
@@ -102,14 +103,54 @@ public partial class CelestialMap : UserControl
 
     #region CelestialObjects
 
-    public IList<CelestialObject> CelestialObjects
+    public IReadOnlySet<CelestialObject> CelestialObjects
     {
-        get { return this.GetValue<IList<CelestialObject>>(CelestialObjectsProperty); }
+        get { return this.GetValue<IReadOnlySet<CelestialObject>>(CelestialObjectsProperty); }
         set { SetValue(CelestialObjectsProperty, value); }
     }
 
     public static readonly DependencyProperty CelestialObjectsProperty =
-        Register<IList<CelestialObject>, CelestialMap>(nameof(CelestialObjects));
+        Register<IReadOnlySet<CelestialObject>, CelestialMap>(
+            nameof(CelestialObjects), 
+            new(null, OnCelestialObjectsChanged));
+
+    private static void OnCelestialObjectsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (!CanHandle<CelestialMap, IReadOnlySet<CelestialObject>>(d, e, out var celestialMap, out var _))
+        {
+            return;
+        }
+
+        celestialMap.UpdateMapCanvas();
+    }
+
+    public void UpdateMapCanvas()
+    {
+        var mapDiameter = Diameter;
+        var canvasPoint = new Point(mapDiameter / 2d, mapDiameter / 2d);
+
+        foreach (var celestialObject in CelestialObjects)
+        {
+            var size = CelestialObjectUIElement.GetSize(celestialObject.Magnitude);
+            var celestialObjectUI = new CelestialObjectUIElement
+            {
+                Size = size
+            };
+
+            var (x, y) = AstronomyCoordsHelper.MapCartesianCoords(
+                celestialObject.HorizonCoordinates,
+                mapDiameter,
+                celestialObjectUI.Size);
+
+            celestialObjectUI.Position = new(x, y);
+            celestialObjectUI.CanvasPoint = canvasPoint;
+
+            this.mapCanvas.Children.Add(celestialObjectUI);
+            //Dispatcher.Invoke(() =>
+            //{
+            //});
+        }
+    }
 
     #endregion
 

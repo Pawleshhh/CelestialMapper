@@ -60,7 +60,7 @@ public class MapViewModel : ViewModelBase
         this.map = await this.mapManager.Generate(
             new(0, 0), 
             DateTime.Now, 
-            IGenerateMapSettings.Create(NumRange.Of(0d, 2d)));
+            IGenerateMapSettings.Create(NumRange.Of(-1d, 4d)));
 
         RisePropertyChanged(nameof(CelestialObjects));
     }
