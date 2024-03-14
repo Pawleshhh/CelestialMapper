@@ -58,7 +58,7 @@ public class MapViewModel : ViewModelBase
     private async void GenerateMap(object? o)
     {
         this.map = await this.mapManager.Generate(
-            new(0, 0), 
+            new(53.482906986790525, 14.862220332070006), 
             DateTime.Now, 
             IGenerateMapSettings.Create(NumRange.Of(-1d, 4d)));
 

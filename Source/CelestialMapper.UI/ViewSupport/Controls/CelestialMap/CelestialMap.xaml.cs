@@ -116,7 +116,8 @@ public partial class CelestialMap : UserControl
 
     private static void OnCelestialObjectsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (!CanHandle<CelestialMap, IReadOnlySet<CelestialObject>>(d, e, out var celestialMap, out var _))
+        if (!CanHandle<CelestialMap, IReadOnlySet<CelestialObject>>(d, e, out var celestialMap, out var celestialObjects)
+            && !celestialObjects.IsNullOrEmpty())
         {
             return;
         }
@@ -127,23 +128,22 @@ public partial class CelestialMap : UserControl
     public void UpdateMapCanvas()
     {
         var mapDiameter = Diameter;
-        var canvasPoint = new Point(mapDiameter / 2d, mapDiameter / 2d);
+        var mapRadius = mapDiameter / 2d;
 
         foreach (var celestialObject in CelestialObjects)
         {
-            var size = CelestialObjectUIElement.GetSize(celestialObject.Magnitude);
-            var celestialObjectUI = new CelestialObjectUIElement
-            {
-                Size = size
-            };
-
             var (x, y) = AstronomyCoordsHelper.MapCartesianCoords(
                 celestialObject.HorizonCoordinates,
-                mapDiameter,
-                celestialObjectUI.Size);
+                mapDiameter);
+            var position = new Point(x + mapRadius, y + mapRadius);
 
-            celestialObjectUI.Position = new(x, y);
-            celestialObjectUI.CanvasPoint = canvasPoint;
+            var size = CelestialObjectHelper.GetSizeBasedOnMagnitude(celestialObject.Magnitude);
+
+            var celestialObjectUI = new CelestialObjectUIElement
+            {
+                Position = position,
+                Size = size
+            };
 
             this.mapCanvas.Children.Add(celestialObjectUI);
         }
