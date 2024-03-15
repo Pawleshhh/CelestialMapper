@@ -59,8 +59,8 @@ public class MapViewModel : ViewModelBase
     {
         this.map = await this.mapManager.Generate(
             new(53.482906986790525, 14.862220332070006), 
-            DateTime.Now, 
-            IGenerateMapSettings.Create(NumRange.Of(-1d, 4d)));
+            DateTime.Now.ToUniversalTime(), 
+            IGenerateMapSettings.Create(NumRange.Of(-1d, 5d)));
 
         RisePropertyChanged(nameof(CelestialObjects));
     }

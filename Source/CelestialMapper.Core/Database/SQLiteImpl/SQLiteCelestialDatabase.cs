@@ -92,15 +92,20 @@ public class SQLiteCelestialDatabase : ICelestialDatabase
 
     private static string AboveHorizonCondition(Geographic location)
     {
-        return $"(90 - {location.Latitude} + {DbColumnNames.StarsColumnNames.Declination}) >= 0";
+        return $"(90 - {FormatDouble(location.Latitude)} + {DbColumnNames.StarsColumnNames.Declination}) >= 0";
     }
 
     private static string SkyContainsCondition(Geographic location, DateTime dateTime)
     {
         return $"SKYCONTAINS({DbColumnNames.StarsColumnNames.RightAcension}, {DbColumnNames.StarsColumnNames.Declination}, " +
             $"'{dateTime.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)}', " +
-            $"{location.Latitude.ToString("N2", CultureInfo.InvariantCulture)}, " +
-            $"{location.Longitude.ToString("N2", CultureInfo.InvariantCulture)})";
+            $"{FormatDouble(location.Latitude)}, " +
+            $"{FormatDouble(location.Longitude)})";
+    }
+
+    private static string FormatDouble(double value)
+    {
+        return value.ToString("N6", CultureInfo.InvariantCulture);
     }
 
     private static SQLiteConnectionStringBuilder CreateSQLiteConnectionStringBuilder()
