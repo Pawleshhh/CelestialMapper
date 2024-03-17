@@ -10,7 +10,7 @@ using static CelestialMapper.UI.DependencyPropertyHelper;
 /// <summary>
 /// Interaction logic for CelestialMap.xaml
 /// </summary>
-public partial class CelestialMap : UserControl
+public partial class CelestialMap : PlatformUserControl
 {
 
     #region Fields
@@ -27,7 +27,7 @@ public partial class CelestialMap : UserControl
 
     #region Properties
 
-    public double Diameter => (double)FindResource("Double.Map.Diameter");
+    public double Diameter => (double)GetResource("Double.Map.Diameter");
 
     #endregion
 

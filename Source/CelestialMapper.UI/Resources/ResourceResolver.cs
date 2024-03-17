@@ -9,7 +9,7 @@ public class ResourceResolver : IResourceResolver
 
         if (resource is null)
         {
-            throw new InvalidOperationException($"Resource of {key} not found");
+            throw GetInvalidOperationException(key);
         }
 
         return resource;
@@ -28,5 +28,20 @@ public class ResourceResolver : IResourceResolver
             return false;
         }
     }
+
+    public object ResolveResource(string key)
+    {
+        var resource = App.Current.Resources[key];
+
+        if (resource is null)
+        {
+            throw GetInvalidOperationException(key);
+        }
+
+        return resource;
+    }
+
+    private static InvalidOperationException GetInvalidOperationException(string key)
+        => new InvalidOperationException($"Resource of {key} not found");
 
 }
