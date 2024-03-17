@@ -31,6 +31,10 @@ public abstract class FeatureViewTest<TFeatureView, TViewModel>
         ServiceProvider
             .Setup(x => x.GetService(ViewModelType))
             .Returns(Mock.Of<IViewModel>());
+
+        ServiceProvider
+            .Setup(x => x.GetService(typeof(IResourceResolver)))
+            .Returns(Mock.Of<IResourceResolver>());
     }
 
     #endregion
