@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CSharpUtilities" Version="1.0.0" />
     <PackageReference Include="Dapper" Version="2.1.28" />
+    <PackageReference Include="functional-c-sharp" Version="1.1.0" />
     <PackageReference Include="PracticalAstronomy.CSharp" Version="1.0.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
   </ItemGroup>

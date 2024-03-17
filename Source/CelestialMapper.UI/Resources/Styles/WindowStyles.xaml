@@ -1,7 +1,7 @@
-﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    >
 
     <!--#region MainWindow-->
 
@@ -11,8 +11,6 @@
     <Style x:Key="Style.MainWindow" TargetType="Window">
         <Setter Property="Height" Value="{DynamicResource Double.MainWindow.Height}" />
         <Setter Property="Width" Value="{DynamicResource Double.MainWindow.Width}" />
-
-        <Setter Property="Title" Value="{DynamicResource String.MainWindow.Title}" />
 
         <Setter Property="Background" Value="{DynamicResource Brush.Background}" />
     </Style>

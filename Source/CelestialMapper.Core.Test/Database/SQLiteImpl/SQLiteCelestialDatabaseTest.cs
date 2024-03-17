@@ -6,6 +6,7 @@ using Moq;
 using PracticalAstronomy.CSharp;
 using System.Data.Common;
 using System.Data.SQLite;
+using System.Globalization;
 
 namespace CelestialMapper.Core.Test;
 
@@ -112,10 +113,13 @@ internal class SQLiteCelestialDatabaseTest : TestBase<SQLiteCelestialDatabase>
         DateTime dateTime = new(2025, 1, 5);
         var magnitude = NumRange.Of(3d, 12);
 
+        static string FormatDouble(double value)
+            => value.ToString("N6", CultureInfo.InvariantCulture);
+
         string expectedQuery = "SELECT * FROM stars WHERE " +
             "mag BETWEEN 3 AND 12 " +
-            "AND (90 - 10 + dec) >= 0 " +
-            "AND SKYCONTAINS(ra, dec, '05/01/2025 00:00:00', 10, 14)";
+            $"AND (90 - {FormatDouble(10)} + dec) >= 0 " +
+            $"AND SKYCONTAINS(ra, dec, '05/01/2025 00:00:00', {FormatDouble(10)}, {FormatDouble(14)})";
 
         var sut = CreateSUT();
 

@@ -24,4 +24,22 @@ public static class DependencyPropertyHelper
     public static T GetValue<T>(this DependencyObject @this, DependencyProperty dp)
         => (T)@this.GetValue(dp);
 
+    public static bool CanHandle<TDp, TValueType>(
+        DependencyObject dp,
+        DependencyPropertyChangedEventArgs e, 
+        out TDp expectedDp, 
+        out TValueType expectedValue)
+    {
+        if (dp is TDp exDp && e.NewValue is TValueType exValue)
+        {
+            expectedDp = exDp;
+            expectedValue = exValue;
+            return true;
+        }
+
+        expectedDp = default!;
+        expectedValue = default!;
+        return false;
+    }
+
 }

@@ -4,10 +4,11 @@ using CelestialMapper.Core.Database.CustomFunctions;
 using CelestialMapper.Core.Infrastructure.Map;
 using PracticalAstronomy.CSharp;
 using System.Data.SQLite;
-using CSharpUtilities;
+using System.Globalization;
 
 namespace CelestialMapper.Core.Database.SQLiteImpl;
 
+[Export(typeof(ICelestialDatabase), typeof(SQLiteCelestialDatabase), IsSingleton = true, Key = nameof(SQLiteCelestialDatabase))]
 public class SQLiteCelestialDatabase : ICelestialDatabase
 {
 
@@ -91,20 +92,27 @@ public class SQLiteCelestialDatabase : ICelestialDatabase
 
     private static string AboveHorizonCondition(Geographic location)
     {
-        return $"(90 - {location.Latitude} + {DbColumnNames.StarsColumnNames.Declination}) >= 0";
+        return $"(90 - {FormatDouble(location.Latitude)} + {DbColumnNames.StarsColumnNames.Declination}) >= 0";
     }
 
     private static string SkyContainsCondition(Geographic location, DateTime dateTime)
     {
         return $"SKYCONTAINS({DbColumnNames.StarsColumnNames.RightAcension}, {DbColumnNames.StarsColumnNames.Declination}, " +
-            $"'{dateTime:dd/MM/yyyy HH:mm:ss}', {location.Latitude}, {location.Longitude})";
+            $"'{dateTime.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)}', " +
+            $"{FormatDouble(location.Latitude)}, " +
+            $"{FormatDouble(location.Longitude)})";
+    }
+
+    private static string FormatDouble(double value)
+    {
+        return value.ToString("N6", CultureInfo.InvariantCulture);
     }
 
     private static SQLiteConnectionStringBuilder CreateSQLiteConnectionStringBuilder()
     {
         return new()
         {
-            DataSource = "Data Source=stars.sqlite"
+            DataSource = "stars.sqlite"
         };
     }
 

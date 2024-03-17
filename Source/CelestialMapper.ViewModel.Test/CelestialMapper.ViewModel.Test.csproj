@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CelestialMapper.TestUtilities\CelestialMapper.TestUtilities.csproj" />
     <ProjectReference Include="..\CelestialMapper.ViewModel\CelestialMapper.ViewModel.csproj" />
   </ItemGroup>
 

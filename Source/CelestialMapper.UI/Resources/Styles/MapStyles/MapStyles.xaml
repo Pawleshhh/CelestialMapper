@@ -3,6 +3,8 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     >
 
-    <sys:String x:Key="String.FeatureName.Shell">CELESTIAL MAPPER</sys:String>
+    <sys:Double x:Key="Double.Map.Diameter">720</sys:Double>
+    <sys:Double x:Key="Double.Map.Altitude30">400</sys:Double>
+    <sys:Double x:Key="Double.Map.Altitude60">200</sys:Double>
 
 </ResourceDictionary>
