@@ -16,7 +16,6 @@ public class PlatformUserControl : UserControl
     {
         ServiceProvider = serviceProvider;
         this.resourceResolver = GetResourceResolver();
-            
     }
 
     protected IServiceProvider ServiceProvider { get; }

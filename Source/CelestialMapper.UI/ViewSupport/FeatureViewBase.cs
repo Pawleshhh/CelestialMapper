@@ -10,10 +10,13 @@ public abstract class FeatureViewBase : PlatformUserControl
     {
     }
 
-    public FeatureViewBase(IServiceProvider serviceProvider)
+    public FeatureViewBase(IServiceProvider serviceProvider, bool allowInitializeComponent = true)
         : base(serviceProvider)
     {
+        AllowInitializeComponent = allowInitializeComponent;
     }
+
+    internal bool AllowInitializeComponent { get; }
 
     protected abstract Type ViewModelType { get; }
 

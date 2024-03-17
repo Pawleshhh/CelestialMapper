@@ -11,9 +11,14 @@ public partial class MapView : FeatureViewBase
         InitializeComponent();
     }
 
-    public MapView(IServiceProvider serviceProvider)
-        : base(serviceProvider)
+    public MapView(IServiceProvider serviceProvider, bool allowInitializeComponent = true)
+        : base(serviceProvider, allowInitializeComponent)
     {
+        if (!AllowInitializeComponent)
+        {
+            return;
+        }
+
         InitializeComponent();
     }
 
