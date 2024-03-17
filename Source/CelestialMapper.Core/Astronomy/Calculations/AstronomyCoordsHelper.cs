@@ -13,8 +13,8 @@ public static class AstronomyCoordsHelper
         const double maxAltitude = 90d;
         double radius = (maxAltitude - alt) / maxAltitude * (mapDiameter / 2.0);
 
-        var x = radius * MathHelper.CosD(az);
-        var y = radius * MathHelper.SinD(az);
+        var x = radius * MathHelper.SinD(az);
+        var y = radius * MathHelper.CosD(az);
 
         return (x, y);
     }
