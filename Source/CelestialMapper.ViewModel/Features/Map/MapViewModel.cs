@@ -55,12 +55,12 @@ public class MapViewModel : ViewModelBase
 
     #region Methods
 
-    private async void GenerateMap(object? o)
+    private void GenerateMap(object? o)
     {
-        this.map = await this.mapManager.Generate(
+        this.map = this.mapManager.Generate(
             new(53.482906986790525, 14.862220332070006), 
             DateTime.Now.ToUniversalTime(), 
-            IGenerateMapSettings.Create(NumRange.Of(-1d, 5d)));
+            IGenerateMapSettings.Create(NumRange.Of(-1d, 5d))).Result;
 
         RisePropertyChanged(nameof(CelestialObjects));
     }
