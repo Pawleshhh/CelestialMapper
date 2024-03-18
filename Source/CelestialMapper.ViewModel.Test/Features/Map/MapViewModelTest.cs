@@ -7,22 +7,20 @@ using PracticalAstronomy.CSharp;
 namespace CelestialMapper.ViewModel.Test;
 
 [TestFixture]
-public class MapViewModelTest : TestBase<MapViewModel>
+public class MapViewModelTest : ViewModelTest<MapViewModel>
 {
 
-    public Mock<IViewModelSupport> ViewModelSupport { get; set; } = new();
     public Mock<IMapManager> MapManager { get; set; } = new();
 
     public override Func<MapViewModel> CreateSUT => () => new MapViewModel(MapManager.Object, ViewModelSupport.Object);
+
+    public override string DefaultFeatureName => "Map";
 
     #region SetUp
 
     [SetUp]
     public void SetUp()
     {
-        ViewModelSupport = new Mock<IViewModelSupport>(MockBehavior.Strict);
-        ViewModelSupport.SetupGet(x => x.ResourceResolver).Returns(new Mock<IResourceResolver>().Object);
-
         MapManager = new Mock<IMapManager>(MockBehavior.Strict);
     }
 
@@ -33,11 +31,8 @@ public class MapViewModelTest : TestBase<MapViewModel>
     [Test]
     public void Initialize_InitializeGenerateMapCommand_GenerateMapCommandIsNotNull()
     {
-        // Arrange
-        var sut = CreateSUT();
-
-        // Act
-        sut.Initialize(IViewModelConfigurator.Create("Map"));
+        // Arrange & Act
+        var sut = CreateSUTAndInitialize();
 
         // Assert
         Assert.That(sut.GenerateMapCommand, Is.Not.Null);
@@ -58,9 +53,8 @@ public class MapViewModelTest : TestBase<MapViewModel>
         MapManager
             .Setup(x => x.Generate(It.IsAny<Geographic>(), It.IsAny<DateTime>(), It.IsAny<IGenerateMapSettings>()))
             .Returns(Task.FromResult(map));
-        
-        var sut = CreateSUT();
-        sut.Initialize(IViewModelConfigurator.Create("Map"));
+
+        var sut = CreateSUTAndInitialize();
 
         // Act
         sut.GenerateMapCommand!.Execute(null);
