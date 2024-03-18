@@ -2,20 +2,21 @@
 
 using static CelestialMapper.UI.DependencyPropertyHelper;
 
-public abstract class FeatureViewBase : UserControl
+public abstract class FeatureViewBase : PlatformUserControl
 {
 
     public FeatureViewBase()
+        : base()
     {
-        ServiceProvider = App.ServiceProvider;
     }
 
-    public FeatureViewBase(IServiceProvider serviceProvider)
+    public FeatureViewBase(IServiceProvider serviceProvider, bool allowInitializeComponent = true)
+        : base(serviceProvider)
     {
-        ServiceProvider = serviceProvider;
+        AllowInitializeComponent = allowInitializeComponent;
     }
 
-    protected IServiceProvider ServiceProvider { get; }
+    internal bool AllowInitializeComponent { get; }
 
     protected abstract Type ViewModelType { get; }
 

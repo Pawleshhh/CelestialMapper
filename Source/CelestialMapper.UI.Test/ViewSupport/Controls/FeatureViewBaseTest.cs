@@ -7,7 +7,7 @@ class MockFeatureViewBase : FeatureViewBase
 {
 
     public MockFeatureViewBase(IServiceProvider serviceProvider)
-        : base(serviceProvider)
+        : base(serviceProvider, false)
     {
     }
 

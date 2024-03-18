@@ -14,6 +14,8 @@ public abstract class FeatureViewTest<TFeatureView, TViewModel>
 
     public Mock<IServiceProvider> ServiceProvider { get; } = new(MockBehavior.Strict);
 
+    public Mock<IResourceResolver> ResourceResolver { get; } = new(MockBehavior.Strict);
+
     #endregion
 
     #region FeatureViewBase
@@ -31,6 +33,10 @@ public abstract class FeatureViewTest<TFeatureView, TViewModel>
         ServiceProvider
             .Setup(x => x.GetService(ViewModelType))
             .Returns(Mock.Of<IViewModel>());
+
+        ServiceProvider
+            .Setup(x => x.GetService(typeof(IResourceResolver)))
+            .Returns(ResourceResolver.Object);
     }
 
     #endregion
