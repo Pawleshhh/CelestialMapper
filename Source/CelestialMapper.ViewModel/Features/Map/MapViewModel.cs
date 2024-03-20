@@ -51,6 +51,8 @@ public class MapViewModel : ViewModelBase
 
     public IReadOnlySet<CelestialObject> CelestialObjects => this.map?.CelestialObjects ?? new HashSet<CelestialObject>();
 
+    public IReadOnlySet<Constellation> Constellations => this.map?.Constellations ?? new HashSet<Constellation>();
+
     #endregion
 
     #region Methods
@@ -62,7 +64,7 @@ public class MapViewModel : ViewModelBase
             DateTime.Now.ToUniversalTime(), 
             IGenerateMapSettings.Create(NumRange.Of(-1d, 5d))).Result;
 
-        RisePropertyChanged(nameof(CelestialObjects));
+        RisePropertyChanged(nameof(CelestialObjects), nameof(Constellations));
     }
 
     #endregion

@@ -32,7 +32,7 @@ internal class SQLiteConstellationsHelper : SQLiteHelperBase
             $"SELECT {GetAllConstellationLineColumns(constellationTableName)} " +
             $"FROM {DbColumnNames.StarsColumnNames.TableName} AS {starTableName}, {DbColumnNames.ConstellationLinesColumnNames.TableName} AS {constellationTableName} " +
             $"WHERE {AboveHorizonCondition(location)} " +
-            $"AND {SkyContainsCondition(location, dateTime)}" +
+            $"AND {SkyContainsCondition(location, dateTime)} " +
             $"AND {ConstellationLineCondition(starTableName, constellationTableName)}";
 
         var rows = this.dbWrapper.Query<ConstellationLineDataRow>(connection, query);

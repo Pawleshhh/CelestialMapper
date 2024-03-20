@@ -2,6 +2,7 @@
 using CelestialMapper.Core.Astronomy;
 using CelestialMapper.Core.Database;
 using PracticalAstronomy.CSharp;
+using System.Collections.Immutable;
 
 namespace CelestialMapper.Core.Infrastructure.Map;
 
@@ -38,7 +39,10 @@ public class MapManager : IMapManager
                 location, 
                 dateTime, 
                 generateMapSettings.MagnitudeRange);
-            return CreateMap(location, dateTime, generateMapSettings, celestialObjects);
+            var constellations = this.celestialDatabase.GetConstellations(
+                location,
+                dateTime);
+            return CreateMap(location, dateTime, generateMapSettings, celestialObjects, constellations);
         });
     }
 
@@ -46,12 +50,14 @@ public class MapManager : IMapManager
         Geographic location,
         DateTime dateTime,
         IGenerateMapSettings generateMapSettings,
-        IEnumerable<CelestialObject> celestialObjects)
+        IEnumerable<CelestialObject> celestialObjects,
+        IEnumerable<Constellation> constellations)
     {
         return new CelestialMap(celestialObjects)
         {
             Location = location,
-            DateTime = dateTime
+            DateTime = dateTime,
+            Constellations = constellations.ToImmutableHashSet()
         };
     }
 

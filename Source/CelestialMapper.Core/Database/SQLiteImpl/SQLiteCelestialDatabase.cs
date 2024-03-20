@@ -22,6 +22,7 @@ public class SQLiteCelestialDatabase : ICelestialDatabase
     private const int ParallelThreshold = 10_000;
 
     private readonly SQLiteCelestialObjectHelper celestialObjectHelper;
+    private readonly SQLiteConstellationsHelper constellationsHelper;
 
     #endregion
 
@@ -49,6 +50,13 @@ public class SQLiteCelestialDatabase : ICelestialDatabase
             this.connectionBuilder,
             ParallelThreshold,
             this.getProcessorCount);
+
+        this.constellationsHelper = new(
+            this.dbWrapper,
+            this.celestialObjectProcessor,
+            this.connectionBuilder,
+            ParallelThreshold,
+            this.getProcessorCount);
     }
 
     #endregion
@@ -63,6 +71,11 @@ public class SQLiteCelestialDatabase : ICelestialDatabase
     public IEnumerable<CelestialObject> GetCelestialObjects(Geographic location, DateTime dateTime, NumRange<double> magnitudeRange)
     {
         return this.celestialObjectHelper.GetCelestialObjects(location, dateTime, magnitudeRange);
+    }
+    
+    public IEnumerable<Constellation> GetConstellations(Geographic location, DateTime dateTime)
+    {
+        return this.constellationsHelper.GetConstellations(location, dateTime);
     }
 
     #endregion
