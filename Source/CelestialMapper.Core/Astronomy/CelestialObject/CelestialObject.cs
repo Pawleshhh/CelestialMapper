@@ -8,7 +8,8 @@ public record CelestialObject(
     long Id,
     string Name, 
     Horizon HorizonCoordinates, 
-    double Magnitude)
+    double Magnitude,
+    string Hr)
 {
 
     public static CelestialObject FromStarDataRow(Geographic location, DateTime dateTime, StarDataRow data)
@@ -17,7 +18,7 @@ public record CelestialObject(
         var hourAngle = PA.CoordinateSystems.RightAscensionToHourAngle(dateTime, location.Longitude, data.Ra * 15d);
         var horizon = PA.CoordinateSystems.EquatorialToHorizon(location.Latitude, new(hourAngle, data.Dec));
 
-        return new(data.Id, name, horizon, data.Mag);
+        return new(data.Id, name, horizon, data.Mag, data.Hr);
     }
 
 }

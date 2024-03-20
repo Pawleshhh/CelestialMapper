@@ -8,20 +8,8 @@ using System.Globalization;
 
 namespace CelestialMapper.Core;
 
-internal class SQLiteCelestialObjectHelper
+internal class SQLiteCelestialObjectHelper : SQLiteHelperBase
 {
-
-    #region Fields
-
-    private readonly Func<int> getProcessorCount;
-
-    private readonly IDatabaseWrapper dbWrapper;
-    private readonly ICelestialObjectProcessor celestialObjectProcessor;
-    private readonly SQLiteConnectionStringBuilder connectionBuilder;
-
-    private readonly int parallelThreshold = 10_000;
-
-    #endregion
 
     public SQLiteCelestialObjectHelper(
         IDatabaseWrapper dbWrapper,
@@ -29,12 +17,9 @@ internal class SQLiteCelestialObjectHelper
         SQLiteConnectionStringBuilder connectionBuilder,
         int parallelThreshold,
         Func<int> getProcessorCount)
+        : base(dbWrapper, celestialObjectProcessor, connectionBuilder, parallelThreshold, getProcessorCount)
     {
-        this.dbWrapper = dbWrapper;
-        this.celestialObjectProcessor = celestialObjectProcessor;
-        this.connectionBuilder = connectionBuilder;
-        this.parallelThreshold = parallelThreshold;
-        this.getProcessorCount = getProcessorCount;
+
     }
 
     public  IEnumerable<CelestialObject> GetCelestialObjects(Geographic location, DateTime dateTime)
@@ -70,32 +55,5 @@ internal class SQLiteCelestialObjectHelper
 
         return celestialObjects;
     }
-
-    #region Helpers
-
-    private static string MagnitudeCondition(NumRange<double> magnitude)
-    {
-        return $"{DbColumnNames.StarsColumnNames.Magnitude} BETWEEN {magnitude.Min} AND {magnitude.Max}";
-    }
-
-    private static string AboveHorizonCondition(Geographic location)
-    {
-        return $"(90 - {FormatDouble(location.Latitude)} + {DbColumnNames.StarsColumnNames.Declination}) >= 0";
-    }
-
-    private static string SkyContainsCondition(Geographic location, DateTime dateTime)
-    {
-        return $"SKYCONTAINS({DbColumnNames.StarsColumnNames.RightAcension}, {DbColumnNames.StarsColumnNames.Declination}, " +
-            $"'{dateTime.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture)}', " +
-            $"{FormatDouble(location.Latitude)}, " +
-            $"{FormatDouble(location.Longitude)})";
-    }
-
-    private static string FormatDouble(double value)
-    {
-        return value.ToString("N6", CultureInfo.InvariantCulture);
-    }
-
-    #endregion
 
 }

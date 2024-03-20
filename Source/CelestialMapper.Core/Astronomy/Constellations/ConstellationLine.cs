@@ -1,3 +1,3 @@
 ﻿namespace CelestialMapper.Core.Astronomy;
 
-public record ConstellationLine(long IdStart, long IdStop);
+public record ConstellationLine(int IdStart, int IdStop);

@@ -21,7 +21,7 @@ internal class CelestialMapTest : TestBase<CelestialMap>
     {
         // Arrange
         var celestialObjects = ids
-            .Select(i => new CelestialObject(i, $"SomeName{i}", new(0, 0), 0));
+            .Select(i => new CelestialObject(i, $"SomeName{i}", new(0, 0), 0, "hr"));
         
         // Act
         var celestialMap = new CelestialMap(celestialObjects);

@@ -44,10 +44,10 @@ public class MapViewModelTest : ViewModelTest<MapViewModel>
         // Arrange
         IMap map = new CelestialMap(new CelestialObject[]
         {
-            new(1, "Name1", new(1, 1), 1),
-            new(2, "Name2", new(2, 2), 2),
-            new(3, "Name3", new(3, 3), 3),
-            new(4, "Name4", new(4, 4), 4),
+            new(1, "Name1", new(1, 1), 1, "HR"),
+            new(2, "Name2", new(2, 2), 2, "HR"),
+            new(3, "Name3", new(3, 3), 3, "HR"),
+            new(4, "Name4", new(4, 4), 4, "HR"),
         });
 
         MapManager
