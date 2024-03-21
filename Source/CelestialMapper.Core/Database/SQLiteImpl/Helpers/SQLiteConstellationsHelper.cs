@@ -34,7 +34,7 @@ internal class SQLiteConstellationsHelper : SQLiteHelperBase
             $"WHERE {AboveHorizonCondition(location)} " +
             $"AND {SkyContainsCondition(location, dateTime)} " +
             $"AND {ConstellationLineCondition(starTableName, constellationTableName)} " +
-            $"ORDER BY cl.id";
+            $"ORDER BY {constellationTableName}.{DbColumnNames.ConstellationLinesColumnNames.Id}";
 
         var rows = this.dbWrapper.Query<ConstellationLineDataRowPosition>(connection, query);
 

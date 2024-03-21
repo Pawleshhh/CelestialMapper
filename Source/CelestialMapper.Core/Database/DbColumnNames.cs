@@ -47,7 +47,7 @@ internal static class DbColumnNames
         "constellation_lines",
         "id", 
         StarsColumnNames.Constellation, 
-        "line_id", 
+        "lineid", 
         StarsColumnNames.HarvardYaleBrightStarCatalogId);
 
 }

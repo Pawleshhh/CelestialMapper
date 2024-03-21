@@ -14,7 +14,7 @@ public record ConstellationLineDataRow
     public string Con { get; init; } = string.Empty;
 
     [Required]
-    [Column("line_id")]
+    [Column("lineid")]
     public int LineId { get; init; }
 
     [Required]
