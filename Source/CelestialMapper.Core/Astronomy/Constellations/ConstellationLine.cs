@@ -1,3 +1,5 @@
-﻿namespace CelestialMapper.Core.Astronomy;
+﻿using PracticalAstronomy.CSharp;
 
-public record ConstellationLine(int IdStart, int IdStop);
+namespace CelestialMapper.Core.Astronomy;
+
+public record ConstellationLine(Horizon Start, Horizon Stop);

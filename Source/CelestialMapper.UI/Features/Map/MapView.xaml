@@ -12,7 +12,12 @@
                        d:DesignWidth="800"
                        >
     <Grid>
-        <local:CelestialMap x:Name="celestialMap" CelestialObjects="{Binding CelestialObjects, UpdateSourceTrigger=PropertyChanged}" />
+        <local:CelestialMap x:Name="celestialMap"
+                            CelestialObjects="{Binding CelestialObjects,
+                                                       UpdateSourceTrigger=PropertyChanged}"
+                            Constellations="{Binding Constellations,
+                                                     UpdateSourceTrigger=PropertyChanged}"
+                            />
 
         <Button Width="100"
                 VerticalAlignment="Bottom"

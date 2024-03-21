@@ -29,21 +29,22 @@ internal class SQLiteConstellationsHelper : SQLiteHelperBase
         string starTableName = "st";
 
         string query =
-            $"SELECT {GetAllConstellationLineColumns(constellationTableName)} " +
+            $"SELECT {GetAllConstellationLineColumns(starTableName, constellationTableName)} " +
             $"FROM {DbColumnNames.StarsColumnNames.TableName} AS {starTableName}, {DbColumnNames.ConstellationLinesColumnNames.TableName} AS {constellationTableName} " +
             $"WHERE {AboveHorizonCondition(location)} " +
             $"AND {SkyContainsCondition(location, dateTime)} " +
-            $"AND {ConstellationLineCondition(starTableName, constellationTableName)}";
+            $"AND {ConstellationLineCondition(starTableName, constellationTableName)} " +
+            $"ORDER BY cl.id";
 
-        var rows = this.dbWrapper.Query<ConstellationLineDataRow>(connection, query);
+        var rows = this.dbWrapper.Query<ConstellationLineDataRowPosition>(connection, query);
 
-        var constellations = CreateConstellations(rows).ToArray();
+        var constellations = CreateConstellations(location, dateTime, rows).ToArray();
         connection.Close();
 
         return constellations;
     }
 
-    private static IEnumerable<Constellation> CreateConstellations(IEnumerable<ConstellationLineDataRow> lineRows)
+    private static IEnumerable<Constellation> CreateConstellations(Geographic location, DateTime dateTime, IEnumerable<ConstellationLineDataRowPosition> lineRows)
     {
         var groupedLines = lineRows.GroupBy(x => x.Con);
 
@@ -51,34 +52,42 @@ internal class SQLiteConstellationsHelper : SQLiteHelperBase
         foreach (var group in groupedLines)
         {
             List<ConstellationLine> lines = new();
-            var lineIds = GetLines(group);
-            for (int i = 0; i < lineIds.Length - 1; i++)
+            var lineCoords = GetHorizonCoords(group);
+            for (int i = 0; i < lineCoords.Length - 1; i++)
             {
-                if (lineIds[i].LineId != lineIds[i + 1].LineId)
+                if (lineCoords[i].LineId != lineCoords[i + 1].LineId)
                 {
                     continue;
                 }
 
-                lines.Add(new(lineIds[i].Hr, lineIds[i + 1].Hr));
+                lines.Add(new(lineCoords[i].Horizon, lineCoords[i + 1].Horizon));
             }
 
             yield return new(id++, group.Key, group.Key, lines);
         }
 
-        (int Hr, int LineId)[] GetLines(IEnumerable<ConstellationLineDataRow> rows)
-            => rows.Select(x => (int.Parse(x.Hr), x.LineId)).ToArray();
+        (Horizon Horizon, int LineId)[] GetHorizonCoords(IEnumerable<ConstellationLineDataRowPosition> rows)
+            => rows.Select(x =>
+            {
+                var hourAngle = PA.CoordinateSystems.RightAscensionToHourAngle(dateTime, location.Longitude, x.Ra * 15d);
+                var horizon = PA.CoordinateSystems.EquatorialToHorizon(location.Latitude, new(hourAngle, x.Dec));
+                return (horizon, x.LineId);
+            }).ToArray();
     }
 
-    private static string GetAllConstellationLineColumns(string tableName)
+    private static string GetAllConstellationLineColumns(string starTableName, string constellationTableName)
     {
-        tableName = NormalizeTableName(tableName);
+        starTableName = NormalizeTableName(starTableName);
+        constellationTableName = NormalizeTableName(constellationTableName);
 
-        return $"{CreateName(DbColumnNames.ConstellationLinesColumnNames.Id)}, " +
-            $"{CreateName(DbColumnNames.ConstellationLinesColumnNames.ConstellationName)}, " +
-            $"{CreateName(DbColumnNames.ConstellationLinesColumnNames.LineId)}, " +
-            $"{CreateName(DbColumnNames.ConstellationLinesColumnNames.HarvardYaleBrightStarCatalogId)}";
+        return $"{CreateName(constellationTableName, DbColumnNames.ConstellationLinesColumnNames.Id)}, " +
+            $"{CreateName(constellationTableName, DbColumnNames.ConstellationLinesColumnNames.ConstellationName)}, " +
+            $"{CreateName(constellationTableName, DbColumnNames.ConstellationLinesColumnNames.LineId)}, " +
+            $"{CreateName(constellationTableName, DbColumnNames.ConstellationLinesColumnNames.HarvardYaleBrightStarCatalogId)}, " +
+            $"{CreateName(starTableName, DbColumnNames.StarsColumnNames.RightAcension)}, " +
+            $"{CreateName(starTableName, DbColumnNames.StarsColumnNames.Declination)}";
 
-        string CreateName(string columnName)
+        string CreateName(string tableName, string columnName)
             => tableName + columnName;
     }
 

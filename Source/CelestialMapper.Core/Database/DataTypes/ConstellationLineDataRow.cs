@@ -21,3 +21,12 @@ public record ConstellationLineDataRow
     [Column("hr")]
     public string Hr { get; init; } = string.Empty;
 }
+
+public record ConstellationLineDataRowPosition : ConstellationLineDataRow
+{
+    [Column("ra")]
+    public double Ra { get; init; }
+
+    [Column("dec")]
+    public double Dec { get; init; }
+}

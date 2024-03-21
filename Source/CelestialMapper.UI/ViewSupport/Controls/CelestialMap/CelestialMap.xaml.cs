@@ -122,10 +122,10 @@ public partial class CelestialMap : PlatformUserControl
             return;
         }
 
-        celestialMap.UpdateMapCanvas();
+        celestialMap.UpdateCelestialObjects();
     }
 
-    public void UpdateMapCanvas()
+    public void UpdateCelestialObjects()
     {
         var mapDiameter = Diameter;
         var mapRadius = mapDiameter / 2d;
@@ -146,6 +146,48 @@ public partial class CelestialMap : PlatformUserControl
             };
 
             this.mapCanvas.Children.Add(celestialObjectUI);
+        }
+    }
+
+    #endregion
+
+    #region CelestialObjects
+
+    public IReadOnlySet<Constellation> Constellations
+    {
+        get { return this.GetValue<IReadOnlySet<Constellation>>(ConstellationsProperty); }
+        set { SetValue(ConstellationsProperty, value); }
+    }
+
+    public static readonly DependencyProperty ConstellationsProperty =
+        Register<IReadOnlySet<Constellation>, CelestialMap>(
+            nameof(Constellations),
+            new(null, OnConstellationsChanged));
+
+    private static void OnConstellationsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (!CanHandle<CelestialMap, IReadOnlySet<Constellation>>(d, e, out var celestialMap, out var constellations)
+            && !constellations.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        celestialMap.UpdateConstellations();
+    }
+
+    public void UpdateConstellations()
+    {
+        var mapDiameter = Diameter;
+
+        foreach (var constellation in Constellations)
+        {
+            var constellationUIElement = new ConstellationUIElement
+            {
+                Constellation = constellation,
+                MapDiameter = mapDiameter
+            };
+
+            this.mapCanvas.Children.Add(constellationUIElement);
         }
     }
 
