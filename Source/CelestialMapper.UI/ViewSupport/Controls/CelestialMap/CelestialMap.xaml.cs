@@ -23,7 +23,66 @@ public partial class CelestialMap : PlatformUserControl
 
         UpdateAzimuthLines();
         UpdateAltitudeLines();
+
+#if DEBUG
+        InitializeDebug();
+#endif
     }
+
+    #region Debug
+#if DEBUG
+
+    private void InitializeDebug()
+    {
+        this.ellipseBackground.MouseEnter += DebugCanvas_MouseEnter;
+        this.ellipseBackground.MouseMove += DebugCanvas_MouseMove;
+        this.ellipseBackground.MouseLeave += DebugCanvas_MouseLeave;
+
+        this.debugCanvas.Children.Add(this.coordinatesTextBlock);
+    }
+
+    private bool showCoordinates;
+    private TextBlock coordinatesTextBlock = new TextBlock()
+    {
+        Visibility = Visibility.Collapsed,
+        Background = Brushes.Black,
+        Foreground = Brushes.Yellow,
+        RenderTransform = new TranslateTransform()
+    };
+
+    private void DebugCanvas_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+    {
+        this.showCoordinates = true;
+        this.coordinatesTextBlock.Visibility = Visibility.Visible;
+    }
+
+    private void DebugCanvas_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+    {
+        this.showCoordinates = false;
+        this.coordinatesTextBlock.Visibility = Visibility.Collapsed;
+    }
+
+    private void DebugCanvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+    {
+        if (!this.showCoordinates)
+        {
+            return;
+        }
+
+        var relativeMousePoint = e.GetPosition(this.debugCanvas);
+        var mousePoint = e.GetPosition(this.debugCanvas);
+        var mapRadius = Diameter / 2d;
+
+        this.coordinatesTextBlock.Text = 
+            $"x: {relativeMousePoint.X}, y: {relativeMousePoint.Y}\n" +
+            $"x+: {relativeMousePoint.X + mapRadius}, y+: {relativeMousePoint.Y + mapRadius}";
+        this.coordinatesTextBlock.RenderTransform = RenderTransformHelper.CreateTransformGroup(
+            Scale.By(-1, -1),
+            Translate.To(mousePoint.X - 20, mousePoint.Y - 20));
+    }
+
+#endif
+    #endregion
 
     #region Properties
 
