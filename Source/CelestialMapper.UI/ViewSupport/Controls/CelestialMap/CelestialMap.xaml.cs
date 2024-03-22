@@ -127,6 +127,8 @@ public partial class CelestialMap : PlatformUserControl
 
     public void UpdateCelestialObjects()
     {
+        this.celestialObjectCanvas.Children.Clear();
+
         var mapDiameter = Diameter;
         var mapRadius = mapDiameter / 2d;
 
@@ -145,7 +147,7 @@ public partial class CelestialMap : PlatformUserControl
                 Size = size
             };
 
-            this.mapCanvas.Children.Add(celestialObjectUI);
+            this.celestialObjectCanvas.Children.Add(celestialObjectUI);
         }
     }
 
@@ -177,6 +179,8 @@ public partial class CelestialMap : PlatformUserControl
 
     public void UpdateConstellations()
     {
+        this.constellationCanvas.Children.Clear();
+
         var mapDiameter = Diameter;
 
         foreach (var constellation in Constellations)
@@ -187,7 +191,7 @@ public partial class CelestialMap : PlatformUserControl
                 MapDiameter = mapDiameter
             };
 
-            this.mapCanvas.Children.Add(constellationUIElement);
+            this.constellationCanvas.Children.Add(constellationUIElement);
         }
     }
 

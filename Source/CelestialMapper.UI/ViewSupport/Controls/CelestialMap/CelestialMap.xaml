@@ -41,12 +41,22 @@
 
         </Grid>
 
-        <!--  Map's Canvas  -->
-        <Canvas x:Name="mapCanvas"
+        <!--  Constellations' Canvas  -->
+        <Canvas x:Name="constellationCanvas"
                 Height="{DynamicResource Double.Map.Diameter}"
                 Width="{DynamicResource Double.Map.Diameter}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
+                Panel.ZIndex="1"
+                />
+
+        <!--  Celestial Object's Canvas  -->
+        <Canvas x:Name="celestialObjectCanvas"
+                Height="{DynamicResource Double.Map.Diameter}"
+                Width="{DynamicResource Double.Map.Diameter}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Panel.ZIndex="2"
                 />
 
     </Grid>
