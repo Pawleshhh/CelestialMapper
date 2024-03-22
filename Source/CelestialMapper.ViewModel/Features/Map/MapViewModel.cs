@@ -36,7 +36,7 @@ public class MapViewModel : ViewModelBase
     {
         base.Initialize(configurator);
 
-        GenerateMapCommand = new RelayCommand(GenerateMap);
+        GenerateMapCommand = new RelayCommand(o => _ = GenerateMap(o));
     }
 
     #endregion
@@ -57,14 +57,24 @@ public class MapViewModel : ViewModelBase
 
     #region Methods
 
-    private void GenerateMap(object? o)
+    private async Task GenerateMap(object? o)
     {
-        this.map = this.mapManager.Generate(
-            new(53.482906986790525, 14.862220332070006), 
-            DateTime.Now.ToUniversalTime(), 
-            IGenerateMapSettings.Create(NumRange.Of(-1d, 5d))).Result;
+        var dateTime = new DateTime(2024, 3, 24, 9, 0, 0, DateTimeKind.Local);
+        dateTime = dateTime.ToUniversalTime();
 
-        RisePropertyChanged(nameof(CelestialObjects), nameof(Constellations));
+        while (true)
+        {
+            this.map = this.mapManager.Generate(
+                new(53.482906986790525, 14.862220332070006),
+                dateTime,
+                IGenerateMapSettings.Create(NumRange.Of(-1d, 5d))).Result;
+
+            RisePropertyChanged(nameof(CelestialObjects), nameof(Constellations));
+
+            await Task.Delay(80);
+
+            dateTime = dateTime.AddHours(0.1);
+        }
     }
 
     #endregion
