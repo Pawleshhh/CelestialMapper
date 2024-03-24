@@ -25,4 +25,22 @@ public static class MathHelper
 
     public static double RadiansToDegrees(double radians)
         => radians * 180.0 / Math.PI;
+
+    public static (double X, double Y) PointOnLine(
+        double x1, double y1,
+        double x2, double y2,
+        double t)
+    {
+        double tx = (1 - t) * x1 + t * x2;
+        double ty = (1 - t) * y1 + t * y2;
+
+        return (tx, ty);
+    }
+
+    public static double LineLength(double x1, double y1, double x2, double y2)
+    {
+        return Math.Sqrt(
+            Math.Pow(x2 - x1, 2) +
+            Math.Pow(y2 - y1, 2));
+    }
 }

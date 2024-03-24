@@ -12,7 +12,7 @@ public class ConstellationUIElement : UIElement
 
     protected override void OnRender(DrawingContext drawingContext)
     {
-        var linePen = new Pen(Brushes.Pink, 0.5);
+        var linePen = new Pen(Brushes.Orange, 0.5);
         var mapRadius = MapDiameter / 2d;
         foreach (var line in Constellation.ConstellationLines)
         {

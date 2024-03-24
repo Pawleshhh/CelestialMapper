@@ -31,7 +31,7 @@ internal class SQLiteConstellationsHelper : SQLiteHelperBase
         string query =
             $"SELECT {GetAllConstellationLineColumns(starTableName, constellationTableName)} " +
             $"FROM {DbColumnNames.StarsColumnNames.TableName} AS {starTableName}, {DbColumnNames.ConstellationLinesColumnNames.TableName} AS {constellationTableName} " +
-            $"WHERE {AboveHorizonCondition(location)} " +
+            $"WHERE {AboveHorizonCondition(starTableName, location)} " +
             $"AND {SkyContainsCondition(location, dateTime)} " +
             $"AND {ConstellationLineCondition(starTableName, constellationTableName)} " +
             $"ORDER BY {constellationTableName}.{DbColumnNames.ConstellationLinesColumnNames.Id}";
@@ -120,14 +120,5 @@ internal class SQLiteConstellationsHelper : SQLiteHelperBase
 
         return $"{constellationTableName}{DbColumnNames.ConstellationLinesColumnNames.HarvardYaleBrightStarCatalogId} == " +
             $"{starTableName}{DbColumnNames.StarsColumnNames.HarvardYaleBrightStarCatalogId}";
-    }
-
-    private static string NormalizeTableName(string tableName)
-    {
-        if (!string.IsNullOrEmpty(tableName))
-        {
-            tableName += ".";
-        }
-        return tableName;
     }
 }

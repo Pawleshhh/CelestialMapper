@@ -41,9 +41,13 @@ internal abstract class SQLiteHelperBase
         return $"{DbColumnNames.StarsColumnNames.Magnitude} BETWEEN {magnitude.Min} AND {magnitude.Max}";
     }
 
-    protected static string AboveHorizonCondition(Geographic location)
+    protected static string AboveHorizonCondition(string starTableName, Geographic location, double horizon = 0)
     {
-        return $"(90 - {FormatDouble(location.Latitude)} + {DbColumnNames.StarsColumnNames.Declination}) >= 0";
+        starTableName = NormalizeTableName(starTableName);
+        return $"(90 - " +
+            $"{FormatDouble(location.Latitude)} + " +
+            $"{starTableName}{DbColumnNames.StarsColumnNames.Declination}) >= " +
+            $"{FormatDouble(horizon)}";
     }
 
     protected static string SkyContainsCondition(Geographic location, DateTime dateTime)
@@ -57,6 +61,15 @@ internal abstract class SQLiteHelperBase
     protected static string FormatDouble(double value)
     {
         return value.ToString("N6", CultureInfo.InvariantCulture);
+    }
+
+    protected static string NormalizeTableName(string tableName)
+    {
+        if (!string.IsNullOrEmpty(tableName))
+        {
+            tableName += ".";
+        }
+        return tableName;
     }
 
     #endregion

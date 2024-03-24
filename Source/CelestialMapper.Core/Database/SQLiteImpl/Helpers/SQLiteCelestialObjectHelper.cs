@@ -36,7 +36,7 @@ internal class SQLiteCelestialObjectHelper : SQLiteHelperBase
             $"SELECT * " +
             $"FROM {DbColumnNames.StarsColumnNames.TableName} " +
             $"WHERE {MagnitudeCondition(magnitudeRange)} " +
-            $"AND {AboveHorizonCondition(location)} " +
+            $"AND {AboveHorizonCondition(string.Empty, location)} " +
             $"AND {SkyContainsCondition(location, dateTime)}";
 
         var rows = this.dbWrapper.Query<StarDataRow>(connection, query);
