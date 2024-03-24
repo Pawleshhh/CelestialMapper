@@ -26,4 +26,5 @@ public class ConstellationUIElement : UIElement
             drawingContext.DrawLine(linePen, startCartesian, stopCartesian);
         }
     }
+
 }

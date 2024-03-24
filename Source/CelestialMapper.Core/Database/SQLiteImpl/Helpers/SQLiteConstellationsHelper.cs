@@ -49,9 +49,10 @@ internal class SQLiteConstellationsHelper : SQLiteHelperBase
         var groupedLines = lineRows.GroupBy(x => x.Con);
 
         long id = 1;
+        List<ConstellationLine> lines;
         foreach (var group in groupedLines)
         {
-            List<ConstellationLine> lines = new();
+            lines = new();
             var lineCoords = GetHorizonCoords(group);
             for (int i = 0; i < lineCoords.Length - 1; i++)
             {
@@ -60,7 +61,14 @@ internal class SQLiteConstellationsHelper : SQLiteHelperBase
                     continue;
                 }
 
-                lines.Add(new(lineCoords[i].Horizon, lineCoords[i + 1].Horizon));
+                var line = new ConstellationLine(lineCoords[i].Horizon, lineCoords[i + 1].Horizon);
+
+                if (AlreadyContainsLine(line))
+                {
+                    continue;
+                }
+
+                lines.Add(line);
             }
 
             yield return new(id++, group.Key, group.Key, lines);
@@ -73,6 +81,20 @@ internal class SQLiteConstellationsHelper : SQLiteHelperBase
                 var horizon = PA.CoordinateSystems.EquatorialToHorizon(location.Latitude, new(hourAngle, x.Dec));
                 return (horizon, x.LineId);
             }).ToArray();
+        
+        bool AlreadyContainsLine(ConstellationLine line)
+        {
+            foreach (var drawnLine in lines)
+            {
+                if ((line.Start.Equals(drawnLine.Stop) && line.Stop.Equals(drawnLine.Start))
+                    || (line.Start.Equals(drawnLine.Start) && line.Stop.Equals(drawnLine.Stop)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 
     private static string GetAllConstellationLineColumns(string starTableName, string constellationTableName)
