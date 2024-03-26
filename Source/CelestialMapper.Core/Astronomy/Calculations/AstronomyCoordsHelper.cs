@@ -2,6 +2,7 @@
 
 using CelestialMapper.Common;
 using PracticalAstronomy.CSharp;
+using static PracticalAstronomy.Units;
 
 public static class AstronomyCoordsHelper
 {
@@ -17,6 +18,16 @@ public static class AstronomyCoordsHelper
         var y = radius * MathHelper.CosD(az);
 
         return (x, y);
+    }
+
+    public static bool SkyContains(EquatorialHourAngle eq, Geographic location)
+    {
+        var (lat, _) = location;
+        var result = PA.CoordinateSystems.EquatorialToHorizon(
+            lat,
+            eq);
+
+        return result.Altitude > 0.0;
     }
 
 }

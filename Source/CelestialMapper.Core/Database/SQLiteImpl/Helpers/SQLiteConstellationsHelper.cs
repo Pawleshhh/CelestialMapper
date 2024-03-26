@@ -3,6 +3,7 @@ using CelestialMapper.Core.Astronomy;
 using CelestialMapper.Core.Database;
 using PracticalAstronomy.CSharp;
 using System.Data.SQLite;
+using System.Globalization;
 
 namespace CelestialMapper.Core;
 
@@ -31,9 +32,7 @@ internal class SQLiteConstellationsHelper : SQLiteHelperBase
         string query =
             $"SELECT {GetAllConstellationLineColumns(starTableName, constellationTableName)} " +
             $"FROM {DbColumnNames.StarsColumnNames.TableName} AS {starTableName}, {DbColumnNames.ConstellationLinesColumnNames.TableName} AS {constellationTableName} " +
-            $"WHERE {AboveHorizonCondition(starTableName, location)} " +
-            $"AND {SkyContainsCondition(location, dateTime)} " +
-            $"AND {ConstellationLineCondition(starTableName, constellationTableName)} " +
+            $"WHERE {ConstellationLineCondition(starTableName, constellationTableName)} " +
             $"ORDER BY {constellationTableName}.{DbColumnNames.ConstellationLinesColumnNames.Id}";
 
         var rows = this.dbWrapper.Query<ConstellationLineDataRowPosition>(connection, query);
@@ -54,6 +53,12 @@ internal class SQLiteConstellationsHelper : SQLiteHelperBase
         {
             lines = new();
             var lineCoords = GetHorizonCoords(group);
+
+            if (lineCoords.All(x => x.Horizon.Altitude < 0))
+            {
+                continue;
+            }
+
             for (int i = 0; i < lineCoords.Length - 1; i++)
             {
                 if (lineCoords[i].LineId != lineCoords[i + 1].LineId)
