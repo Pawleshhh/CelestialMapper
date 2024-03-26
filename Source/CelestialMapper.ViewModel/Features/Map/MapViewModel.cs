@@ -71,7 +71,7 @@ public class MapViewModel : ViewModelBase
 
             RisePropertyChanged(nameof(CelestialObjects), nameof(Constellations));
 
-            await Task.Delay(80);
+            await Task.Delay(200);
 
             dateTime = dateTime.AddHours(0.1);
         }

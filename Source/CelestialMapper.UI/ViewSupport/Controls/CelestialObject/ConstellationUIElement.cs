@@ -34,7 +34,7 @@ public class ConstellationUIElement : UIElement
 
             if (!startOnMap)
             {
-                var intersection = IntersectionWithCircle(startCartesian, stopCartesian, center, mapRadius);
+                var intersection = IntersectionWithCircle(stopCartesian, startCartesian, center, mapRadius);
 
                 if (intersection is null)
                 {
@@ -59,12 +59,6 @@ public class ConstellationUIElement : UIElement
         }
     }
 
-    private static bool LineOnMap(Point a, Point b, Point center, double mapRadius)
-    {
-        return PointOnMap(a, center, mapRadius)
-            || PointOnMap(b, center, mapRadius);
-    }
-
     private static bool PointOnMap(Point p, Point center, double mapRadius)
     {
         var (h, k) = (center.X, center.Y);
@@ -76,32 +70,36 @@ public class ConstellationUIElement : UIElement
 
     private static Point? IntersectionWithCircle(Point pointA, Point pointB, Point center, double mapRadius)
     {
-        double baX = pointB.X - pointA.X;
-        double baY = pointB.Y - pointA.Y;
-        double caX = center.X - pointA.X;
-        double caY = center.Y - pointA.Y;
+        double dx, dy, A, B, C, det, t;
+        var (cx, cy) = (center.X, center.Y);
+        var (x1, y1) = (pointA.X, pointA.Y);
+        var (x2, y2) = (pointB.X, pointB.Y);
 
-        double a = baX * baX + baY * baY;
-        double bBy2 = baX * caX + baY * caY;
-        double c = caX * caX + caY * caY - mapRadius * mapRadius;
+        dx = x2 - x1;
+        dy = y2 - y1;
 
-        double pBy2 = bBy2 / a;
-        double q = c / a;
+        A = dx * dx + dy * dy;
+        B = 2 * (dx * (x1 - cx) + dy * (y1 - cy));
+        C = (x1 - cx) * (x1 - cx) + (y1 - cy) * (y1 - cy) - mapRadius * mapRadius;
 
-        double disc = pBy2 * pBy2 - q;
-        if (disc < 0)
+        det = B * B - 4 * A * C;
+        if ((A <= Math.E) || (det < 0))
         {
             return null;
         }
+        else if (det == 0)
+        {
+            t = -B / (2 * A);
+            var intersection1 = new Point(x1 + t * dx, y1 + t * dy);
+            return intersection1;
+        }
+        else
+        {
+            t = ((-B + Math.Sqrt(det)) / (2 * A));
+            var intersection1 = new Point(x1 + t * dx, y1 + t * dy);
 
-        double tmpSqrt = Math.Sqrt(disc);
-        double abScalingFactor1 = -pBy2 + tmpSqrt;
-        double abScalingFactor2 = -pBy2 - tmpSqrt;
-
-        Point p1 = new Point(pointA.X - baX * abScalingFactor1, pointA.Y
-                - baY * abScalingFactor1);
-
-        return p1;
+            return intersection1;
+        }
     }
 
 }
