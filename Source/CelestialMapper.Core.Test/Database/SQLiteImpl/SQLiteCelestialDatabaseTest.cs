@@ -118,7 +118,7 @@ internal class SQLiteCelestialDatabaseTest : TestBase<SQLiteCelestialDatabase>
 
         string expectedQuery = "SELECT * FROM stars WHERE " +
             "mag BETWEEN 3 AND 12 " +
-            $"AND (90 - {FormatDouble(10)} + dec) >= 0 " +
+            $"AND (90 - {FormatDouble(10)} + dec) >= {FormatDouble(0)} " +
             $"AND SKYCONTAINS(ra, dec, '05/01/2025 00:00:00', {FormatDouble(10)}, {FormatDouble(14)})";
 
         var sut = CreateSUT();
