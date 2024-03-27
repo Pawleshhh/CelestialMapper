@@ -57,6 +57,16 @@ internal class CelestialMapTest : TestBase<CelestialMap>
         Assert.That(celestialMap.Location, Is.EqualTo(MapConstants.DefaultLocation));
     }
 
+    [Test]
+    public void Constellations_GetsConstellations_ReturnsEmptyHashSet()
+    {
+        // Arrange & Act
+        var celestialMap = CreateSUT();
+
+        // Assert
+        Assert.That(celestialMap.Constellations, Is.Empty);
+    }
+
     #endregion
 
 }
