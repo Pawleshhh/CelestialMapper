@@ -21,7 +21,7 @@ internal class CelestialMapTest : TestBase<CelestialMap>
     {
         // Arrange
         var celestialObjects = ids
-            .Select(i => new CelestialObject(i, $"SomeName{i}", new(0, 0), 0));
+            .Select(i => new CelestialObject(i, $"SomeName{i}", new(0, 0), 0, "hr"));
         
         // Act
         var celestialMap = new CelestialMap(celestialObjects);
@@ -55,6 +55,16 @@ internal class CelestialMapTest : TestBase<CelestialMap>
 
         // Assert
         Assert.That(celestialMap.Location, Is.EqualTo(MapConstants.DefaultLocation));
+    }
+
+    [Test]
+    public void Constellations_GetsConstellations_ReturnsEmptyHashSet()
+    {
+        // Arrange & Act
+        var celestialMap = CreateSUT();
+
+        // Assert
+        Assert.That(celestialMap.Constellations, Is.Empty);
     }
 
     #endregion

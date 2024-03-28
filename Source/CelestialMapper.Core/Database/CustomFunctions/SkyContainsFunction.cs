@@ -20,11 +20,7 @@ internal class SkyContainsFunction : SQLiteFunction
 
         var hourAngle = PA.CoordinateSystems.RightAscensionToHourAngle(dateTime, lon, ra * 15d);
 
-        var result = PA.CoordinateSystems.EquatorialToHorizon(
-            lat, 
-            new(hourAngle, dec));
-
-        return result.Altitude > 0.0;
+        return AstronomyCoordsHelper.SkyContains(new(hourAngle, dec), new(lat, lon));
     }
 
 }

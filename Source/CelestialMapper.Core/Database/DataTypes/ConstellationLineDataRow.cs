@@ -14,10 +14,19 @@ public record ConstellationLineDataRow
     public string Con { get; init; } = string.Empty;
 
     [Required]
-    [Column("line_id")]
+    [Column("lineid")]
     public int LineId { get; init; }
 
     [Required]
     [Column("hr")]
     public string Hr { get; init; } = string.Empty;
+}
+
+public record ConstellationLineDataRowPosition : ConstellationLineDataRow
+{
+    [Column("ra")]
+    public double Ra { get; init; }
+
+    [Column("dec")]
+    public double Dec { get; init; }
 }

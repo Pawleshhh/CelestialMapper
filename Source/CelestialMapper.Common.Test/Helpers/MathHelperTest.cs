@@ -101,4 +101,16 @@ public class MathHelperTest
     {
         Assert.That(MathHelper.RadiansToDegrees(radians), Is.EqualTo(expected).Within(tolerance));
     }
+
+    [TestCase(0, 0, 5, 0, 5)]
+    [TestCase(0, 0, 0, 4, 4)]
+    [TestCase(0, 0, 3, 4, 5)]
+    [TestCase(0, 0, -3, -4, 5)]
+    [TestCase(-2, 3, 4, 3, 6)]
+    public void LineLength_ReturnsExpectedValue(double x1, double y1, double x2, double y2, double expected)
+    {
+        var result = MathHelper.LineLength(x1, y1, x2, y2);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
 }

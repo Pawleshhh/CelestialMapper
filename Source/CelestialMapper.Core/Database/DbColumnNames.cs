@@ -44,9 +44,10 @@ internal static class DbColumnNames
         "var_max");
 
     public static ConstellationLinesColumnNames ConstellationLinesColumnNames { get; } = new(
+        "constellation_lines",
         "id", 
         StarsColumnNames.Constellation, 
-        "line_id", 
+        "lineid", 
         StarsColumnNames.HarvardYaleBrightStarCatalogId);
 
 }
@@ -91,4 +92,4 @@ record StarsColumnNames(
     string StarApproximateMinMag,
     string StarApproximateMaxMag);
 
-record ConstellationLinesColumnNames(string Id, string ConstellationName, string LineId, string HarvardYaleBrightStarCatalogId);
+record ConstellationLinesColumnNames(string TableName, string Id, string ConstellationName, string LineId, string HarvardYaleBrightStarCatalogId);

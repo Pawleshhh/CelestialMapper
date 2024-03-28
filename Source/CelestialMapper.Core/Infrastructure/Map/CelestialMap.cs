@@ -17,6 +17,8 @@ public class CelestialMap : IMap
 
     public IReadOnlySet<CelestialObject> CelestialObjects { get; }
 
+    public IReadOnlySet<Constellation> Constellations { get; init; } = new HashSet<Constellation>();
+
     public Geographic Location { get; init; } = MapConstants.DefaultLocation;
     public DateTime DateTime { get; init; } = DateTime.UtcNow;
 

@@ -11,4 +11,6 @@ public interface ICelestialDatabase
 
     public IEnumerable<CelestialObject> GetCelestialObjects(Geographic location, DateTime dateTime, NumRange<double> magnitudeRange);
 
+    public IEnumerable<Constellation> GetConstellations(Geographic location, DateTime dateTime);
+
 }

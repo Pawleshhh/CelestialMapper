@@ -10,6 +10,8 @@ public interface IMap
 
     public IReadOnlySet<CelestialObject> CelestialObjects { get; }
 
+    public IReadOnlySet<Constellation> Constellations { get; }
+
     public Geographic Location { get; init; }
 
     public DateTime DateTime { get; init; }

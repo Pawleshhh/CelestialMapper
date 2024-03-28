@@ -19,7 +19,7 @@ public static class CelestialObjectHelper
             var m when mediumObject.InRange(m, NumRangeKind.Exclusive, NumRangeKind.Inclusive) => 1,
             var m when bigObject.InRange(m, NumRangeKind.Exclusive, NumRangeKind.Inclusive) => 2,
             _ => throw null
-        } * 3;
+        } * 6;
 
         return objectDiameter;
     }

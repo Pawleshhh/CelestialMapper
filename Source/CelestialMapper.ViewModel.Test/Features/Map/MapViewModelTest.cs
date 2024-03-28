@@ -44,10 +44,10 @@ public class MapViewModelTest : ViewModelTest<MapViewModel>
         // Arrange
         IMap map = new CelestialMap(new CelestialObject[]
         {
-            new(1, "Name1", new(1, 1), 1),
-            new(2, "Name2", new(2, 2), 2),
-            new(3, "Name3", new(3, 3), 3),
-            new(4, "Name4", new(4, 4), 4),
+            new(1, "Name1", new(1, 1), 1, "HR"),
+            new(2, "Name2", new(2, 2), 2, "HR"),
+            new(3, "Name3", new(3, 3), 3, "HR"),
+            new(4, "Name4", new(4, 4), 4, "HR"),
         });
 
         MapManager
@@ -61,6 +61,34 @@ public class MapViewModelTest : ViewModelTest<MapViewModel>
 
         // Assert
         Assert.That(sut.CelestialObjects, Is.SameAs(map.CelestialObjects));
+    }
+
+    [Test]
+    public void Constellations_GetsConstellations_ReturnsExpectedConstellations()
+    {
+        // Arrange
+        IMap map = new CelestialMap(Array.Empty<CelestialObject>())
+        {
+            Constellations = new Constellation[]
+            {
+                new(1, "Name1", "Short1", new ConstellationLine[] { new(new(1, 1), new(1, 1))}),
+                new(2, "Name2", "Short2", new ConstellationLine[] { new(new(2, 2), new(2, 2))}),
+                new(3, "Name3", "Short3", new ConstellationLine[] { new(new(3, 3), new(3, 3))}),
+                new(4, "Name4", "Short4", new ConstellationLine[] { new(new(4, 4), new(4, 4))}),
+            }.ToHashSet()
+        };
+
+        MapManager
+            .Setup(x => x.Generate(It.IsAny<Geographic>(), It.IsAny<DateTime>(), It.IsAny<IGenerateMapSettings>()))
+            .Returns(Task.FromResult(map));
+
+        var sut = CreateSUTAndInitialize();
+
+        // Act
+        sut.GenerateMapCommand!.Execute(null);
+
+        // Assert
+        Assert.That(sut.Constellations, Is.SameAs(map.Constellations));
     }
 
     #endregion

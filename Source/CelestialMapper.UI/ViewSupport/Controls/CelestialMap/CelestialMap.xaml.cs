@@ -23,7 +23,66 @@ public partial class CelestialMap : PlatformUserControl
 
         UpdateAzimuthLines();
         UpdateAltitudeLines();
+
+#if DEBUG
+        InitializeDebug();
+#endif
     }
+
+    #region Debug
+#if DEBUG
+
+    private void InitializeDebug()
+    {
+        this.ellipseBackground.MouseEnter += DebugCanvas_MouseEnter;
+        this.ellipseBackground.MouseMove += DebugCanvas_MouseMove;
+        this.ellipseBackground.MouseLeave += DebugCanvas_MouseLeave;
+
+        this.debugCanvas.Children.Add(this.coordinatesTextBlock);
+    }
+
+    private bool showCoordinates;
+    private TextBlock coordinatesTextBlock = new TextBlock()
+    {
+        Visibility = Visibility.Collapsed,
+        Background = Brushes.Black,
+        Foreground = Brushes.Yellow,
+        RenderTransform = new TranslateTransform()
+    };
+
+    private void DebugCanvas_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+    {
+        this.showCoordinates = true;
+        this.coordinatesTextBlock.Visibility = Visibility.Visible;
+    }
+
+    private void DebugCanvas_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+    {
+        this.showCoordinates = false;
+        this.coordinatesTextBlock.Visibility = Visibility.Collapsed;
+    }
+
+    private void DebugCanvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+    {
+        if (!this.showCoordinates)
+        {
+            return;
+        }
+
+        var relativeMousePoint = e.GetPosition(this.debugCanvas);
+        var mousePoint = e.GetPosition(this.debugCanvas);
+        var mapRadius = Diameter / 2d;
+
+        this.coordinatesTextBlock.Text = 
+            $"x: {relativeMousePoint.X}, y: {relativeMousePoint.Y}\n" +
+            $"x+: {relativeMousePoint.X + mapRadius}, y+: {relativeMousePoint.Y + mapRadius}";
+        this.coordinatesTextBlock.RenderTransform = RenderTransformHelper.CreateTransformGroup(
+            Scale.By(-1, -1),
+            Translate.To(mousePoint.X - 20, mousePoint.Y - 20));
+    }
+
+#endif
+    #endregion
 
     #region Properties
 
@@ -122,11 +181,13 @@ public partial class CelestialMap : PlatformUserControl
             return;
         }
 
-        celestialMap.UpdateMapCanvas();
+        celestialMap.UpdateCelestialObjects();
     }
 
-    public void UpdateMapCanvas()
+    public void UpdateCelestialObjects()
     {
+        this.celestialObjectCanvas.Children.Clear();
+
         var mapDiameter = Diameter;
         var mapRadius = mapDiameter / 2d;
 
@@ -145,7 +206,51 @@ public partial class CelestialMap : PlatformUserControl
                 Size = size
             };
 
-            this.mapCanvas.Children.Add(celestialObjectUI);
+            this.celestialObjectCanvas.Children.Add(celestialObjectUI);
+        }
+    }
+
+    #endregion
+
+    #region CelestialObjects
+
+    public IReadOnlySet<Constellation> Constellations
+    {
+        get { return this.GetValue<IReadOnlySet<Constellation>>(ConstellationsProperty); }
+        set { SetValue(ConstellationsProperty, value); }
+    }
+
+    public static readonly DependencyProperty ConstellationsProperty =
+        Register<IReadOnlySet<Constellation>, CelestialMap>(
+            nameof(Constellations),
+            new(null, OnConstellationsChanged));
+
+    private static void OnConstellationsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (!CanHandle<CelestialMap, IReadOnlySet<Constellation>>(d, e, out var celestialMap, out var constellations)
+            && !constellations.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        celestialMap.UpdateConstellations();
+    }
+
+    public void UpdateConstellations()
+    {
+        this.constellationCanvas.Children.Clear();
+
+        var mapDiameter = Diameter;
+
+        foreach (var constellation in Constellations)
+        {
+            var constellationUIElement = new ConstellationUIElement
+            {
+                Constellation = constellation,
+                MapDiameter = mapDiameter
+            };
+
+            this.constellationCanvas.Children.Add(constellationUIElement);
         }
     }
 
