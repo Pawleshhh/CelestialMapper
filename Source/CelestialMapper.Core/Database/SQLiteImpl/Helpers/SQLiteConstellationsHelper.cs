@@ -123,7 +123,7 @@ internal class SQLiteConstellationsHelper : SQLiteHelperBase
         starTableName = NormalizeTableName(starTableName);
         constellationTableName = NormalizeTableName(constellationTableName);
 
-        return $"{constellationTableName}{DbColumnNames.ConstellationLinesColumnNames.HarvardYaleBrightStarCatalogId} == " +
+        return $"{constellationTableName}{DbColumnNames.ConstellationLinesColumnNames.HarvardYaleBrightStarCatalogId} = " +
             $"{starTableName}{DbColumnNames.StarsColumnNames.HarvardYaleBrightStarCatalogId}";
     }
 }

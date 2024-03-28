@@ -4,6 +4,7 @@ using CelestialMapper.Core.Database.SQLiteImpl;
 using CelestialMapper.TestUtilities;
 using Moq;
 using PracticalAstronomy.CSharp;
+using System;
 using System.Data.Common;
 using System.Data.SQLite;
 using System.Globalization;
@@ -196,6 +197,107 @@ internal class SQLiteCelestialDatabaseTest : TestBase<SQLiteCelestialDatabase>
                 x.Process(
                     It.IsAny<IEnumerable<StarDataRow>>(), 
                     It.IsAny<Action<StarDataRow>>(), parallelProcessing), Times.Once);
+    }
+
+    [Test]
+    public void GetConstellations_CreatesDbConnectionOpensAndClosesIt_Passes()
+    {
+        // Arrange
+        Geographic location = new(0, 0);
+        DateTime dateTime = new(2025, 1, 5);
+
+        var dbConnectionMock = new Mock<DbConnection>();
+        dbConnectionMock.Setup(c => c.Open());
+        dbConnectionMock.Setup(c => c.Close());
+
+        this.wrapper
+            .Setup(x => x.CreateDbConnection(this.connectionStringBuilder))
+            .Returns(dbConnectionMock.Object);
+
+        var sut = CreateSUT();
+
+        // Act
+        _ = sut.GetConstellations(location, dateTime);
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            this.wrapper
+                .Verify(x =>
+                    x.CreateDbConnection(this.connectionStringBuilder),
+                    Times.Once);
+            dbConnectionMock.Verify(x => x.Open(), Times.Once);
+            dbConnectionMock.Verify(x => x.Close(), Times.Once);
+        });
+    }
+
+    [Test]
+    public void GetConstellations_CreatesQuery_Passes()
+    {
+        // Arrange
+        Geographic location = new(10, 14);
+        DateTime dateTime = new(2025, 1, 5);
+
+        string expectedQuery = "SELECT cl.id, cl.con, cl.lineid, cl.hr, st.ra, st.dec " +
+            "FROM stars AS st, constellation_lines AS cl " +
+            "WHERE cl.hr = st.hr " +
+            "ORDER BY cl.id";
+
+        var sut = CreateSUT();
+
+        // Act
+        _ = sut.GetConstellations(location, dateTime);
+
+        // Assert
+        this.wrapper.Verify(x => x.Query<ConstellationLineDataRowPosition>(It.IsAny<DbConnection>(), expectedQuery), Times.Once);
+    }
+
+    [Test]
+    public void GetConstellations_ProcessesQuery_ReturnsExpectedConstellations()
+    {
+        // Arrange
+        ConstellationLineDataRowPosition CreateRow(int id, string con, int lineId, double ra, double dec, string hr)
+            => new() { Id = id, Con = con, LineId = lineId, Ra = ra, Dec = dec, Hr = hr };
+
+        Geographic location = new(10, 14);
+        DateTime dateTime = new(2025, 1, 5);
+
+        var rows = new ConstellationLineDataRowPosition[]
+        {
+            CreateRow(1, "aaa", 1, 50, 50, "1"),
+            CreateRow(2, "aaa", 1, 50, 50, "2"),
+            CreateRow(3, "aaa", 1, 30, 30, "3"),
+            CreateRow(4, "bbb", 1, 60, 60, "3"),
+            CreateRow(5, "bbb", 1, 30, 30, "4"),
+            CreateRow(6, "bbb", 2, 35, 35, "5"),
+            CreateRow(7, "bbb", 2, 25, -3, "6"),
+            CreateRow(8, "ccc", 1, 20, -1, "7"),
+            CreateRow(9, "ccc", 1, 15, -6, "8"),
+            CreateRow(10, "ccc", 1, 17, -10, "9"),
+        };
+
+        this.wrapper
+            .Setup(x => x.Query<ConstellationLineDataRowPosition>(It.IsAny<DbConnection>(), It.IsAny<string>()))
+            .Returns(rows);
+
+        var sut = CreateSUT();
+
+        // Act
+        var result = sut.GetConstellations(location, dateTime);
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Count(), Is.EqualTo(2));
+
+            var aaaConstellation = result.ElementAt(0);
+            Assert.That(aaaConstellation.ShortName, Is.EqualTo("aaa"));
+            Assert.That(aaaConstellation.ConstellationLines.Count(), Is.EqualTo(2));
+
+            var bbbConstellation = result.ElementAt(1);
+            Assert.That(bbbConstellation.ShortName, Is.EqualTo("bbb"));
+            Assert.That(bbbConstellation.ConstellationLines.Count(), Is.EqualTo(2));
+        });
     }
 
     #endregion
