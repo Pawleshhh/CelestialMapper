@@ -7,4 +7,6 @@ public static class FeatureNames
 
     public static string Map { get; } = nameof(Map);
 
+    public static string TimeMachine { get; } = nameof(TimeMachine);
+
 }
