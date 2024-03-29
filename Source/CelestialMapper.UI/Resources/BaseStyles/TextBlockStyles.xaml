@@ -1,24 +1,63 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:ui="clr-namespace:CelestialMapper.UI"
-                    >
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:ui="clr-namespace:CelestialMapper.UI">
+
+    <!--#region TextBlock-->
+
+    <sys:Double x:Key="TextBlock.FontSize.Regular">14</sys:Double>
+
+    <Style x:Key="Style.TextBlock.Regular" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{StaticResource TextBlock.FontSize.Regular}" />
+    </Style>
+
+    <!--#endregion-->
 
     <!--#region LabeledText-->
 
-    <ControlTemplate x:Key="ControlTemplate.LabeledText" TargetType="ui:LabeledTextBox">
-        <DockPanel LastChildFill="True">
-            <TextBlock x:Name="Label"
-                       DockPanel.Dock="{TemplateBinding LabelPlacement,
-                                                        Converter={x:Static ui:TextPlacementToDockConverter.Instance}}"
-                       Text="{TemplateBinding Label}"
-                       />
+    <sys:Double x:Key="LabeledText.MaxWidth">200</sys:Double>
+    <sys:Double x:Key="LabeledText.Width">120</sys:Double>
+    <sys:Double x:Key="LabeledText.MinWidth">80</sys:Double>
 
-            <ContentPresenter x:Name="Content" />
+    <ControlTemplate x:Key="ControlTemplate.LabeledText" TargetType="ui:LabeledTextBox">
+        <DockPanel
+            Width="{TemplateBinding Width}"
+            MinWidth="{TemplateBinding MinWidth}"
+            MaxWidth="{TemplateBinding MaxWidth}"
+            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+            LastChildFill="True">
+            <TextBlock
+                x:Name="Label"
+                VerticalAlignment="Center"
+                DockPanel.Dock="{TemplateBinding LabelPlacement,
+                                                 Converter={x:Static ui:TextPlacementToDockConverter.Instance}}"
+                Style="{TemplateBinding LabelStyle}"
+                Text="{TemplateBinding Label}" />
+
+            <TextBox
+                x:Name="TextBox"
+                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                Text="{TemplateBinding Text}" />
         </DockPanel>
     </ControlTemplate>
 
-    <Style x:Key="Style.LabeledText" TargetType="ui:LabeledTextBox" />
+    <Style x:Key="Style.LabeledText" TargetType="ui:LabeledTextBox">
+        <Setter Property="Template" Value="{StaticResource ControlTemplate.LabeledText}" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+
+        <!--  Layout  -->
+        <Setter Property="MaxWidth" Value="{StaticResource LabeledText.MaxWidth}" />
+        <Setter Property="Width" Value="{StaticResource LabeledText.Width}" />
+        <Setter Property="MinWidth" Value="{StaticResource LabeledText.MinWidth}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+
+        <!--  Label  -->
+        <Setter Property="LabelStyle" Value="{StaticResource Style.TextBlock.Regular}" />
+    </Style>
 
     <!--#endregion-->
 

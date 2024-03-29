@@ -1,14 +1,13 @@
 ﻿namespace CelestialMapper.UI;
 
-/// <summary>
-/// Interaction logic for LabeledTextBox.xaml
-/// </summary>
-public partial class LabeledTextBox : TextBox
+public class LabeledTextBox : TextBox
 {
+
+    public static readonly string LabeledTextBoxDefaultStyleKey = "Style.LabeledText";
 
     public LabeledTextBox()
     {
-        InitializeComponent();
+        Style = FindResource(LabeledTextBoxDefaultStyleKey) as Style;
     }
 
     public string Label
@@ -28,5 +27,14 @@ public partial class LabeledTextBox : TextBox
 
     public static readonly DependencyProperty LabelPlacementProperty =
         DependencyProperty.Register(nameof(LabelPlacement), typeof(TextPlacement), typeof(LabeledTextBox), new PropertyMetadata(TextPlacement.Left));
+
+    public Style LabelStyle
+    {
+        get { return (Style)GetValue(LabelStyleProperty); }
+        set { SetValue(LabelStyleProperty, value); }
+    }
+
+    public static readonly DependencyProperty LabelStyleProperty =
+        DependencyProperty.Register(nameof(LabelStyle), typeof(Style), typeof(LabeledTextBox), new PropertyMetadata(null));
 
 }
