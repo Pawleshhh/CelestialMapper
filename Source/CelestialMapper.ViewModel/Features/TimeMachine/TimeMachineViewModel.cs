@@ -34,6 +34,8 @@ public class TimeMachineViewModel : ViewModelBase
     {
         base.Initialize(configurator);
 
+        DateTime = DateTime.Now;
+
         ApplyCommand = new RelayCommand(o =>
         {
             this.timeMachineManager.Update(DateTime, Location);
