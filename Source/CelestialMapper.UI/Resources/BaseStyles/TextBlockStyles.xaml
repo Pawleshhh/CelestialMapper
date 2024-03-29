@@ -1,4 +1,25 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    />
+                    xmlns:ui="clr-namespace:CelestialMapper.UI"
+                    >
+
+    <!--#region LabeledText-->
+
+    <ControlTemplate x:Key="ControlTemplate.LabeledText" TargetType="ui:LabeledTextBox">
+        <DockPanel LastChildFill="True">
+            <TextBlock x:Name="Label"
+                       DockPanel.Dock="{TemplateBinding LabelPlacement,
+                                                        Converter={x:Static ui:TextPlacementToDockConverter.Instance}}"
+                       Text="{TemplateBinding Label}"
+                       />
+
+            <ContentPresenter x:Name="Content" />
+        </DockPanel>
+    </ControlTemplate>
+
+    <Style x:Key="Style.LabeledText" TargetType="ui:LabeledTextBox" />
+
+    <!--#endregion-->
+
+</ResourceDictionary>
