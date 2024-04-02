@@ -3,11 +3,11 @@
 public class LabeledTextBox : TextBox
 {
 
-    public static readonly string LabeledTextBoxDefaultStyleKey = "Style.LabeledText";
+    public static readonly string LabeledTextBoxDefaultStyleKey = "Style.LabeledTextBox";
 
     public LabeledTextBox()
     {
-        Style = FindResource(LabeledTextBoxDefaultStyleKey) as Style;
+        Style = TryFindResource(LabeledTextBoxDefaultStyleKey) as Style;
     }
 
     public string Label

@@ -1,7 +1,7 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    >
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <!--#region Margins-->
 
@@ -12,6 +12,19 @@
     <Thickness x:Key="Margin.ExtraLarge">25</Thickness>
     <Thickness x:Key="Margin.Huge">30</Thickness>
 
+    <Thickness x:Key="Margin.ExtraSmall.Horizontal">5, 0</Thickness>
+    <Thickness x:Key="Margin.Small.Horizontal">10, 0</Thickness>
+    <Thickness x:Key="Margin.Medium.Horizontal">15, 0</Thickness>
+    <Thickness x:Key="Margin.Large.Horizontal">20, 0</Thickness>
+    <Thickness x:Key="Margin.ExtraLarge.Horizontal">25, 0</Thickness>
+    <Thickness x:Key="Margin.Huge.Horizontal">30, 0</Thickness>
+
+    <Thickness x:Key="Margin.ExtraSmall.Vertical">0, 5</Thickness>
+    <Thickness x:Key="Margin.Small.Vertical">0, 10</Thickness>
+    <Thickness x:Key="Margin.Medium.Vertical">0, 15</Thickness>
+    <Thickness x:Key="Margin.Large.Vertical">0, 20</Thickness>
+    <Thickness x:Key="Margin.ExtraLarge.Vertical">0, 25</Thickness>
+    <Thickness x:Key="Margin.Huge.Vertical">0, 30</Thickness>
     <!--#endregion-->
 
     <!--#region Paddings-->

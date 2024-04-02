@@ -4,6 +4,10 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="clr-namespace:CelestialMapper.UI">
 
+    <!--<ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Spacing/MarginsAndPaddings.xaml" />
+    </ResourceDictionary.MergedDictionaries>-->
+
     <!--#region TextBlock-->
 
     <sys:Double x:Key="TextBlock.FontSize.Regular">14</sys:Double>
@@ -16,42 +20,87 @@
 
     <!--#region LabeledText-->
 
-    <sys:Double x:Key="LabeledText.MaxWidth">200</sys:Double>
-    <sys:Double x:Key="LabeledText.Width">120</sys:Double>
-    <sys:Double x:Key="LabeledText.MinWidth">80</sys:Double>
+    <sys:Double x:Key="LabeledTextBox.MaxWidth">250</sys:Double>
+    <sys:Double x:Key="LabeledTextBox.MinWidth">80</sys:Double>
 
-    <ControlTemplate x:Key="ControlTemplate.LabeledText" TargetType="ui:LabeledTextBox">
-        <DockPanel
+    <sys:Double x:Key="LabeledTextBox.TextBox.MinWidth">50</sys:Double>
+
+    <ControlTemplate x:Key="ControlTemplate.LabeledTextBox" TargetType="ui:LabeledTextBox">
+        <Grid
             Width="{TemplateBinding Width}"
             MinWidth="{TemplateBinding MinWidth}"
             MaxWidth="{TemplateBinding MaxWidth}"
             HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-            VerticalAlignment="{TemplateBinding VerticalAlignment}"
-            LastChildFill="True">
+            VerticalAlignment="{TemplateBinding VerticalAlignment}">
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="Row0" />
+                <RowDefinition x:Name="Row1" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="Column0" Width="Auto" />
+                <ColumnDefinition x:Name="Column1" Width="*" />
+            </Grid.ColumnDefinitions>
+
             <TextBlock
                 x:Name="Label"
+                Grid.RowSpan="2"
+                Grid.Column="0"
                 VerticalAlignment="Center"
-                DockPanel.Dock="{TemplateBinding LabelPlacement,
-                                                 Converter={x:Static ui:TextPlacementToDockConverter.Instance}}"
                 Style="{TemplateBinding LabelStyle}"
                 Text="{TemplateBinding Label}" />
 
             <TextBox
                 x:Name="TextBox"
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                MinWidth="{StaticResource LabeledTextBox.TextBox.MinWidth}"
                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                 Text="{TemplateBinding Text}" />
-        </DockPanel>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="LabelPlacement" Value="Top">
+                <Setter TargetName="Label" Property="Grid.Row" Value="0" />
+                <Setter TargetName="Label" Property="Grid.Column" Value="0" />
+                <Setter TargetName="Label" Property="Grid.RowSpan" Value="1" />
+                <Setter TargetName="Label" Property="Grid.ColumnSpan" Value="2" />
+                <Setter TargetName="TextBox" Property="Grid.Row" Value="1" />
+                <Setter TargetName="TextBox" Property="Grid.Column" Value="0" />
+                <Setter TargetName="TextBox" Property="Grid.RowSpan" Value="1" />
+                <Setter TargetName="TextBox" Property="Grid.ColumnSpan" Value="2" />
+            </Trigger>
+
+            <Trigger Property="LabelPlacement" Value="Right">
+                <Setter TargetName="Label" Property="Grid.Row" Value="0" />
+                <Setter TargetName="Label" Property="Grid.Column" Value="1" />
+                <Setter TargetName="Label" Property="Grid.RowSpan" Value="2" />
+                <Setter TargetName="Label" Property="Grid.ColumnSpan" Value="1" />
+                <Setter TargetName="TextBox" Property="Grid.Row" Value="0" />
+                <Setter TargetName="TextBox" Property="Grid.Column" Value="0" />
+                <Setter TargetName="TextBox" Property="Grid.RowSpan" Value="2" />
+                <Setter TargetName="TextBox" Property="Grid.ColumnSpan" Value="1" />
+            </Trigger>
+
+            <Trigger Property="LabelPlacement" Value="Bottom">
+                <Setter TargetName="Label" Property="Grid.Row" Value="1" />
+                <Setter TargetName="Label" Property="Grid.Column" Value="0" />
+                <Setter TargetName="Label" Property="Grid.RowSpan" Value="1" />
+                <Setter TargetName="Label" Property="Grid.ColumnSpan" Value="2" />
+                <Setter TargetName="TextBox" Property="Grid.Row" Value="0" />
+                <Setter TargetName="TextBox" Property="Grid.Column" Value="0" />
+                <Setter TargetName="TextBox" Property="Grid.RowSpan" Value="1" />
+                <Setter TargetName="TextBox" Property="Grid.ColumnSpan" Value="2" />
+            </Trigger>
+        </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style x:Key="Style.LabeledText" TargetType="ui:LabeledTextBox">
-        <Setter Property="Template" Value="{StaticResource ControlTemplate.LabeledText}" />
+    <Style x:Key="Style.LabeledTextBox" TargetType="ui:LabeledTextBox">
+        <Setter Property="Template" Value="{StaticResource ControlTemplate.LabeledTextBox}" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
 
         <!--  Layout  -->
-        <Setter Property="MaxWidth" Value="{StaticResource LabeledText.MaxWidth}" />
-        <Setter Property="Width" Value="{StaticResource LabeledText.Width}" />
-        <Setter Property="MinWidth" Value="{StaticResource LabeledText.MinWidth}" />
+        <Setter Property="MaxWidth" Value="{StaticResource LabeledTextBox.MaxWidth}" />
+        <Setter Property="MinWidth" Value="{StaticResource LabeledTextBox.MinWidth}" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
 
