@@ -21,9 +21,23 @@
             </Style>
         </StackPanel.Resources>
 
-        <local:LabeledTextBox Label="Latitude:" Text="{Binding Location.Latitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <local:LabeledTextBox Label="Latitude:" Text="{Binding Location.Latitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <local:LabeledTextBox.InputModeStrategy>
+                <local:DoubleInputModeStrategy
+                    DigitsOnly="True"
+                    MaxValue="90"
+                    MinValue="-90" />
+            </local:LabeledTextBox.InputModeStrategy>
+        </local:LabeledTextBox>
 
-        <local:LabeledTextBox Label="Longitude:" Text="{Binding Location.Longitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <local:LabeledTextBox Label="Longitude:" Text="{Binding Location.Longitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <local:LabeledTextBox.InputModeStrategy>
+                <local:DoubleInputModeStrategy
+                    DigitsOnly="True"
+                    MaxValue="-180"
+                    MinValue="180" />
+            </local:LabeledTextBox.InputModeStrategy>
+        </local:LabeledTextBox>
 
         <TextBlock Text="Date:" />
         <DatePicker SelectedDate="{Binding DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
