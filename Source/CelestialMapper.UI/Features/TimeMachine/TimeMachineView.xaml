@@ -21,22 +21,30 @@
             </Style>
         </StackPanel.Resources>
 
-        <local:LabeledTextBox Label="Latitude:" Text="{Binding Latitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <local:LabeledTextBox.InputModeStrategy>
-                <local:DoubleInputModeStrategy
-                    DigitsOnly="True"
-                    MaxValue="90"
-                    MinValue="-90" />
-            </local:LabeledTextBox.InputModeStrategy>
+        <local:LabeledTextBox Label="Latitude:">
+            <local:LabeledTextBox.Text>
+                <Binding
+                    Mode="TwoWay"
+                    Path="LatitudeInput"
+                    UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <local:DoubleInputModeStrategy MaxValue="90" MinValue="-90" />
+                    </Binding.ValidationRules>
+                </Binding>
+            </local:LabeledTextBox.Text>
         </local:LabeledTextBox>
 
-        <local:LabeledTextBox Label="Longitude:" Text="{Binding Longitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <local:LabeledTextBox.InputModeStrategy>
-                <local:DoubleInputModeStrategy
-                    DigitsOnly="True"
-                    MaxValue="-180"
-                    MinValue="180" />
-            </local:LabeledTextBox.InputModeStrategy>
+        <local:LabeledTextBox Label="Longitude:">
+            <local:LabeledTextBox.Text>
+                <Binding
+                    Mode="TwoWay"
+                    Path="LongitudeInput"
+                    UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <local:DoubleInputModeStrategy MaxValue="180" MinValue="-180" />
+                    </Binding.ValidationRules>
+                </Binding>
+            </local:LabeledTextBox.Text>
         </local:LabeledTextBox>
 
         <TextBlock Text="Date:" />

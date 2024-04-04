@@ -41,64 +41,69 @@ public class LabeledTextBox : TextBox
 
     #region InputMode
 
-    public InputModeStrategy InputModeStrategy
-    {
-        get { return (InputModeStrategy)GetValue(InputModeStrategyProperty); }
-        set { SetValue(InputModeStrategyProperty, value); }
-    }
+    //public InputModeStrategy InputModeStrategy
+    //{
+    //    get { return (InputModeStrategy)GetValue(InputModeStrategyProperty); }
+    //    set { SetValue(InputModeStrategyProperty, value); }
+    //}
 
-    public static readonly DependencyProperty InputModeStrategyProperty =
-        DependencyProperty.Register(nameof(InputModeStrategy), typeof(InputModeStrategy), typeof(LabeledTextBox), new(null, OnInputModeStrategyChanged));
+    //public static readonly DependencyProperty InputModeStrategyProperty =
+    //    DependencyProperty.Register(nameof(InputModeStrategy), typeof(InputModeStrategy), typeof(LabeledTextBox), new(null, OnInputModeStrategyChanged));
 
-    private static void OnInputModeStrategyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (!CanHandle<LabeledTextBox, InputModeStrategy>(d, e, out var labeledTextBox, out var inputModeStrategy))
-        {
-            return;
-        }
+    //private static void OnInputModeStrategyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    //{
+    //    if (!CanHandle<LabeledTextBox, InputModeStrategy>(d, e, out var labeledTextBox, out var inputModeStrategy))
+    //    {
+    //        return;
+    //    }
 
-        var inputMode = inputModeStrategy.Mode;
+    //    labeledTextBox.OnInputModeStrategyChanged(inputModeStrategy);
+    //}
 
-        if (labeledTextBox.InputMode != inputMode)
-        {
-            labeledTextBox.InputMode = inputMode;
-        }
-    }
+    //protected virtual void OnInputModeStrategyChanged(InputModeStrategy inputModeStrategy)
+    //{
+    //    var inputMode = inputModeStrategy.Mode;
 
-    public InputMode InputMode
-    {
-        get { return (InputMode)GetValue(InputModeProperty); }
-        set { SetValue(InputModeProperty, value); }
-    }
+    //    if (InputMode != inputMode)
+    //    {
+    //        InputMode = inputMode;
+    //    }
+    //}
 
-    public static readonly DependencyProperty InputModeProperty =
-        DependencyProperty.Register(nameof(InputMode), typeof(InputMode), typeof(LabeledTextBox), new(InputMode.String, OnInputModeChanged));
+    //public InputMode InputMode
+    //{
+    //    get { return (InputMode)GetValue(InputModeProperty); }
+    //    set { SetValue(InputModeProperty, value); }
+    //}
 
-    private static void OnInputModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (!CanHandle<LabeledTextBox, InputMode>(d, e, out var labeledTextBox, out var inputMode))
-        {
-            return;
-        }
+    //public static readonly DependencyProperty InputModeProperty =
+    //    DependencyProperty.Register(nameof(InputMode), typeof(InputMode), typeof(LabeledTextBox), new(InputMode.String, OnInputModeChanged));
 
-        if (labeledTextBox.InputMode == InputMode.String &&
-            labeledTextBox.InputModeStrategy is not TextInputModeStrategy)
-        {
-            labeledTextBox.InputModeStrategy = new TextInputModeStrategy();
-        }
+    //private static void OnInputModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    //{
+    //    if (!CanHandle<LabeledTextBox, InputMode>(d, e, out var labeledTextBox, out var inputMode))
+    //    {
+    //        return;
+    //    }
 
-        if (labeledTextBox.InputMode == InputMode.Double &&
-            labeledTextBox.InputModeStrategy is not DoubleInputModeStrategy)
-        {
-            labeledTextBox.InputModeStrategy = new DoubleInputModeStrategy();
-        }
-    }
+    //    labeledTextBox.OnInputModeChanged(inputMode);
+    //}
+
+    //protected virtual void OnInputModeChanged(InputMode inputMode)
+    //{
+    //    if (InputMode == InputMode.String &&
+    //        InputModeStrategy is not TextInputModeStrategy)
+    //    {
+    //        InputModeStrategy = new TextInputModeStrategy();
+    //    }
+
+    //    if (InputMode == InputMode.Double &&
+    //        InputModeStrategy is not DoubleInputModeStrategy)
+    //    {
+    //        InputModeStrategy = new DoubleInputModeStrategy();
+    //    }
+    //}
 
     #endregion
-
-    protected override void OnTextChanged(TextChangedEventArgs e)
-    {
-        base.OnTextChanged(e);
-    }
 
 }

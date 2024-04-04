@@ -1,4 +1,5 @@
 ﻿using PracticalAstronomy.CSharp;
+using System.Globalization;
 using System.Windows.Input;
 
 namespace CelestialMapper.ViewModel;
@@ -81,7 +82,7 @@ public class TimeMachineViewModel : ViewModelBase
             (Latitude, Longitude) = this.defaultLocation;
         }
 
-        (Latitude, Longitude) = e.Data;
+        (Latitude, Longitude) = e.Data!;
     }
 
     #endregion
@@ -106,6 +107,48 @@ public class TimeMachineViewModel : ViewModelBase
     {
         get => GetPropertyValue<double>();
         set => SetPropertyValue(value);
+    }
+
+    public string LatitudeInput
+    {
+        get => GetPropertyValue<string>() ?? string.Empty;
+        set
+        {
+            if (!SetPropertyValue(value))
+            {
+                return;
+            }
+
+            Latitude = ParseDouble(value);
+        }
+    }
+
+    public string LongitudeInput
+    {
+        get => GetPropertyValue<string>() ?? string.Empty;
+        set
+        {
+            if (!SetPropertyValue(value))
+            {
+                return;
+            }
+
+            Longitude = ParseDouble(value);
+        }
+    }
+
+    #endregion
+
+    #region Helpers
+
+    private double ParseDouble(string value)
+    {
+        if (double.TryParse(value, CultureInfo.InvariantCulture, out double result))
+        {
+            return result;
+        }
+
+        return 0;
     }
 
     #endregion
