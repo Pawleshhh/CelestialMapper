@@ -21,7 +21,7 @@
             </Style>
         </StackPanel.Resources>
 
-        <local:LabeledTextBox Label="Latitude:" Text="{Binding Location.Latitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <local:LabeledTextBox Label="Latitude:" Text="{Binding Latitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <local:LabeledTextBox.InputModeStrategy>
                 <local:DoubleInputModeStrategy
                     DigitsOnly="True"
@@ -30,7 +30,7 @@
             </local:LabeledTextBox.InputModeStrategy>
         </local:LabeledTextBox>
 
-        <local:LabeledTextBox Label="Longitude:" Text="{Binding Location.Longitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <local:LabeledTextBox Label="Longitude:" Text="{Binding Longitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <local:LabeledTextBox.InputModeStrategy>
                 <local:DoubleInputModeStrategy
                     DigitsOnly="True"

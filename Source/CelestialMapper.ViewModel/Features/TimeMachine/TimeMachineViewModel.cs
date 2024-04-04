@@ -38,7 +38,7 @@ public class TimeMachineViewModel : ViewModelBase
 
         ApplyCommand = new RelayCommand(o =>
         {
-            this.timeMachineManager.Update(DateTime, Location);
+            this.timeMachineManager.Update(DateTime, new(Latitude, Longitude));
         });
     }
 
@@ -65,7 +65,8 @@ public class TimeMachineViewModel : ViewModelBase
     private void TimeMachineManager_TimeMachineUpdated(PlatformEventArgs<ITimeMachineManager, (DateTime DateTime, Geographic Location)> e)
     {
         DateTime = e.Data.DateTime;
-        Location = e.Data.Location;
+        Longitude = e.Data.Location.Longitude;
+        Latitude = e.Data.Location.Latitude;
     }
 
     private void TimeMachineManager_DateTimeChanged(PlatformEventArgs<ITimeMachineManager, DateTime> e)
@@ -75,7 +76,12 @@ public class TimeMachineViewModel : ViewModelBase
 
     private void TimeMachineManager_LocationChanged(PlatformEventArgs<ITimeMachineManager, Geographic> e)
     {
-        Location = e.Data ?? this.defaultLocation;
+        if (e.Data is null)
+        {
+            (Latitude, Longitude) = this.defaultLocation;
+        }
+
+        (Latitude, Longitude) = e.Data;
     }
 
     #endregion
@@ -90,9 +96,15 @@ public class TimeMachineViewModel : ViewModelBase
         set => SetPropertyValue(value);
     }
 
-    public Geographic Location
+    public double Latitude
     {
-        get => GetPropertyValue<Geographic>() ?? this.defaultLocation;
+        get => GetPropertyValue<double>();
+        set => SetPropertyValue(value);
+    }
+
+    public double Longitude
+    {
+        get => GetPropertyValue<double>();
         set => SetPropertyValue(value);
     }
 

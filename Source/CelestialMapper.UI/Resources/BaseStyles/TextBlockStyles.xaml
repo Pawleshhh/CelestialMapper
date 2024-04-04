@@ -4,9 +4,9 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="clr-namespace:CelestialMapper.UI">
 
-    <!--<ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Spacing/MarginsAndPaddings.xaml" />
-    </ResourceDictionary.MergedDictionaries>-->
+    </ResourceDictionary.MergedDictionaries>
 
     <!--#region TextBlock-->
 
@@ -23,7 +23,7 @@
     <sys:Double x:Key="LabeledTextBox.MaxWidth">250</sys:Double>
     <sys:Double x:Key="LabeledTextBox.MinWidth">80</sys:Double>
 
-    <sys:Double x:Key="LabeledTextBox.TextBox.MinWidth">50</sys:Double>
+    <sys:Double x:Key="LabeledTextBox.TextBox.Width">50</sys:Double>
 
     <ControlTemplate x:Key="ControlTemplate.LabeledTextBox" TargetType="ui:LabeledTextBox">
         <Grid
@@ -49,14 +49,18 @@
                 Style="{TemplateBinding LabelStyle}"
                 Text="{TemplateBinding Label}" />
 
-            <TextBox
-                x:Name="TextBox"
+            <Border
+                x:Name="ContentHostBorder"
                 Grid.RowSpan="2"
                 Grid.Column="1"
-                MinWidth="{StaticResource LabeledTextBox.TextBox.MinWidth}"
-                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                Text="{TemplateBinding Text}" />
+                Width="{StaticResource LabeledTextBox.TextBox.Width}"
+                Margin="{StaticResource Margin.Twos.Small}"
+                VerticalAlignment="Center"
+                Background="White"
+                BorderBrush="DimGray"
+                BorderThickness="1">
+                <ScrollViewer x:Name="PART_ContentHost" HorizontalScrollBarVisibility="Hidden" />
+            </Border>
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="LabelPlacement" Value="Top">
@@ -64,10 +68,10 @@
                 <Setter TargetName="Label" Property="Grid.Column" Value="0" />
                 <Setter TargetName="Label" Property="Grid.RowSpan" Value="1" />
                 <Setter TargetName="Label" Property="Grid.ColumnSpan" Value="2" />
-                <Setter TargetName="TextBox" Property="Grid.Row" Value="1" />
-                <Setter TargetName="TextBox" Property="Grid.Column" Value="0" />
-                <Setter TargetName="TextBox" Property="Grid.RowSpan" Value="1" />
-                <Setter TargetName="TextBox" Property="Grid.ColumnSpan" Value="2" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.Row" Value="1" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.Column" Value="0" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.RowSpan" Value="1" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.ColumnSpan" Value="2" />
             </Trigger>
 
             <Trigger Property="LabelPlacement" Value="Right">
@@ -75,10 +79,10 @@
                 <Setter TargetName="Label" Property="Grid.Column" Value="1" />
                 <Setter TargetName="Label" Property="Grid.RowSpan" Value="2" />
                 <Setter TargetName="Label" Property="Grid.ColumnSpan" Value="1" />
-                <Setter TargetName="TextBox" Property="Grid.Row" Value="0" />
-                <Setter TargetName="TextBox" Property="Grid.Column" Value="0" />
-                <Setter TargetName="TextBox" Property="Grid.RowSpan" Value="2" />
-                <Setter TargetName="TextBox" Property="Grid.ColumnSpan" Value="1" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.Row" Value="0" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.Column" Value="0" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.RowSpan" Value="2" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.ColumnSpan" Value="1" />
             </Trigger>
 
             <Trigger Property="LabelPlacement" Value="Bottom">
@@ -86,10 +90,10 @@
                 <Setter TargetName="Label" Property="Grid.Column" Value="0" />
                 <Setter TargetName="Label" Property="Grid.RowSpan" Value="1" />
                 <Setter TargetName="Label" Property="Grid.ColumnSpan" Value="2" />
-                <Setter TargetName="TextBox" Property="Grid.Row" Value="0" />
-                <Setter TargetName="TextBox" Property="Grid.Column" Value="0" />
-                <Setter TargetName="TextBox" Property="Grid.RowSpan" Value="1" />
-                <Setter TargetName="TextBox" Property="Grid.ColumnSpan" Value="2" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.Row" Value="0" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.Column" Value="0" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.RowSpan" Value="1" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.ColumnSpan" Value="2" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

@@ -96,4 +96,9 @@ public class LabeledTextBox : TextBox
 
     #endregion
 
+    protected override void OnTextChanged(TextChangedEventArgs e)
+    {
+        base.OnTextChanged(e);
+    }
+
 }
