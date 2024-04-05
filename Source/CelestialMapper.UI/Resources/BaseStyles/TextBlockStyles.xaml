@@ -16,6 +16,18 @@
         <Setter Property="FontSize" Value="{StaticResource TextBlock.FontSize.Regular}" />
     </Style>
 
+    <sys:Double x:Key="TextBlock.FontSize.Small">12</sys:Double>
+
+    <Style x:Key="Style.TextBlock.Small" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{StaticResource TextBlock.FontSize.Small}" />
+    </Style>
+
+    <sys:Double x:Key="TextBlock.FontSize.Hint">10</sys:Double>
+
+    <Style x:Key="Style.TextBlock.Hint" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{StaticResource TextBlock.FontSize.Hint}" />
+    </Style>
+
     <!--#endregion-->
 
     <!--#region LabeledText-->
@@ -27,6 +39,7 @@
 
     <ControlTemplate x:Key="ControlTemplate.LabeledTextBox" TargetType="ui:LabeledTextBox">
         <Grid
+            x:Name="MainGrid"
             Width="{TemplateBinding Width}"
             MinWidth="{TemplateBinding MinWidth}"
             MaxWidth="{TemplateBinding MaxWidth}"
@@ -35,6 +48,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition x:Name="Row0" />
                 <RowDefinition x:Name="Row1" />
+                <RowDefinition x:Name="Row2" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="Column0" Width="Auto" />
@@ -61,6 +75,19 @@
                 BorderThickness="1">
                 <ScrollViewer x:Name="PART_ContentHost" HorizontalScrollBarVisibility="Hidden" />
             </Border>
+
+            <TextBlock
+                x:Name="ErrorLabel"
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                VerticalAlignment="Center"
+                Foreground="Red"
+                Style="{StaticResource Style.TextBlock.Hint}"
+                Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.Errors)[0].ErrorContent}"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="Wrap"
+                Visibility="Hidden" />
+
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="LabelPlacement" Value="Top">
@@ -85,21 +112,15 @@
                 <Setter TargetName="ContentHostBorder" Property="Grid.ColumnSpan" Value="1" />
             </Trigger>
 
-            <Trigger Property="LabelPlacement" Value="Bottom">
-                <Setter TargetName="Label" Property="Grid.Row" Value="1" />
-                <Setter TargetName="Label" Property="Grid.Column" Value="0" />
-                <Setter TargetName="Label" Property="Grid.RowSpan" Value="1" />
-                <Setter TargetName="Label" Property="Grid.ColumnSpan" Value="2" />
-                <Setter TargetName="ContentHostBorder" Property="Grid.Row" Value="0" />
-                <Setter TargetName="ContentHostBorder" Property="Grid.Column" Value="0" />
-                <Setter TargetName="ContentHostBorder" Property="Grid.RowSpan" Value="1" />
-                <Setter TargetName="ContentHostBorder" Property="Grid.ColumnSpan" Value="2" />
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter TargetName="ErrorLabel" Property="Visibility" Value="Visible" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <Style x:Key="Style.LabeledTextBox" TargetType="ui:LabeledTextBox">
         <Setter Property="Template" Value="{StaticResource ControlTemplate.LabeledTextBox}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
 
         <!--  Layout  -->

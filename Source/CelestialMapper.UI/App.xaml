@@ -9,6 +9,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/BaseStyles/TextBlockStyles.xaml" />
 
+                <ResourceDictionary Source="Resources/Strings/TimeMachineStrings.xaml" />
                 <ResourceDictionary Source="Resources/Strings/WindowStrings.xaml" />
 
                 <ResourceDictionary Source="Resources/Spacing/MarginsAndPaddings.xaml" />

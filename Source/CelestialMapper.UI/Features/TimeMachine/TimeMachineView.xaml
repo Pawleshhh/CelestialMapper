@@ -28,7 +28,10 @@
                     Path="LatitudeInput"
                     UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
-                        <local:DoubleInputModeStrategy MaxValue="90" MinValue="-90" />
+                        <local:DoubleInputModeStrategy
+                            InvalidResultString="String.Latitude.Error"
+                            MaxValue="90"
+                            MinValue="-90" />
                     </Binding.ValidationRules>
                 </Binding>
             </local:LabeledTextBox.Text>
@@ -41,7 +44,10 @@
                     Path="LongitudeInput"
                     UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
-                        <local:DoubleInputModeStrategy MaxValue="180" MinValue="-180" />
+                        <local:DoubleInputModeStrategy
+                            InvalidResultString="String.Longitude.Error"
+                            MaxValue="180"
+                            MinValue="-180" />
                     </Binding.ValidationRules>
                 </Binding>
             </local:LabeledTextBox.Text>

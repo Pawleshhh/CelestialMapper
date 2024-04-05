@@ -111,7 +111,7 @@ public class TimeMachineViewModel : ViewModelBase
 
     public string LatitudeInput
     {
-        get => GetPropertyValue<string>() ?? string.Empty;
+        get => GetPropertyValue<string>() ?? Latitude.ToString();
         set
         {
             if (!SetPropertyValue(value))
@@ -125,7 +125,7 @@ public class TimeMachineViewModel : ViewModelBase
 
     public string LongitudeInput
     {
-        get => GetPropertyValue<string>() ?? string.Empty;
+        get => GetPropertyValue<string>() ?? Longitude.ToString();
         set
         {
             if (!SetPropertyValue(value))
