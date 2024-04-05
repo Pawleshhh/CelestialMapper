@@ -2,7 +2,7 @@
 
 namespace CelestialMapper.UI;
 
-public class DoubleInputModeStrategy : InputModeStrategy
+public class DoubleInputValidation : InputValidation
 {
     public override InputMode Mode => InputMode.Double;
 
@@ -15,6 +15,11 @@ public class DoubleInputModeStrategy : InputModeStrategy
         if (!base.IsCorrect(text))
         {
             return false;
+        }
+
+        if (AllowEmptyInput && text.IsNullOrEmpty())
+        {
+            return true;
         }
 
         if (!double.TryParse(text, CultureInfo.InvariantCulture, out double value))

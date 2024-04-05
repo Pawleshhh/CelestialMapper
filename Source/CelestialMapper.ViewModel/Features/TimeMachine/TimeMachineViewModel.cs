@@ -40,6 +40,8 @@ public class TimeMachineViewModel : ViewModelBase
         ApplyCommand = new RelayCommand(o =>
         {
             this.timeMachineManager.Update(DateTime, new(Latitude, Longitude));
+
+            RefreshInputs();
         });
     }
 
@@ -149,6 +151,19 @@ public class TimeMachineViewModel : ViewModelBase
         }
 
         return 0;
+    }
+
+    private void RefreshInputs()
+    {
+        if (LatitudeInput.IsNullOrEmpty())
+        {
+            LatitudeInput = "0";
+        }
+
+        if (LongitudeInput.IsNullOrEmpty())
+        {
+            LongitudeInput = "0";
+        }
     }
 
     #endregion

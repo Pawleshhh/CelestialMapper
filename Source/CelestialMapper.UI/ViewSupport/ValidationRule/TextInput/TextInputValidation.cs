@@ -1,6 +1,6 @@
 ﻿namespace CelestialMapper.UI;
 
-public class TextInputModeStrategy : InputModeStrategy
+public class TextInputValidation : InputValidation
 {
 
     public override InputMode Mode => InputMode.String;

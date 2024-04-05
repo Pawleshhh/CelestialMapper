@@ -28,7 +28,7 @@
                     Path="LatitudeInput"
                     UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
-                        <local:DoubleInputModeStrategy
+                        <local:DoubleInputValidation
                             InvalidResultString="String.Latitude.Error"
                             MaxValue="90"
                             MinValue="-90" />
@@ -44,7 +44,7 @@
                     Path="LongitudeInput"
                     UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
-                        <local:DoubleInputModeStrategy
+                        <local:DoubleInputValidation
                             InvalidResultString="String.Longitude.Error"
                             MaxValue="180"
                             MinValue="-180" />
