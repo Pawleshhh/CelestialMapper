@@ -48,11 +48,11 @@
             <Grid.RowDefinitions>
                 <RowDefinition x:Name="Row0" />
                 <RowDefinition x:Name="Row1" />
-                <RowDefinition x:Name="Row2" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="Column0" Width="Auto" />
                 <ColumnDefinition x:Name="Column1" Width="*" />
+                <ColumnDefinition x:Name="Column2" Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <TextBlock
@@ -76,18 +76,22 @@
                 <ScrollViewer x:Name="PART_ContentHost" HorizontalScrollBarVisibility="Hidden" />
             </Border>
 
-            <TextBlock
-                x:Name="ErrorLabel"
-                Grid.Row="2"
-                Grid.ColumnSpan="2"
-                VerticalAlignment="Center"
-                Foreground="Red"
-                Style="{StaticResource Style.TextBlock.Hint}"
-                Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.Errors)[0].ErrorContent}"
-                TextTrimming="CharacterEllipsis"
-                TextWrapping="Wrap"
-                Visibility="Hidden" />
-
+            <Ellipse
+                x:Name="ErrorIcon"
+                Grid.RowSpan="2"
+                Grid.Column="2"
+                Width="12"
+                Height="12"
+                Margin="{StaticResource Margin.Twos.ExtraSmall}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <Ellipse.Fill>
+                    <SolidColorBrush Opacity="0.0" Color="Red" />
+                </Ellipse.Fill>
+                <Ellipse.ToolTip>
+                    <TextBlock Style="{StaticResource Style.TextBlock.Small}" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.Errors)[0].ErrorContent}" />
+                </Ellipse.ToolTip>
+            </Ellipse>
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="LabelPlacement" Value="Top">
@@ -113,7 +117,32 @@
             </Trigger>
 
             <Trigger Property="Validation.HasError" Value="True">
-                <Setter TargetName="ErrorLabel" Property="Visibility" Value="Visible" />
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                BeginTime="00:00:00"
+                                Storyboard.TargetName="ErrorIcon"
+                                Storyboard.TargetProperty="(Fill).Opacity"
+                                From="0"
+                                To="1"
+                                Duration="00:00:00.300" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                BeginTime="00:00:00"
+                                Storyboard.TargetName="ErrorIcon"
+                                Storyboard.TargetProperty="(Fill).Opacity"
+                                From="1"
+                                To="0"
+                                Duration="00:00:00.300" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
