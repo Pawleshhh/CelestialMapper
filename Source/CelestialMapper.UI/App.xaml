@@ -7,6 +7,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/BaseStyles/HeaderedContentControlStyles.xaml" />
                 <ResourceDictionary Source="Resources/BaseStyles/TextBlockStyles.xaml" />
 
                 <ResourceDictionary Source="Resources/Strings/TimeMachineStrings.xaml" />

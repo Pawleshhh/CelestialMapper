@@ -1,43 +1,46 @@
-﻿namespace CelestialMapper.UI;
+﻿using System.Windows;
+
+namespace CelestialMapper.UI;
 
 public static class DependencyPropertyHelper
 {
+
+    #region Register
 
     public static DependencyProperty Register<TProperty, TOwner>(string name)
         where TOwner : DependencyObject
         => DependencyProperty.Register(name, typeof(TProperty), typeof(TOwner));
 
-    public static DependencyProperty Register<TProperty, TOwner>(string name, TProperty? defaultValue)
+    public static DependencyProperty Register<TProperty, TOwner>(string name, PlatformPropertyMetadata<TOwner, TProperty> propertyMetadata)
         where TOwner : DependencyObject
-        => DependencyProperty.Register(name, typeof(TProperty), typeof(TOwner), new(defaultValue));
+        => DependencyProperty.Register(name, typeof(TProperty), typeof(TOwner), propertyMetadata);
 
-    public static DependencyProperty Register<TProperty, TOwner>(string name, PropertyChangedCallback<TOwner, TProperty> callback)
+    public static DependencyProperty Register<TProperty, TOwner>(string name, PlatformFrameworkPropertyMetadata<TOwner, TProperty> frameworkPropertyMetadata)
         where TOwner : DependencyObject
-        => DependencyProperty.Register(name, typeof(TProperty), typeof(TOwner), new((s, e) => callback.Invoke((TOwner)s, new(e))));
+        => DependencyProperty.Register(name, typeof(TProperty), typeof(TOwner), frameworkPropertyMetadata);
 
-    public static DependencyProperty Register<TProperty, TOwner>(string name, TProperty? defaultValue, PropertyChangedCallback<TOwner, TProperty> callback)
-        where TOwner : DependencyObject
-        => DependencyProperty.Register(name, typeof(TProperty), typeof(TOwner), new(defaultValue, (s, e) => callback.Invoke((TOwner)s, new(e))));
+    #endregion
+
+    #region RegisterAttached
 
     public static DependencyProperty RegisterAttached<TProperty, TOwner>(string name)
         => DependencyProperty.RegisterAttached(name, typeof(TProperty), typeof(TOwner));
 
-    public static DependencyProperty RegisterAttached<TProperty, TOwner>(string name, TProperty? defaultValue)
-        => DependencyProperty.RegisterAttached(name, typeof(TProperty), typeof(TOwner), new(defaultValue));
+    public static DependencyProperty RegisterAttached<TProperty, TOwner>(string name, PlatformPropertyMetadata<DependencyObject, TProperty> propertyMetadata)
+        => DependencyProperty.RegisterAttached(name, typeof(TProperty), typeof(TOwner), propertyMetadata);
 
-    public static DependencyProperty RegisterAttached<TProperty, TOwner>(string name, PropertyChangedCallback<DependencyObject, TProperty> callback)
-        => DependencyProperty.RegisterAttached(name, typeof(TProperty), typeof(TOwner), new((s, e) => callback.Invoke(s, new(e))));
-
-    public static DependencyProperty RegisterAttached<TProperty, TOwner>(string name, TProperty? defaultValue, PropertyChangedCallback<DependencyObject, TProperty> callback)
-        => DependencyProperty.RegisterAttached(name, typeof(TProperty), typeof(TOwner), new(defaultValue, (s, e) => callback.Invoke(s, new(e))));
-
-    public static DependencyProperty RegisterAttached<TProperty, TOwner, TDepObj>(string name, PropertyChangedCallback<TDepObj, TProperty> callback)
+    public static DependencyProperty RegisterAttached<TProperty, TOwner, TDepObj>(string name, PlatformPropertyMetadata<TDepObj, TProperty> propertyMetadata)
         where TDepObj : DependencyObject
-        => DependencyProperty.RegisterAttached(name, typeof(TProperty), typeof(TOwner), new((s, e) => callback.Invoke((TDepObj)s, new(e))));
+        => DependencyProperty.RegisterAttached(name, typeof(TProperty), typeof(TOwner), propertyMetadata);
 
-    public static DependencyProperty RegisterAttached<TProperty, TOwner, TDepObj>(string name, TProperty? defaultValue, PropertyChangedCallback<TDepObj, TProperty> callback)
+    public static DependencyProperty RegisterAttached<TProperty, TOwner>(string name, PlatformFrameworkPropertyMetadata<DependencyObject, TProperty> frameworkPropertyMetadata)
+        => DependencyProperty.RegisterAttached(name, typeof(TProperty), typeof(TOwner), frameworkPropertyMetadata);
+
+    public static DependencyProperty RegisterAttached<TProperty, TOwner, TDepObj>(string name, PlatformFrameworkPropertyMetadata<TDepObj, TProperty> frameworkPropertyMetadata)
         where TDepObj : DependencyObject
-        => DependencyProperty.RegisterAttached(name, typeof(TProperty), typeof(TOwner), new(defaultValue, (s, e) => callback.Invoke((TDepObj)s, new(e))));
+        => DependencyProperty.RegisterAttached(name, typeof(TProperty), typeof(TOwner), frameworkPropertyMetadata);
+
+    #endregion
 
     public static T GetValue<T>(this DependencyObject @this, DependencyProperty dp)
         => (T)@this.GetValue(dp);

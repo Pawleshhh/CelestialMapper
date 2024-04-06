@@ -169,10 +169,9 @@ public partial class CelestialMap : PlatformUserControl
     }
 
     public static readonly DependencyProperty CelestialObjectsProperty =
-        Register<IReadOnlySet<CelestialObject>, CelestialMap>(
+        Register(
             nameof(CelestialObjects), 
-            null, 
-            OnCelestialObjectsChanged);
+            new PlatformPropertyMetadata<CelestialMap, IReadOnlySet<CelestialObject>>(null, OnCelestialObjectsChanged));
 
     private static void OnCelestialObjectsChanged(CelestialMap celestialMap, DependencyPropertyChangedEventArgs<IReadOnlySet<CelestialObject>> e)
     {
@@ -216,8 +215,9 @@ public partial class CelestialMap : PlatformUserControl
     }
 
     public static readonly DependencyProperty ConstellationsProperty =
-        Register<IReadOnlySet<Constellation>, CelestialMap>(
-            nameof(Constellations), null, OnConstellationsChanged);
+        Register(
+            nameof(Constellations),
+            new PlatformPropertyMetadata<CelestialMap, IReadOnlySet<Constellation>>(null, OnConstellationsChanged));
 
     private static void OnConstellationsChanged(CelestialMap celestialMap, DependencyPropertyChangedEventArgs<IReadOnlySet<Constellation>> e)
     {

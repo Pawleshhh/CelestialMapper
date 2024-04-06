@@ -5,39 +5,11 @@
     xmlns:ui="clr-namespace:CelestialMapper.UI">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="./TextBlockStyles.xaml" />
         <ResourceDictionary Source="../Spacing/MarginsAndPaddings.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <!--#region TextBlock-->
-
-    <sys:Double x:Key="TextBlock.FontSize.Regular">14</sys:Double>
-
-    <Style x:Key="Style.TextBlock.Regular" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="{StaticResource TextBlock.FontSize.Regular}" />
-    </Style>
-
-    <sys:Double x:Key="TextBlock.FontSize.Small">12</sys:Double>
-
-    <Style x:Key="Style.TextBlock.Small" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="{StaticResource TextBlock.FontSize.Small}" />
-    </Style>
-
-    <sys:Double x:Key="TextBlock.FontSize.Hint">10</sys:Double>
-
-    <Style x:Key="Style.TextBlock.Hint" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="{StaticResource TextBlock.FontSize.Hint}" />
-    </Style>
-
-    <!--#endregion-->
-
-    <!--#region LabeledTextBox-->
-
-    <sys:Double x:Key="LabeledTextBox.MaxWidth">250</sys:Double>
-    <sys:Double x:Key="LabeledTextBox.MinWidth">80</sys:Double>
-
-    <sys:Double x:Key="LabeledTextBox.TextBox.Width">50</sys:Double>
-
-    <ControlTemplate x:Key="ControlTemplate.LabeledTextBox" TargetType="ui:LabeledTextBox">
+    <ControlTemplate x:Key="ControlTemplate.HeaderedContentControl" TargetType="HeaderedContentControl">
         <Grid
             x:Name="MainGrid"
             Width="{TemplateBinding Width}"
@@ -55,25 +27,29 @@
                 <ColumnDefinition x:Name="Column2" Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock
+            <ContentControl
                 x:Name="Label"
                 Grid.RowSpan="2"
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Style="{TemplateBinding LabelStyle}"
-                Text="{TemplateBinding Label}" />
+                Content="{TemplateBinding Header}">
+                <ContentControl.ContentTemplate>
+                    <DataTemplate DataType="sys:String">
+                        <TextBlock Style="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(ui:LabelExtension.LabelStyle)}" Text="{Binding .}" />
+                    </DataTemplate>
+                </ContentControl.ContentTemplate>
+            </ContentControl>
 
             <Border
                 x:Name="ContentHostBorder"
                 Grid.RowSpan="2"
                 Grid.Column="1"
-                Width="{StaticResource LabeledTextBox.TextBox.Width}"
                 Margin="{StaticResource Margin.Twos.Small}"
                 VerticalAlignment="Center"
                 Background="White"
                 BorderBrush="DimGray"
                 BorderThickness="1">
-                <ScrollViewer x:Name="PART_ContentHost" HorizontalScrollBarVisibility="Hidden" />
+                <ContentPresenter x:Name="PART_ContentHost" Content="{TemplateBinding Content}" />
             </Border>
 
             <Ellipse
@@ -94,7 +70,7 @@
             </Ellipse>
         </Grid>
         <ControlTemplate.Triggers>
-            <Trigger Property="LabelPlacement" Value="Top">
+            <Trigger Property="ui:LabelExtension.LabelPlacement" Value="Top">
                 <Setter TargetName="Label" Property="Grid.Row" Value="0" />
                 <Setter TargetName="Label" Property="Grid.Column" Value="0" />
                 <Setter TargetName="Label" Property="Grid.RowSpan" Value="1" />
@@ -105,7 +81,7 @@
                 <Setter TargetName="ContentHostBorder" Property="Grid.ColumnSpan" Value="2" />
             </Trigger>
 
-            <Trigger Property="LabelPlacement" Value="Right">
+            <Trigger Property="ui:LabelExtension.LabelPlacement" Value="Right">
                 <Setter TargetName="Label" Property="Grid.Row" Value="0" />
                 <Setter TargetName="Label" Property="Grid.Column" Value="1" />
                 <Setter TargetName="Label" Property="Grid.RowSpan" Value="2" />
@@ -147,21 +123,15 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style x:Key="Style.LabeledTextBox" TargetType="ui:LabeledTextBox">
-        <Setter Property="Template" Value="{StaticResource ControlTemplate.LabeledTextBox}" />
+    <Style x:Key="Style.HeaderedContentControl" TargetType="HeaderedContentControl">
+        <Setter Property="Template" Value="{StaticResource ControlTemplate.HeaderedContentControl}" />
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
 
-        <!--  Layout  -->
-        <Setter Property="MaxWidth" Value="{StaticResource LabeledTextBox.MaxWidth}" />
-        <Setter Property="MinWidth" Value="{StaticResource LabeledTextBox.MinWidth}" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="ui:LabelExtension.LabelPlacement" Value="Left" />
 
         <!--  Label  -->
-        <Setter Property="LabelStyle" Value="{StaticResource Style.TextBlock.Regular}" />
+        <Setter Property="ui:LabelExtension.LabelStyle" Value="{StaticResource Style.TextBlock.Regular}" />
     </Style>
-
-    <!--#endregion-->
 
 </ResourceDictionary>

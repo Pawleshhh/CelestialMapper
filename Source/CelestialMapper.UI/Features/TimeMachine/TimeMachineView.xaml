@@ -53,8 +53,9 @@
             </local:LabeledTextBox.Text>
         </local:LabeledTextBox>
 
-        <TextBlock Text="Date:" />
-        <DatePicker SelectedDate="{Binding DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <HeaderedContentControl Header="Date:" Style="{StaticResource Style.HeaderedContentControl}">
+            <DatePicker SelectedDate="{Binding DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </HeaderedContentControl>
 
         <Button Command="{Binding ApplyCommand}" Content="Apply" />
 

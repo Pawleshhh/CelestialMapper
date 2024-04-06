@@ -19,7 +19,7 @@ public class LabeledTextBox : TextBox
     }
 
     public static readonly DependencyProperty LabelProperty =
-        Register<string, LabeledTextBox>(nameof(Label), string.Empty);
+        Register(nameof(Label), new PlatformPropertyMetadata<LabeledTextBox, string>(string.Empty));
 
     public TextPlacement LabelPlacement
     {
@@ -28,7 +28,7 @@ public class LabeledTextBox : TextBox
     }
 
     public static readonly DependencyProperty LabelPlacementProperty =
-        Register<TextPlacement, LabeledTextBox>(nameof(LabelPlacement), TextPlacement.Left);
+        Register(nameof(LabelPlacement), new PlatformPropertyMetadata<LabeledTextBox, TextPlacement>(TextPlacement.Left));
 
     public Style LabelStyle
     {
@@ -37,7 +37,7 @@ public class LabeledTextBox : TextBox
     }
 
     public static readonly DependencyProperty LabelStyleProperty =
-        Register<Style, LabeledTextBox>(nameof(LabelStyle), defaultValue: null!);
+        Register(nameof(LabelStyle), new PlatformPropertyMetadata<LabeledTextBox, Style>((Style?)null));
 
     #region InputMode
 
