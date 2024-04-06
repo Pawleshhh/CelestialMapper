@@ -21,4 +21,8 @@
     <ProjectReference Include="..\CelestialMapper.ViewModel\CelestialMapper.ViewModel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewSupport\AttachedProperties\" />
+  </ItemGroup>
+
 </Project>

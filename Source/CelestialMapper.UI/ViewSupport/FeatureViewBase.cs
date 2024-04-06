@@ -29,7 +29,7 @@ public abstract class FeatureViewBase : PlatformUserControl
     }
 
     public static readonly DependencyProperty FeatureNameProperty =
-        Register<string, FeatureViewBase>(nameof(FeatureName), new(string.Empty));
+        Register<string, FeatureViewBase>(nameof(FeatureName), string.Empty);
 
     protected override void OnInitialized(EventArgs e)
     {

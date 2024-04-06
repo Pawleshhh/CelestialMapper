@@ -171,16 +171,11 @@ public partial class CelestialMap : PlatformUserControl
     public static readonly DependencyProperty CelestialObjectsProperty =
         Register<IReadOnlySet<CelestialObject>, CelestialMap>(
             nameof(CelestialObjects), 
-            new(null, OnCelestialObjectsChanged));
+            null, 
+            OnCelestialObjectsChanged);
 
-    private static void OnCelestialObjectsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnCelestialObjectsChanged(CelestialMap celestialMap, DependencyPropertyChangedEventArgs<IReadOnlySet<CelestialObject>> e)
     {
-        if (!CanHandle<CelestialMap, IReadOnlySet<CelestialObject>>(d, e, out var celestialMap, out var celestialObjects)
-            && !celestialObjects.IsNullOrEmpty())
-        {
-            return;
-        }
-
         celestialMap.UpdateCelestialObjects();
     }
 
@@ -222,17 +217,10 @@ public partial class CelestialMap : PlatformUserControl
 
     public static readonly DependencyProperty ConstellationsProperty =
         Register<IReadOnlySet<Constellation>, CelestialMap>(
-            nameof(Constellations),
-            new(null, OnConstellationsChanged));
+            nameof(Constellations), null, OnConstellationsChanged);
 
-    private static void OnConstellationsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnConstellationsChanged(CelestialMap celestialMap, DependencyPropertyChangedEventArgs<IReadOnlySet<Constellation>> e)
     {
-        if (!CanHandle<CelestialMap, IReadOnlySet<Constellation>>(d, e, out var celestialMap, out var constellations)
-            && !constellations.IsNullOrEmpty())
-        {
-            return;
-        }
-
         celestialMap.UpdateConstellations();
     }
 

@@ -19,7 +19,7 @@ public class LabeledTextBox : TextBox
     }
 
     public static readonly DependencyProperty LabelProperty =
-        DependencyProperty.Register(nameof(Label), typeof(string), typeof(LabeledTextBox), new(string.Empty));
+        Register<string, LabeledTextBox>(nameof(Label), string.Empty);
 
     public TextPlacement LabelPlacement
     {
@@ -28,7 +28,7 @@ public class LabeledTextBox : TextBox
     }
 
     public static readonly DependencyProperty LabelPlacementProperty =
-        DependencyProperty.Register(nameof(LabelPlacement), typeof(TextPlacement), typeof(LabeledTextBox), new(TextPlacement.Left));
+        Register<TextPlacement, LabeledTextBox>(nameof(LabelPlacement), TextPlacement.Left);
 
     public Style LabelStyle
     {
@@ -37,7 +37,7 @@ public class LabeledTextBox : TextBox
     }
 
     public static readonly DependencyProperty LabelStyleProperty =
-        DependencyProperty.Register(nameof(LabelStyle), typeof(Style), typeof(LabeledTextBox), new(null));
+        Register<Style, LabeledTextBox>(nameof(LabelStyle), defaultValue: null!);
 
     #region InputMode
 
