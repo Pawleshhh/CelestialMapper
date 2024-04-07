@@ -18,7 +18,7 @@ public class LabelExtension
     public static readonly DependencyProperty LabelPlacementProperty =
         RegisterAttached<TextPlacement, LabelExtension>(
             "LabelPlacement", 
-            new PlatformFrameworkPropertyMetadata<DependencyObject, TextPlacement>(TextPlacement.Left, FrameworkPropertyMetadataOptions.Inherits));
+            new PlatformFrameworkPropertyMetadata<TextPlacement>(TextPlacement.Left, FrameworkPropertyMetadataOptions.Inherits));
 
     public static string GetLabelText(DependencyObject obj)
     {
@@ -33,7 +33,7 @@ public class LabelExtension
     public static readonly DependencyProperty LabelTextProperty =
         RegisterAttached<string, LabelExtension>(
             "LabelText",
-            new PlatformFrameworkPropertyMetadata<DependencyObject, string>(string.Empty, FrameworkPropertyMetadataOptions.Inherits));
+            new PlatformFrameworkPropertyMetadata<string>(string.Empty, FrameworkPropertyMetadataOptions.Inherits));
 
     public static Style GetLabelStyle(DependencyObject obj)
     {
@@ -48,6 +48,6 @@ public class LabelExtension
     public static readonly DependencyProperty LabelStyleProperty =
         RegisterAttached<Style, LabelExtension>(
             "LabelStyle",
-            new PlatformFrameworkPropertyMetadata<DependencyObject, Style>(null, FrameworkPropertyMetadataOptions.Inherits));
+            new PlatformFrameworkPropertyMetadata<Style>(null, FrameworkPropertyMetadataOptions.Inherits));
 
 }

@@ -1,5 +1,33 @@
 ﻿namespace CelestialMapper.UI;
 
+public class PlatformPropertyMetadata<TProperty> : PlatformPropertyMetadata<DependencyObject, TProperty>
+{
+
+    public PlatformPropertyMetadata()
+        : base()
+    {
+
+    }
+
+    public PlatformPropertyMetadata(TProperty? defaultValue)
+        : base(defaultValue)
+    {
+
+    }
+
+    public PlatformPropertyMetadata(PropertyChangedCallback<DependencyObject, TProperty> propertyChangedCallback)
+        : base(propertyChangedCallback)
+    {
+
+    }
+
+    public PlatformPropertyMetadata(TProperty? defaultValue, PropertyChangedCallback<DependencyObject, TProperty> propertyChangedCallback)
+        : base(defaultValue, propertyChangedCallback)
+    {
+
+    }
+}
+
 public class PlatformPropertyMetadata<TDepOb, TProperty> : PropertyMetadata
     where TDepOb : DependencyObject
 {
