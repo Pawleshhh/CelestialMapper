@@ -16,6 +16,7 @@
                 <ResourceDictionary Source="Resources/Spacing/MarginsAndPaddings.xaml" />
                 <ResourceDictionary Source="Resources/Styles/WindowStyles.xaml" />
                 <ResourceDictionary Source="Resources/Styles/MapStyles/MapStyles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/TimePickerStyles/TimePickerStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

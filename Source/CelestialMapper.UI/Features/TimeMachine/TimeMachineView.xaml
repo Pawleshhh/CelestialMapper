@@ -57,6 +57,10 @@
             <DatePicker SelectedDate="{Binding DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </HeaderedContentControl>
 
+        <HeaderedContentControl Header="Time:" Style="{StaticResource Style.HeaderedContentControl}">
+            <local:TimePicker SelectedTime="{Binding Time, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </HeaderedContentControl>
+
         <Button Command="{Binding ApplyCommand}" Content="Apply" />
 
     </StackPanel>

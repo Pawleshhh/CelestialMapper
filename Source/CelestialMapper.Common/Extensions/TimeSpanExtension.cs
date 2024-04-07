@@ -54,17 +54,17 @@ public static class TimeSpanExtension
 
     public static TimeSpan WithHours(this TimeSpan timeSpan, int hours)
     {
-        return new TimeSpan(hours, timeSpan.Minutes, timeSpan.Seconds, timeSpan.Milliseconds, timeSpan.Microseconds);
+        return new TimeSpan(timeSpan.Days, hours, timeSpan.Minutes, timeSpan.Seconds, timeSpan.Milliseconds, timeSpan.Microseconds);
     }
 
     public static TimeSpan WithMinutes(this TimeSpan timeSpan, int minutes)
     {
-        return new TimeSpan(timeSpan.Hours, minutes, timeSpan.Seconds, timeSpan.Milliseconds, timeSpan.Microseconds);
+        return new TimeSpan(timeSpan.Days, timeSpan.Hours, minutes, timeSpan.Seconds, timeSpan.Milliseconds, timeSpan.Microseconds);
     }
 
     public static TimeSpan WithSeconds(this TimeSpan timeSpan, int seconds)
     {
-        return new TimeSpan(timeSpan.Hours, timeSpan.Minutes, seconds, timeSpan.Milliseconds, timeSpan.Microseconds);
+        return new TimeSpan(timeSpan.Days, timeSpan.Hours, timeSpan.Minutes, seconds, timeSpan.Milliseconds, timeSpan.Microseconds);
     }
 
     #endregion

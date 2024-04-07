@@ -35,11 +35,13 @@ public class TimeMachineViewModel : ViewModelBase
     {
         base.Initialize(configurator);
 
-        DateTime = DateTime.Now;
+        var now = DateTime.Now;
+        DateTime = now.Date;
+        Time = now.TimeOfDay;
 
         ApplyCommand = new RelayCommand(o =>
         {
-            this.timeMachineManager.Update(DateTime, new(Latitude, Longitude));
+            this.timeMachineManager.Update(DateTime.WithTimeOfDay(Time), new(Latitude, Longitude));
 
             RefreshInputs();
         });
@@ -68,6 +70,7 @@ public class TimeMachineViewModel : ViewModelBase
     private void TimeMachineManager_TimeMachineUpdated(PlatformEventArgs<ITimeMachineManager, (DateTime DateTime, Geographic Location)> e)
     {
         DateTime = e.Data.DateTime;
+        Time = e.Data.DateTime.TimeOfDay;
         Longitude = e.Data.Location.Longitude;
         Latitude = e.Data.Location.Latitude;
     }
@@ -75,6 +78,7 @@ public class TimeMachineViewModel : ViewModelBase
     private void TimeMachineManager_DateTimeChanged(PlatformEventArgs<ITimeMachineManager, DateTime> e)
     {
         DateTime = e.Data;
+        Time = e.Data.TimeOfDay;
     }
 
     private void TimeMachineManager_LocationChanged(PlatformEventArgs<ITimeMachineManager, Geographic> e)
@@ -96,6 +100,12 @@ public class TimeMachineViewModel : ViewModelBase
     public DateTime DateTime
     {
         get => GetPropertyValue<DateTime>();
+        set => SetPropertyValue(value);
+    }
+
+    public TimeSpan Time
+    {
+        get => GetPropertyValue<TimeSpan>();
         set => SetPropertyValue(value);
     }
 

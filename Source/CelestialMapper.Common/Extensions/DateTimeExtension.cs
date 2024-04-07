@@ -38,4 +38,13 @@ public static class DateTimeExtension
 
     #endregion
 
+    #region With
+
+    public static DateTime WithTimeOfDay(this DateTime dateTime, TimeSpan timeOfDay)
+    {
+        return dateTime.Date.Add(timeOfDay);
+    }
+
+    #endregion
+
 }

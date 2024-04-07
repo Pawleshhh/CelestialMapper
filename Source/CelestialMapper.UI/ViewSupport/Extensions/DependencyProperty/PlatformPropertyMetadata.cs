@@ -26,6 +26,15 @@ public class PlatformPropertyMetadata<TProperty> : PlatformPropertyMetadata<Depe
     {
 
     }
+
+    public PlatformPropertyMetadata(
+        TProperty? defaultValue, 
+        PropertyChangedCallback<DependencyObject, TProperty> propertyChangedCallback,
+        CoerceValueCallback<DependencyObject, TProperty> coerceValueCallback)
+        : base(defaultValue, propertyChangedCallback, coerceValueCallback)
+    {
+
+    }
 }
 
 public class PlatformPropertyMetadata<TDepOb, TProperty> : PropertyMetadata
@@ -54,6 +63,18 @@ public class PlatformPropertyMetadata<TDepOb, TProperty> : PropertyMetadata
 
     public PlatformPropertyMetadata(TProperty? defaultValue, PropertyChangedCallback<TDepOb, TProperty> propertyChangedCallback)
         : base(defaultValue, (s, e) => propertyChangedCallback.Invoke((TDepOb)s, new(e)))
+    {
+
+    }
+
+    public PlatformPropertyMetadata(
+        TProperty? defaultValue, 
+        PropertyChangedCallback<TDepOb, TProperty> propertyChangedCallback,
+        CoerceValueCallback<TDepOb, TProperty> coerceValueCallback)
+        : base(
+            defaultValue, 
+            (s, e) => propertyChangedCallback.Invoke((TDepOb)s, new(e)),
+            (s, e) => coerceValueCallback.Invoke((TDepOb)s, (TProperty)e))
     {
 
     }

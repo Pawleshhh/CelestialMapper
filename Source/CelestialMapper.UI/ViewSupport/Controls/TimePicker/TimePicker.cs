@@ -1,23 +1,30 @@
 ﻿namespace CelestialMapper.UI;
 
+using CelestialMapper.Common;
 using static CelestialMapper.UI.DependencyPropertyHelper;
 
 public class TimePicker : PlatformUserControl
 {
 
+    public static readonly string TimePickerDefaultStyleKey = "Style.TimePicker";
+
     #region Constructors
 
     public TimePicker()
     {
+        Style = TryFindResource("Style.TimePicker") as Style;
     }
 
     public TimePicker(IServiceProvider serviceProvider) : base(serviceProvider)
     {
+        Style = TryFindResource("Style.TimePicker") as Style;
     }
 
     #endregion
 
     #region Properties
+
+    private const string defaultTimePart = "00";
 
     public TimeSpan SelectedTime
     {
@@ -42,7 +49,7 @@ public class TimePicker : PlatformUserControl
             var newPart = getPart(newTimeSpan);
             if (newPart != getPart(oldTimeSpan))
             {
-                setPart(newPart.ToString());
+                setPart(newPart.ToString(defaultTimePart));
             }
         }
     }
@@ -54,7 +61,7 @@ public class TimePicker : PlatformUserControl
     }
 
     public static readonly DependencyProperty HourTextProperty =
-        Register(nameof(HourText), new PlatformPropertyMetadata<TimePicker, string>("00", OnHourTextChanged));
+        Register(nameof(HourText), new PlatformPropertyMetadata<TimePicker, string>(defaultTimePart, OnHourTextChanged, CoerceTimeText));
 
     private static void OnHourTextChanged(TimePicker d, DependencyPropertyChangedEventArgs<string> e)
     {
@@ -68,7 +75,7 @@ public class TimePicker : PlatformUserControl
     }
 
     public static readonly DependencyProperty MinuteTextProperty =
-        Register(nameof(MinuteText), new PlatformPropertyMetadata<TimePicker, string>("00", OnMinuteTextChanged));
+        Register(nameof(MinuteText), new PlatformPropertyMetadata<TimePicker, string>(defaultTimePart, OnMinuteTextChanged, CoerceTimeText));
 
     private static void OnMinuteTextChanged(TimePicker d, DependencyPropertyChangedEventArgs<string> e)
     {
@@ -82,7 +89,7 @@ public class TimePicker : PlatformUserControl
     }
 
     public static readonly DependencyProperty SecondTextProperty =
-        Register(nameof(SecondText), new PlatformPropertyMetadata<TimePicker, string>("00", OnSecondTextChanged));
+        Register(nameof(SecondText), new PlatformPropertyMetadata<TimePicker, string>(defaultTimePart, OnSecondTextChanged, CoerceTimeText));
 
     private static void OnSecondTextChanged(TimePicker d, DependencyPropertyChangedEventArgs<string> e)
     {
@@ -97,13 +104,22 @@ public class TimePicker : PlatformUserControl
         }
 
         var timeSpan = timePicker.SelectedTime;
-
         if (getPart(timeSpan) == timeSpanPart)
         {
             return;
         }
 
         timePicker.SelectedTime = convert(timeSpan, timeSpanPart);
+    }
+
+    private static string CoerceTimeText(TimePicker d, string baseValue)
+    {
+        if (baseValue.IsNullOrWhiteSpace() || baseValue.All(c => c == '0'))
+        {
+            return defaultTimePart;
+        }
+
+        return baseValue;
     }
 
     #endregion
