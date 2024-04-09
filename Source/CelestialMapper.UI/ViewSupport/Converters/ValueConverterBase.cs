@@ -60,7 +60,7 @@ public abstract class ValueConverterBase<TFrom, TTo, TParameter> : IValueConvert
         }
         if (OnWrongType == OnWrongType.ReturnDefault)
         {
-            return DefaultFromValue;
+            return DefaultToValue;
         }
 
         throw new InvalidOperationException($"Expected type {typeof(TFrom)} but instead got {obj.GetType()}");
@@ -74,7 +74,7 @@ public abstract class ValueConverterBase<TFrom, TTo, TParameter> : IValueConvert
         }
         if (OnWrongType == OnWrongType.ReturnDefault)
         {
-            return DefaultToValue;
+            return DefaultFromValue;
         }
 
         throw new InvalidOperationException($"Expected type {typeof(TTo)} but instead got {obj.GetType()}");
