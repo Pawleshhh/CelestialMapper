@@ -8,4 +8,10 @@ public abstract class TestBase<T>
 
     public virtual Func<T> CreateSUT => () => default!;
 
+    #region Test event
+
+
+
+    #endregion
+
 }

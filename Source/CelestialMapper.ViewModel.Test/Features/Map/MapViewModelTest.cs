@@ -1,4 +1,5 @@
-﻿using CelestialMapper.Core.Astronomy;
+﻿using CelestialMapper.Core;
+using CelestialMapper.Core.Astronomy;
 using CelestialMapper.Core.Infrastructure.Map;
 using CelestialMapper.TestUtilities;
 using Moq;
@@ -12,7 +13,12 @@ public class MapViewModelTest : ViewModelTest<MapViewModel>
 
     public Mock<IMapManager> MapManager { get; set; } = new();
 
-    public override Func<MapViewModel> CreateSUT => () => new MapViewModel(MapManager.Object, ViewModelSupport.Object);
+    public Mock<ITimeMachineManager> TimeMachineManager { get; set; } = new();
+
+    public override Func<MapViewModel> CreateSUT => () => new MapViewModel(
+        MapManager.Object,
+        TimeMachineManager.Object, 
+        ViewModelSupport.Object);
 
     public override string DefaultFeatureName => "Map";
 
@@ -22,6 +28,7 @@ public class MapViewModelTest : ViewModelTest<MapViewModel>
     public void SetUp()
     {
         MapManager = new Mock<IMapManager>(MockBehavior.Strict);
+        TimeMachineManager = new Mock<ITimeMachineManager>(MockBehavior.Strict);
     }
 
     #endregion
