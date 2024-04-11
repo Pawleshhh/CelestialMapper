@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace CelestialMapper.UI;
+﻿namespace CelestialMapper.UI;
 
 public abstract class InputValidation : ValidationRule<string>
 {
@@ -10,6 +8,18 @@ public abstract class InputValidation : ValidationRule<string>
     public int MaxLength { get; set; } = int.MaxValue;
 
     public bool AllowEmptyInput { get; set; } = true;
+
+    public InputValidation()
+        : base()
+    {
+        
+    }
+
+    public InputValidation(IServiceProvider serviceProvider)
+        : base(serviceProvider)
+    {
+        
+    }
 
     public override bool IsCorrect(string text)
     {
