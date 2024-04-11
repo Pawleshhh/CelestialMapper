@@ -9,7 +9,7 @@ public class TextInputValidation : InputValidation
 
     public override bool IsCorrect(string text)
     {
-        if (!IsCorrect(text))
+        if (!base.IsCorrect(text))
         {
             return false;
         }
