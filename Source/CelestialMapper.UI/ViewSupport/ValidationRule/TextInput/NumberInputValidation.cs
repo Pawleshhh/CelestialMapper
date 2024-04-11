@@ -11,6 +11,18 @@ public abstract class NumberInputValidation<TNumber> : InputValidation
 
     public TNumber MinValue { get; set;} = TNumber.MinValue;
 
+    public NumberInputValidation()
+        : base()
+    {
+        
+    }
+
+    public NumberInputValidation(IServiceProvider serviceProvider)
+        : base(serviceProvider)
+    {
+        
+    }
+
     public override bool IsCorrect(string text)
     {
         if (!base.IsCorrect(text))
