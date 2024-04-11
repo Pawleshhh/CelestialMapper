@@ -2,7 +2,7 @@
 
 namespace CelestialMapper.UI.Test;
 
-public interface INumberInputValidationTestBase<TNumber>
+public interface INumberInputValidationTestSource<TNumber>
     where TNumber : INumber<TNumber>, IMinMaxValue<TNumber>, IParsable<TNumber>
 {
     public static abstract NumberInputValidationTestCaseData<TNumber>[] NumberInputValidationTestCaseDataSource { get; }
@@ -10,7 +10,7 @@ public interface INumberInputValidationTestBase<TNumber>
 
 public abstract class NumberInputValidationTestBase<TNumber, TTestClass> : ValidationRuleTestBase
     where TNumber : INumber<TNumber>, IMinMaxValue<TNumber>, IParsable<TNumber>
-    where TTestClass : NumberInputValidationTestBase<TNumber, TTestClass>, INumberInputValidationTestBase<TNumber>
+    where TTestClass : NumberInputValidationTestBase<TNumber, TTestClass>, INumberInputValidationTestSource<TNumber>
 {
     protected abstract InputMode InputMode { get; }
 

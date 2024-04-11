@@ -3,7 +3,7 @@
 [TestFixture]
 public class IntegerInputValidationTest : 
     NumberInputValidationTestBase<int, IntegerInputValidationTest>,
-    INumberInputValidationTestBase<int>
+    INumberInputValidationTestSource<int>
 {
 
     protected override InputMode InputMode => InputMode.Int;
