@@ -23,6 +23,11 @@ public abstract class InputValidation : ValidationRule<string>
 
     public override bool IsCorrect(string text)
     {
+        if (text.IsNullOrEmpty())
+        {
+            return AllowEmptyInput;
+        }
+
         if (!IsLengthCorrect(text.Length))
         {
             return false;

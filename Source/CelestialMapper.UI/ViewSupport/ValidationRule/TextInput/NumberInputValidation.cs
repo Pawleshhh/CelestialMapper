@@ -25,14 +25,14 @@ public abstract class NumberInputValidation<TNumber> : InputValidation
 
     public override bool IsCorrect(string text)
     {
+        if (string.IsNullOrEmpty(text))
+        {
+            return AllowEmptyInput;
+        }
+
         if (!base.IsCorrect(text))
         {
             return false;
-        }
-
-        if (AllowEmptyInput && text.IsNullOrEmpty())
-        {
-            return true;
         }
 
         if (!TNumber.TryParse(text, CultureInfo.InvariantCulture, out TNumber? value))
