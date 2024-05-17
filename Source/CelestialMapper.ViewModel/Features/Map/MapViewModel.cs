@@ -63,17 +63,17 @@ public class MapViewModel : ViewModelBase
 
     #region Event handlers
 
-    private void TimeMachineManager_TimeMachineUpdated(PlatformEventArgs<ITimeMachineManager, (DateTime DateTime, Geographic Location)> e)
+    private void TimeMachineManager_TimeMachineUpdated(ITimeMachineManager sender, PlatformEventArgs<(DateTime DateTime, Geographic Location)> e)
     {
         GenerateMapCommand?.Execute(null);
     }
 
-    private void TimeMachineManager_DateTimeChanged(PlatformEventArgs<ITimeMachineManager, DateTime> e)
+    private void TimeMachineManager_DateTimeChanged(ITimeMachineManager sender, PlatformEventArgs<DateTime> e)
     {
         GenerateMapCommand?.Execute(null);
     }
 
-    private void TimeMachineManager_LocationChanged(PlatformEventArgs<ITimeMachineManager, Geographic> e)
+    private void TimeMachineManager_LocationChanged(ITimeMachineManager sender, PlatformEventArgs<Geographic> e)
     {
         GenerateMapCommand?.Execute(null);
     }

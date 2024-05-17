@@ -2,7 +2,6 @@
 using CelestialMapper.Core;
 using CelestialMapper.Core.Astronomy;
 using CelestialMapper.Core.Infrastructure.Map;
-using CelestialMapper.TestUtilities;
 using Moq;
 using PracticalAstronomy.CSharp;
 
@@ -125,6 +124,13 @@ public class MapViewModelTest : ViewModelTest<MapViewModel>
         // Arrange
         IMap map = new CelestialMap(Array.Empty<CelestialObject>());
 
+        MapManager
+            .Setup(x => x.Generate(
+                It.IsAny<Geographic>(),
+                It.IsAny<DateTime>(),
+                It.IsAny<IGenerateMapSettings>()))
+            .Returns(Task.FromResult(Mock.Of<IMap>()));
+
         var dateTime = new DateTime(2024, 1, 4);
         var location = new Geographic(10, 15);
         TimeMachineManager.SetupGet(x => x.DateTime)
@@ -136,19 +142,22 @@ public class MapViewModelTest : ViewModelTest<MapViewModel>
 
         // Act
 
-        TestUtils.Raise(
-            TimeMachineManager.Object,
-            nameof(ITimeMachineManager.TimeMachineUpdated),
-            new PlatformEventArgs<ITimeMachineManager, (DateTime DateTime, Geographic Location)>()
-            {
-                Data = (dateTime, location)
-            });
+        // Data changed so reset the setup of those getters
+        TimeMachineManager.SetupGet(x => x.DateTime)
+            .Returns(dateTime);
+        TimeMachineManager.SetupGet(x => x.Location)
+            .Returns(location);
+
+        TimeMachineManager.Raise(
+            x => x.TimeMachineUpdated += null,
+            new PlatformEventArgs<(DateTime DateTime, Geographic Location)>((dateTime, location)));
+
 
         // Assert
         MapManager
             .Verify(x => x.Generate(
                 location,
-                dateTime,
+                dateTime.ToUniversalTime(),
                 It.IsAny<IGenerateMapSettings>()), Times.Once);
     }
 

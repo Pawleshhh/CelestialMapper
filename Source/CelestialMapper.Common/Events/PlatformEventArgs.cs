@@ -1,12 +1,11 @@
 ﻿namespace CelestialMapper.Common;
 
-public delegate void PlatformEventHandler<TEventArgs>(TEventArgs e)
+public delegate void PlatformEventHandler<TSender, TEventArgs>(TSender sender, TEventArgs e)
     where TEventArgs : EventArgs;
 
-public class PlatformEventArgs<TSender, TData> : EventArgs
+public class PlatformEventArgs<TData> : EventArgs
 {
 
-    public TSender? Sender { get; init; }
 
     public TData? Data { get; init; }
 
@@ -15,9 +14,8 @@ public class PlatformEventArgs<TSender, TData> : EventArgs
 
     }
 
-    public PlatformEventArgs(TSender sender, TData data)
+    public PlatformEventArgs(TData data)
     {
-        Sender = sender;
         Data = data;
     }
 

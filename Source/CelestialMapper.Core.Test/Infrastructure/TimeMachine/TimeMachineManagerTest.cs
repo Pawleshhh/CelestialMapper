@@ -43,8 +43,9 @@ public class TimeMachineManagerTest : TestBase<TimeMachineManager>
         var dateTime = new DateTime(2024, 3, 3);
         var sut = CreateSUT();
 
-        PlatformEventArgs<ITimeMachineManager, DateTime>? eventArgs = null;
-        sut.DateTimeChanged += e => eventArgs = e;
+        PlatformEventArgs<DateTime>? eventArgs = null;
+        ITimeMachineManager? sender = null;
+        sut.DateTimeChanged += (s, e) => (sender, eventArgs) = (s, e);
 
         // Act
         sut.DateTime = dateTime;
@@ -53,7 +54,7 @@ public class TimeMachineManagerTest : TestBase<TimeMachineManager>
         Assert.Multiple(() =>
         {
             Assert.That(eventArgs, Is.Not.Null);
-            Assert.That(eventArgs!.Sender, Is.SameAs(sut));
+            Assert.That(sender, Is.SameAs(sut));
             Assert.That(eventArgs!.Data, Is.EqualTo(dateTime));
         });
     }
@@ -66,8 +67,8 @@ public class TimeMachineManagerTest : TestBase<TimeMachineManager>
         var sut = CreateSUT();
         sut.DateTime = dateTime;
 
-        PlatformEventArgs<ITimeMachineManager, DateTime>? eventArgs = null;
-        sut.DateTimeChanged += e => eventArgs = e;
+        PlatformEventArgs<DateTime>? eventArgs = null;
+        sut.DateTimeChanged += (s, e) => eventArgs = e;
 
         // Act
         sut.DateTime = dateTime;
@@ -97,8 +98,9 @@ public class TimeMachineManagerTest : TestBase<TimeMachineManager>
         var location = new Geographic(31, 25);
         var sut = CreateSUT();
 
-        PlatformEventArgs<ITimeMachineManager, Geographic>? eventArgs = null;
-        sut.LocationChanged += e => eventArgs = e;
+        PlatformEventArgs<Geographic>? eventArgs = null;
+        ITimeMachineManager? sender = null;
+        sut.LocationChanged += (s, e) => (sender, eventArgs) = (s, e);
 
         // Act
         sut.Location = location;
@@ -107,7 +109,7 @@ public class TimeMachineManagerTest : TestBase<TimeMachineManager>
         Assert.Multiple(() =>
         {
             Assert.That(eventArgs, Is.Not.Null);
-            Assert.That(eventArgs!.Sender, Is.SameAs(sut));
+            Assert.That(sender, Is.SameAs(sut));
             Assert.That(eventArgs!.Data, Is.EqualTo(location));
         });
     }
@@ -120,8 +122,8 @@ public class TimeMachineManagerTest : TestBase<TimeMachineManager>
         var sut = CreateSUT();
         sut.Location = location;
 
-        PlatformEventArgs<ITimeMachineManager, Geographic>? eventArgs = null;
-        sut.LocationChanged += e => eventArgs = e;
+        PlatformEventArgs<Geographic>? eventArgs = null;
+        sut.LocationChanged += (s, e) => eventArgs = e;
 
         // Act
         sut.Location = location;
@@ -138,12 +140,13 @@ public class TimeMachineManagerTest : TestBase<TimeMachineManager>
         var location = new Geographic(11, 53);
         var sut = CreateSUT();
 
-        PlatformEventArgs<ITimeMachineManager, (DateTime DateTime, Geographic Location)>? timeMachineUpdatedEventArgs = null;
+        PlatformEventArgs<(DateTime DateTime, Geographic Location)>? timeMachineUpdatedEventArgs = null;
         object? dateTimeUpdatedEventArgs = null;
         object? locationUpdatedEventArgs = null;
-        sut.TimeMachineUpdated += e => timeMachineUpdatedEventArgs = e;
-        sut.DateTimeChanged += e => dateTimeUpdatedEventArgs = e;
-        sut.LocationChanged += e => locationUpdatedEventArgs = e;
+        ITimeMachineManager? senderTimeMachineUpdated = null;
+        sut.TimeMachineUpdated += (s, e) => (senderTimeMachineUpdated, timeMachineUpdatedEventArgs) = (s, e);
+        sut.DateTimeChanged += (s, e) => dateTimeUpdatedEventArgs = e;
+        sut.LocationChanged += (s, e) => locationUpdatedEventArgs = e;
 
         // Act
         sut.Update(dateTime, location);
@@ -155,7 +158,7 @@ public class TimeMachineManagerTest : TestBase<TimeMachineManager>
             Assert.That(sut.Location, Is.EqualTo(location));
 
             Assert.That(timeMachineUpdatedEventArgs, Is.Not.Null);
-            Assert.That(timeMachineUpdatedEventArgs!.Sender, Is.SameAs(sut));
+            Assert.That(senderTimeMachineUpdated, Is.SameAs(sut));
             Assert.That(timeMachineUpdatedEventArgs!.Data.DateTime, Is.EqualTo(dateTime));
             Assert.That(timeMachineUpdatedEventArgs!.Data.Location, Is.EqualTo(location));
 

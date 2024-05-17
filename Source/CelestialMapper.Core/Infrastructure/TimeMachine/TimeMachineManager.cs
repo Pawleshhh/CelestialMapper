@@ -27,7 +27,7 @@ public class TimeMachineManager : ITimeMachineManager
             }
 
             this.dateTime = value;
-            DateTimeChanged?.Invoke(new(this, this.dateTime));
+            DateTimeChanged?.Invoke(this, new(this.dateTime));
         }
     }
 
@@ -42,20 +42,20 @@ public class TimeMachineManager : ITimeMachineManager
             }
 
             this.location = value;
-            LocationChanged?.Invoke(new(this, this.location));
+            LocationChanged?.Invoke(this, new(this.location));
         }
     }
 
-    public event PlatformEventHandler<PlatformEventArgs<ITimeMachineManager, DateTime>>? DateTimeChanged;
+    public event PlatformEventHandler<ITimeMachineManager, PlatformEventArgs<DateTime>>? DateTimeChanged;
 
-    public event PlatformEventHandler<PlatformEventArgs<ITimeMachineManager, Geographic>>? LocationChanged;
+    public event PlatformEventHandler<ITimeMachineManager, PlatformEventArgs<Geographic>>? LocationChanged;
 
-    public event PlatformEventHandler<PlatformEventArgs<ITimeMachineManager, (DateTime DateTime, Geographic Location)>>? TimeMachineUpdated;
+    public event PlatformEventHandler<ITimeMachineManager, PlatformEventArgs<(DateTime DateTime, Geographic Location)>>? TimeMachineUpdated;
 
     public void Update(DateTime dateTime, Geographic location)
     {
         this.dateTime = dateTime;
         this.location = location;
-        TimeMachineUpdated?.Invoke(new(this, new(this.dateTime, this.location)));
+        TimeMachineUpdated?.Invoke(this, new((this.dateTime, this.location)));
     }
 }

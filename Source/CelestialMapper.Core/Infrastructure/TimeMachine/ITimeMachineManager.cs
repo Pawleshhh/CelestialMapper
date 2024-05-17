@@ -6,11 +6,11 @@ namespace CelestialMapper.Core;
 public interface ITimeMachineManager
 {
 
-    public event PlatformEventHandler<PlatformEventArgs<ITimeMachineManager, DateTime>>? DateTimeChanged;
+    public event PlatformEventHandler<ITimeMachineManager, PlatformEventArgs<DateTime>>? DateTimeChanged;
 
-    public event PlatformEventHandler<PlatformEventArgs<ITimeMachineManager, Geographic>>? LocationChanged;
+    public event PlatformEventHandler<ITimeMachineManager, PlatformEventArgs<Geographic>>? LocationChanged;
 
-    public event PlatformEventHandler<PlatformEventArgs<ITimeMachineManager, (DateTime DateTime, Geographic Location)>>? TimeMachineUpdated;
+    public event PlatformEventHandler<ITimeMachineManager, PlatformEventArgs<(DateTime DateTime, Geographic Location)>>? TimeMachineUpdated;
 
     public DateTime DateTime { get; set; }
 
