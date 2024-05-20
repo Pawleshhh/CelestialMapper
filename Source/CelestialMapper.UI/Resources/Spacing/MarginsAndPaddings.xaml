@@ -5,13 +5,47 @@
 
     <!--#region Margins-->
 
-    <Thickness x:Key="Margin.ExtraSmall">5</Thickness>
-    <Thickness x:Key="Margin.Small">10</Thickness>
-    <Thickness x:Key="Margin.Medium">15</Thickness>
-    <Thickness x:Key="Margin.Large">20</Thickness>
-    <Thickness x:Key="Margin.ExtraLarge">25</Thickness>
-    <Thickness x:Key="Margin.Huge">30</Thickness>
+    <Thickness x:Key="Margin.Fives.ExtraSmall">5</Thickness>
+    <Thickness x:Key="Margin.Fives.Small">10</Thickness>
+    <Thickness x:Key="Margin.Fives.Medium">15</Thickness>
+    <Thickness x:Key="Margin.Fives.Large">20</Thickness>
+    <Thickness x:Key="Margin.Fives.ExtraLarge">25</Thickness>
+    <Thickness x:Key="Margin.Fives.Huge">30</Thickness>
 
+    <Thickness x:Key="Margin.Fives.ExtraSmall.Horizontal">5, 0</Thickness>
+    <Thickness x:Key="Margin.Fives.Small.Horizontal">10, 0</Thickness>
+    <Thickness x:Key="Margin.Fives.Medium.Horizontal">15, 0</Thickness>
+    <Thickness x:Key="Margin.Fives.Large.Horizontal">20, 0</Thickness>
+    <Thickness x:Key="Margin.Fives.ExtraLarge.Horizontal">25, 0</Thickness>
+    <Thickness x:Key="Margin.Fives.Huge.Horizontal">30, 0</Thickness>
+
+    <Thickness x:Key="Margin.Fives.ExtraSmall.Vertical">0, 5</Thickness>
+    <Thickness x:Key="Margin.Fives.Small.Vertical">0, 10</Thickness>
+    <Thickness x:Key="Margin.Fives.Medium.Vertical">0, 15</Thickness>
+    <Thickness x:Key="Margin.Fives.Large.Vertical">0, 20</Thickness>
+    <Thickness x:Key="Margin.Fives.ExtraLarge.Vertical">0, 25</Thickness>
+    <Thickness x:Key="Margin.Fives.Huge.Vertical">0, 30</Thickness>
+
+    <Thickness x:Key="Margin.Twos.ExtraSmall">2</Thickness>
+    <Thickness x:Key="Margin.Twos.Small">4</Thickness>
+    <Thickness x:Key="Margin.Twos.Medium">8</Thickness>
+    <Thickness x:Key="Margin.Twos.Large">16</Thickness>
+    <Thickness x:Key="Margin.Twos.ExtraLarge">24</Thickness>
+    <Thickness x:Key="Margin.Twos.Huge">32</Thickness>
+
+    <Thickness x:Key="Margin.Twos.ExtraSmall.Horizontal">2, 0</Thickness>
+    <Thickness x:Key="Margin.Twos.Small.Horizontal">4, 0</Thickness>
+    <Thickness x:Key="Margin.Twos.Medium.Horizontal">8, 0</Thickness>
+    <Thickness x:Key="Margin.Twos.Large.Horizontal">16, 0</Thickness>
+    <Thickness x:Key="Margin.Twos.ExtraLarge.Horizontal">24, 0</Thickness>
+    <Thickness x:Key="Margin.Twos.Huge.Horizontal">32, 0</Thickness>
+
+    <Thickness x:Key="Margin.Twos.ExtraSmall.Vertical">0, 2</Thickness>
+    <Thickness x:Key="Margin.Twos.Small.Vertical">0, 4</Thickness>
+    <Thickness x:Key="Margin.Twos.Medium.Vertical">0, 8</Thickness>
+    <Thickness x:Key="Margin.Twos.Large.Vertical">0, 16</Thickness>
+    <Thickness x:Key="Margin.Twos.ExtraLarge.Vertical">0, 24</Thickness>
+    <Thickness x:Key="Margin.Twos.Huge.Vertical">0, 32</Thickness>
     <!--#endregion-->
 
     <!--#region Paddings-->

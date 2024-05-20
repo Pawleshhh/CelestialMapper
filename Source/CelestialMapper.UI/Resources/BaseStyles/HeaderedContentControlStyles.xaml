@@ -1,0 +1,137 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:ui="clr-namespace:CelestialMapper.UI">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="./TextBlockStyles.xaml" />
+        <ResourceDictionary Source="../Spacing/MarginsAndPaddings.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <ControlTemplate x:Key="ControlTemplate.HeaderedContentControl" TargetType="HeaderedContentControl">
+        <Grid
+            x:Name="MainGrid"
+            Width="{TemplateBinding Width}"
+            MinWidth="{TemplateBinding MinWidth}"
+            MaxWidth="{TemplateBinding MaxWidth}"
+            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+            VerticalAlignment="{TemplateBinding VerticalAlignment}">
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="Row0" />
+                <RowDefinition x:Name="Row1" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="Column0" Width="Auto" />
+                <ColumnDefinition x:Name="Column1" Width="*" />
+                <ColumnDefinition x:Name="Column2" Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ContentControl
+                x:Name="Label"
+                Grid.RowSpan="2"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Content="{TemplateBinding Header}">
+                <ContentControl.ContentTemplate>
+                    <DataTemplate DataType="sys:String">
+                        <TextBlock Style="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(ui:LabelExtension.LabelStyle)}" Text="{Binding .}" />
+                    </DataTemplate>
+                </ContentControl.ContentTemplate>
+            </ContentControl>
+
+            <Border
+                x:Name="ContentHostBorder"
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                Margin="{StaticResource Margin.Twos.Small}"
+                VerticalAlignment="Center"
+                Background="White"
+                BorderBrush="DimGray"
+                BorderThickness="1">
+                <ContentPresenter x:Name="PART_ContentHost" Content="{TemplateBinding Content}" />
+            </Border>
+
+            <Ellipse
+                x:Name="ErrorIcon"
+                Grid.RowSpan="2"
+                Grid.Column="2"
+                Width="12"
+                Height="12"
+                Margin="{StaticResource Margin.Twos.ExtraSmall}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <Ellipse.Fill>
+                    <SolidColorBrush Opacity="0.0" Color="Red" />
+                </Ellipse.Fill>
+                <Ellipse.ToolTip>
+                    <TextBlock Style="{StaticResource Style.TextBlock.Small}" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.Errors)[0].ErrorContent}" />
+                </Ellipse.ToolTip>
+            </Ellipse>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="ui:LabelExtension.LabelPlacement" Value="Top">
+                <Setter TargetName="Label" Property="Grid.Row" Value="0" />
+                <Setter TargetName="Label" Property="Grid.Column" Value="0" />
+                <Setter TargetName="Label" Property="Grid.RowSpan" Value="1" />
+                <Setter TargetName="Label" Property="Grid.ColumnSpan" Value="2" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.Row" Value="1" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.Column" Value="0" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.RowSpan" Value="1" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.ColumnSpan" Value="2" />
+            </Trigger>
+
+            <Trigger Property="ui:LabelExtension.LabelPlacement" Value="Right">
+                <Setter TargetName="Label" Property="Grid.Row" Value="0" />
+                <Setter TargetName="Label" Property="Grid.Column" Value="1" />
+                <Setter TargetName="Label" Property="Grid.RowSpan" Value="2" />
+                <Setter TargetName="Label" Property="Grid.ColumnSpan" Value="1" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.Row" Value="0" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.Column" Value="0" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.RowSpan" Value="2" />
+                <Setter TargetName="ContentHostBorder" Property="Grid.ColumnSpan" Value="1" />
+            </Trigger>
+
+            <Trigger Property="Validation.HasError" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                BeginTime="00:00:00"
+                                Storyboard.TargetName="ErrorIcon"
+                                Storyboard.TargetProperty="(Fill).Opacity"
+                                From="0"
+                                To="1"
+                                Duration="00:00:00.300" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                BeginTime="00:00:00"
+                                Storyboard.TargetName="ErrorIcon"
+                                Storyboard.TargetProperty="(Fill).Opacity"
+                                From="1"
+                                To="0"
+                                Duration="00:00:00.300" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="Style.HeaderedContentControl" TargetType="HeaderedContentControl">
+        <Setter Property="Template" Value="{StaticResource ControlTemplate.HeaderedContentControl}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+
+        <Setter Property="ui:LabelExtension.LabelPlacement" Value="Left" />
+
+        <!--  Label  -->
+        <Setter Property="ui:LabelExtension.LabelStyle" Value="{StaticResource Style.TextBlock.Regular}" />
+    </Style>
+
+</ResourceDictionary>

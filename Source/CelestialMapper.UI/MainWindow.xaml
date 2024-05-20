@@ -14,6 +14,11 @@
         Style="{DynamicResource Style.MainWindow}"
         >
 
-    <local:MapView />
+    <DockPanel LastChildFill="True">
 
+        <local:TimeMachineView DockPanel.Dock="Top" />
+
+        <local:MapView />
+
+    </DockPanel>
 </Window>

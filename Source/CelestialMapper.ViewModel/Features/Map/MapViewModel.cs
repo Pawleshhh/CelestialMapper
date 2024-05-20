@@ -1,6 +1,6 @@
 ﻿using CelestialMapper.Core.Astronomy;
 using CelestialMapper.Core.Infrastructure.Map;
-using System.Collections.ObjectModel;
+using PracticalAstronomy.CSharp;
 using System.Windows.Input;
 
 namespace CelestialMapper.ViewModel;
@@ -12,6 +12,7 @@ public class MapViewModel : ViewModelBase
     #region Fields
 
     private readonly IMapManager mapManager;
+    private readonly ITimeMachineManager timeMachineManager;
 
     private IMap map = default!;
 
@@ -21,9 +22,11 @@ public class MapViewModel : ViewModelBase
 
     public MapViewModel(
         IMapManager mapManager,
+        ITimeMachineManager timeMachineManager,
         IViewModelSupport viewModelSupport) : base(viewModelSupport)
     {
         this.mapManager = mapManager;
+        this.timeMachineManager = timeMachineManager;
     }
 
     #endregion
@@ -37,6 +40,42 @@ public class MapViewModel : ViewModelBase
         base.Initialize(configurator);
 
         GenerateMapCommand = new RelayCommand(o => GenerateMap(o));
+    }
+
+    protected override void SubscribeToEvents()
+    {
+        base.SubscribeToEvents();
+        this.timeMachineManager.LocationChanged += TimeMachineManager_LocationChanged;
+        this.timeMachineManager.DateTimeChanged += TimeMachineManager_DateTimeChanged;
+        this.timeMachineManager.TimeMachineUpdated += TimeMachineManager_TimeMachineUpdated;
+    }
+
+    protected override void UnsubscribeFromEvents()
+    {
+        base.UnsubscribeFromEvents();
+        this.timeMachineManager.LocationChanged -= TimeMachineManager_LocationChanged;
+        this.timeMachineManager.DateTimeChanged -= TimeMachineManager_DateTimeChanged;
+        this.timeMachineManager.TimeMachineUpdated -= TimeMachineManager_TimeMachineUpdated;
+    }
+
+
+    #endregion
+
+    #region Event handlers
+
+    private void TimeMachineManager_TimeMachineUpdated(ITimeMachineManager sender, PlatformEventArgs<(DateTime DateTime, Geographic Location)> e)
+    {
+        GenerateMapCommand?.Execute(null);
+    }
+
+    private void TimeMachineManager_DateTimeChanged(ITimeMachineManager sender, PlatformEventArgs<DateTime> e)
+    {
+        GenerateMapCommand?.Execute(null);
+    }
+
+    private void TimeMachineManager_LocationChanged(ITimeMachineManager sender, PlatformEventArgs<Geographic> e)
+    {
+        GenerateMapCommand?.Execute(null);
     }
 
     #endregion
@@ -59,11 +98,11 @@ public class MapViewModel : ViewModelBase
 
     private void GenerateMap(object? o)
     {
-        var dateTime = new DateTime(2024, 3, 24, 9, 0, 0, DateTimeKind.Local);
+        var dateTime = this.timeMachineManager.DateTime;
         dateTime = dateTime.ToUniversalTime();
 
         this.map = this.mapManager.Generate(
-                new(53.482906986790525, 14.862220332070006),
+                this.timeMachineManager.Location,
                 dateTime,
                 IGenerateMapSettings.Create(NumRange.Of(-1d, 5d))).Result;
 

@@ -1,17 +1,22 @@
-﻿<Application x:Class="CelestialMapper.UI.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CelestialMapper.UI"
-             Startup="Application_Startup"
-             >
+﻿<Application
+    x:Class="CelestialMapper.UI.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:CelestialMapper.UI"
+    Startup="Application_Startup">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/BaseStyles/HeaderedContentControlStyles.xaml" />
+                <ResourceDictionary Source="Resources/BaseStyles/TextBlockStyles.xaml" />
+
+                <ResourceDictionary Source="Resources/Strings/TimeMachineStrings.xaml" />
                 <ResourceDictionary Source="Resources/Strings/WindowStrings.xaml" />
 
                 <ResourceDictionary Source="Resources/Spacing/MarginsAndPaddings.xaml" />
                 <ResourceDictionary Source="Resources/Styles/WindowStyles.xaml" />
                 <ResourceDictionary Source="Resources/Styles/MapStyles/MapStyles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/TimePickerStyles/TimePickerStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

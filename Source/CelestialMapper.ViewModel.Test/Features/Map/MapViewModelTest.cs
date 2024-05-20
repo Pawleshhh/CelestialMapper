@@ -1,6 +1,7 @@
-﻿using CelestialMapper.Core.Astronomy;
+﻿using CelestialMapper.Common;
+using CelestialMapper.Core;
+using CelestialMapper.Core.Astronomy;
 using CelestialMapper.Core.Infrastructure.Map;
-using CelestialMapper.TestUtilities;
 using Moq;
 using PracticalAstronomy.CSharp;
 
@@ -12,7 +13,12 @@ public class MapViewModelTest : ViewModelTest<MapViewModel>
 
     public Mock<IMapManager> MapManager { get; set; } = new();
 
-    public override Func<MapViewModel> CreateSUT => () => new MapViewModel(MapManager.Object, ViewModelSupport.Object);
+    public Mock<ITimeMachineManager> TimeMachineManager { get; set; } = new();
+
+    public override Func<MapViewModel> CreateSUT => () => new MapViewModel(
+        MapManager.Object,
+        TimeMachineManager.Object, 
+        ViewModelSupport.Object);
 
     public override string DefaultFeatureName => "Map";
 
@@ -22,6 +28,7 @@ public class MapViewModelTest : ViewModelTest<MapViewModel>
     public void SetUp()
     {
         MapManager = new Mock<IMapManager>(MockBehavior.Strict);
+        TimeMachineManager = new Mock<ITimeMachineManager>(MockBehavior.Strict);
     }
 
     #endregion
@@ -50,8 +57,18 @@ public class MapViewModelTest : ViewModelTest<MapViewModel>
             new(4, "Name4", new(4, 4), 4, "HR"),
         });
 
+        var dateTime = new DateTime(2024, 1, 4);
+        var location = new Geographic(10, 15);
+        TimeMachineManager.SetupGet(x => x.DateTime)
+            .Returns(dateTime);
+        TimeMachineManager.SetupGet(x => x.Location)
+            .Returns(location);
+
         MapManager
-            .Setup(x => x.Generate(It.IsAny<Geographic>(), It.IsAny<DateTime>(), It.IsAny<IGenerateMapSettings>()))
+            .Setup(x => x.Generate(
+                It.IsAny<Geographic>(),
+                It.IsAny<DateTime>(), 
+                It.IsAny<IGenerateMapSettings>()))
             .Returns(Task.FromResult(map));
 
         var sut = CreateSUTAndInitialize();
@@ -78,8 +95,18 @@ public class MapViewModelTest : ViewModelTest<MapViewModel>
             }.ToHashSet()
         };
 
+        var dateTime = new DateTime(2024, 1, 4);
+        var location = new Geographic(10, 15);
+        TimeMachineManager.SetupGet(x => x.DateTime)
+            .Returns(dateTime);
+        TimeMachineManager.SetupGet(x => x.Location)
+            .Returns(location);
+
         MapManager
-            .Setup(x => x.Generate(It.IsAny<Geographic>(), It.IsAny<DateTime>(), It.IsAny<IGenerateMapSettings>()))
+            .Setup(x => x.Generate(
+                It.IsAny<Geographic>(),
+                It.IsAny<DateTime>(),
+                It.IsAny<IGenerateMapSettings>()))
             .Returns(Task.FromResult(map));
 
         var sut = CreateSUTAndInitialize();
@@ -89,6 +116,126 @@ public class MapViewModelTest : ViewModelTest<MapViewModel>
 
         // Assert
         Assert.That(sut.Constellations, Is.SameAs(map.Constellations));
+    }
+
+    [Test]
+    public void GenerateMap_When_TimeMachineUpdated()
+    {
+        // Arrange
+        IMap map = new CelestialMap(Array.Empty<CelestialObject>());
+
+        MapManager
+            .Setup(x => x.Generate(
+                It.IsAny<Geographic>(),
+                It.IsAny<DateTime>(),
+                It.IsAny<IGenerateMapSettings>()))
+            .Returns(Task.FromResult(Mock.Of<IMap>()));
+
+        var dateTime = new DateTime(2024, 1, 4);
+        var location = new Geographic(10, 15);
+        TimeMachineManager.SetupGet(x => x.DateTime)
+            .Returns(new DateTime());
+        TimeMachineManager.SetupGet(x => x.Location)
+            .Returns(new Geographic(0, 0));
+
+        var sut = CreateSUTAndInitialize();
+
+        // Act
+
+        // Data changed so reset the setup of those getters
+        TimeMachineManager.SetupGet(x => x.DateTime)
+            .Returns(dateTime);
+        TimeMachineManager.SetupGet(x => x.Location)
+            .Returns(location);
+
+        TimeMachineManager.Raise(
+            x => x.TimeMachineUpdated += null,
+            new PlatformEventArgs<(DateTime DateTime, Geographic Location)>((dateTime, location)));
+
+        // Assert
+        MapManager
+            .Verify(x => x.Generate(
+                location,
+                dateTime.ToUniversalTime(),
+                It.IsAny<IGenerateMapSettings>()), Times.Once);
+    }
+
+    [Test]
+    public void GenerateMap_When_LocationUpdated()
+    {
+        // Arrange
+        IMap map = new CelestialMap(Array.Empty<CelestialObject>());
+
+        MapManager
+            .Setup(x => x.Generate(
+                It.IsAny<Geographic>(),
+                It.IsAny<DateTime>(),
+                It.IsAny<IGenerateMapSettings>()))
+            .Returns(Task.FromResult(Mock.Of<IMap>()));
+
+        var location = new Geographic(10, 15);
+        TimeMachineManager.SetupGet(x => x.DateTime)
+            .Returns(new DateTime());
+        TimeMachineManager.SetupGet(x => x.Location)
+            .Returns(new Geographic(0, 0));
+
+        var sut = CreateSUTAndInitialize();
+
+        // Act
+
+        // Data changed so reset the setup of this getter
+        TimeMachineManager.SetupGet(x => x.Location)
+            .Returns(location);
+
+        TimeMachineManager.Raise(
+            x => x.LocationChanged += null,
+            new PlatformEventArgs<Geographic>(location));
+
+        // Assert
+        MapManager
+            .Verify(x => x.Generate(
+                location,
+                It.IsAny<DateTime>(),
+                It.IsAny<IGenerateMapSettings>()), Times.Once);
+    }
+
+    [Test]
+    public void GenerateMap_When_DateTimeUpdated()
+    {
+        // Arrange
+        IMap map = new CelestialMap(Array.Empty<CelestialObject>());
+
+        MapManager
+            .Setup(x => x.Generate(
+                It.IsAny<Geographic>(),
+                It.IsAny<DateTime>(),
+                It.IsAny<IGenerateMapSettings>()))
+            .Returns(Task.FromResult(Mock.Of<IMap>()));
+
+        var dateTime = new DateTime(2024, 1, 4);
+        TimeMachineManager.SetupGet(x => x.DateTime)
+            .Returns(new DateTime());
+        TimeMachineManager.SetupGet(x => x.Location)
+            .Returns(new Geographic(0, 0));
+
+        var sut = CreateSUTAndInitialize();
+
+        // Act
+
+        // Data changed so reset the setup of this getter
+        TimeMachineManager.SetupGet(x => x.DateTime)
+            .Returns(dateTime);
+
+        TimeMachineManager.Raise(
+            x => x.DateTimeChanged += null,
+            new PlatformEventArgs<DateTime>(dateTime));
+
+        // Assert
+        MapManager
+            .Verify(x => x.Generate(
+                It.IsAny<Geographic>(),
+                dateTime.ToUniversalTime(),
+                It.IsAny<IGenerateMapSettings>()), Times.Once);
     }
 
     #endregion

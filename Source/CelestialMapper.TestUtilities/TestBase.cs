@@ -1,4 +1,5 @@
 ﻿using Moq;
+using System.Reflection;
 
 namespace CelestialMapper.TestUtilities;
 
@@ -7,5 +8,9 @@ public abstract class TestBase<T>
 {
 
     public virtual Func<T> CreateSUT => () => default!;
+
+    #region Test event
+
+    #endregion
 
 }
