@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="XpsToPdf" Version="1.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CelestialMapper.Bootstrapper\CelestialMapper.Bootstrapper.csproj" />
     <ProjectReference Include="..\CelestialMapper.Common\CelestialMapper.Common.csproj" />
     <ProjectReference Include="..\CelestialMapper.Core\CelestialMapper.Core.csproj" />
