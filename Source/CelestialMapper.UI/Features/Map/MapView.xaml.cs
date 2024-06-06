@@ -26,4 +26,10 @@ public partial class MapView : FeatureViewBase
 
     protected override Type ViewModelType => typeof(MapViewModel);
 
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        var visualToPdf = new VisualToPdf();
+
+        visualToPdf.Convert(this.celestialMap, @"C:\Temp\map.pdf");
+    }
 }

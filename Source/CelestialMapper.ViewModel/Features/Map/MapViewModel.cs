@@ -84,6 +84,8 @@ public class MapViewModel : ViewModelBase
 
     public ICommand? GenerateMapCommand { get; private set; }
 
+    public ICommand? GeneratePdf { get; private set; }
+
     #endregion
 
     #region Properties

@@ -6,6 +6,6 @@ namespace CelestialMapper.UI;
 public interface IVisualToPdf
 {
 
-    public void XpsToPdf(Visual visual, string pdfPath);
+    public void Convert(Visual visual, string pdfPath);
 
 }

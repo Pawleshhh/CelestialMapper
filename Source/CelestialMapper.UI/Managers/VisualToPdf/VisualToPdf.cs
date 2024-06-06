@@ -7,7 +7,7 @@ namespace CelestialMapper.UI;
 
 public class VisualToPdf : IVisualToPdf
 {
-    public void XpsToPdf(Visual visual, string pdfPath)
+    public void Convert(Visual visual, string pdfPath)
     {
         using (MemoryStream memoryStream = new MemoryStream())
         {
