@@ -2,8 +2,40 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-    xmlns:ui="clr-namespace:CelestialMapper.UI">
+    xmlns:ui="clr-namespace:CelestialMapper.UI"
+    xmlns:vm="clr-namespace:CelestialMapper.ViewModel;assembly=CelestialMapper.ViewModel">
 
-    <Style x:Key="Style.Acordeon" TargetType="ui:Acordeon" />
+    <DataTemplate x:Key="Private.DataTemplate.Acordeon.AcordeonItemData" DataType="ui:AcordeonItemData">
+        <DockPanel LastChildFill="True">
+
+            <ToggleButton x:Name="AcordeonHeaderButton" Content="{Binding HeaderContent}" />
+
+            <ContentControl x:Name="AcordeonContent" Content="{Binding Content}" />
+
+        </DockPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Private.DataTemplate.Acordeon.ViewModel" DataType="vm:IViewModel" />
+
+    <ui:DataTypeTemplateSelector x:Key="Private.TemplateSelector.Acordeon">
+        <ui:PlatformDataTemplate IsDefault="True" Template="{StaticResource Private.DataTemplate.Acordeon.AcordeonItemData}" />
+        <ui:PlatformDataTemplate Template="{StaticResource Private.DataTemplate.Acordeon.ViewModel}" />
+    </ui:DataTypeTemplateSelector>
+
+    <ControlTemplate x:Key="Private.ControlTemplate.Acordeon" TargetType="ui:Acordeon">
+        <Grid>
+            <ItemsControl ItemsSource="{TemplateBinding ItemsSource}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </Grid>
+    </ControlTemplate>
+
+    <Style x:Key="Style.Acordeon" TargetType="ui:Acordeon">
+        <Setter Property="Template" Value="{StaticResource Private.ControlTemplate.Acordeon}" />
+    </Style>
 
 </ResourceDictionary>

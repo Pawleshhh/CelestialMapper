@@ -1,13 +1,7 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Markup;
+﻿namespace CelestialMapper.UI;
 
-namespace CelestialMapper.UI;
-
-[ContentProperty(nameof(Templates))]
-public class FeatureNameDataTemplateSelector : DataTemplateSelector
+public class FeatureNameDataTemplateSelector : PlatformDataTemplateSelector<FeatureNameDataTemplate>
 {
-
-    public ObservableCollection<FeatureNameDataTemplate> Templates { get; } = new();
 
     public override DataTemplate SelectTemplate(object item, DependencyObject container)
     {
@@ -21,12 +15,19 @@ public class FeatureNameDataTemplateSelector : DataTemplateSelector
             throw new ArgumentException($"Item is expected to be string with feature name but received {item.GetType()}", nameof(item));
         }
 
-        return Templates.Single(x => x.FeatureName == id);
+        var result = Templates.SingleOrDefault(x => x.FeatureName == id);
+
+        if (result is not null)
+        {
+            return result;
+        }
+
+        return GetDefault()!;
     }
 
 }
 
-public class FeatureNameDataTemplate : DataTemplate
+public class FeatureNameDataTemplate : PlatformDataTemplate
 {
 
     public string FeatureName { get; set; } = string.Empty;

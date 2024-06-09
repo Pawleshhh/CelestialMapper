@@ -1,6 +1,5 @@
 ﻿namespace CelestialMapper.UI;
 
-using CelestialMapper.Common;
 using static CelestialMapper.UI.DependencyPropertyHelper;
 
 public class Acordeon : PlatformUserControl
@@ -24,14 +23,14 @@ public class Acordeon : PlatformUserControl
 
     #region Properties
 
-    public IList ItemsSource
+    public IList<AcordeonItemData> ItemsSource
     {
-        get { return (IList)GetValue(ItemsSourceProperty); }
+        get { return (IList<AcordeonItemData>)GetValue(ItemsSourceProperty); }
         set { SetValue(ItemsSourceProperty, value); }
     }
 
     public static readonly DependencyProperty ItemsSourceProperty =
-        Register(nameof(ItemsSource) , new PlatformPropertyMetadata<Acordeon, IList>(Array.Empty<object>()));
+        Register(nameof(ItemsSource) , new PlatformPropertyMetadata<Acordeon, IList<AcordeonItemData>>(Array.Empty<AcordeonItemData>()));
 
     #endregion
 
