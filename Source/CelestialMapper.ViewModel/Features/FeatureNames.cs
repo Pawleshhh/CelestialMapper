@@ -9,4 +9,6 @@ public static class FeatureNames
 
     public static string TimeMachine { get; } = nameof(TimeMachine);
 
+    public static string Menu { get; } = nameof(Menu);
+
 }
