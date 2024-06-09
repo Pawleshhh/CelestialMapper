@@ -13,7 +13,7 @@
     mc:Ignorable="d">
     <Grid>
 
-        <Button Width="200" Content="I'm here :)" />
+        <Button Height="100" Content="I'm here :)" />
 
     </Grid>
 </local:FeatureViewBase>
