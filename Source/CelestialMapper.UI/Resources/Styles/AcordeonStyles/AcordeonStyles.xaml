@@ -15,7 +15,15 @@
         </DockPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="Private.DataTemplate.Acordeon.ViewModel" DataType="vm:IViewModel" />
+    <DataTemplate x:Key="Private.DataTemplate.Acordeon.ViewModel" DataType="vm:IViewModel">
+        <DockPanel LastChildFill="True">
+
+            <ToggleButton x:Name="AcordeonHeaderButton" Content="{Binding Name}" />
+
+            <ContentControl x:Name="AcordeonViewModel" Content="{Binding .}" />
+
+        </DockPanel>
+    </DataTemplate>
 
     <ui:DataTypeTemplateSelector x:Key="Private.TemplateSelector.Acordeon">
         <ui:PlatformDataTemplate IsDefault="True" Template="{StaticResource Private.DataTemplate.Acordeon.AcordeonItemData}" />
