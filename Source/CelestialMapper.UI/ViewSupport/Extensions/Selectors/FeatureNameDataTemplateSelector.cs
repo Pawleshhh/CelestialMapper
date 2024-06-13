@@ -19,7 +19,7 @@ public class FeatureNameDataTemplateSelector : PlatformDataTemplateSelector<Feat
 
         if (result is not null)
         {
-            return result;
+            return result.DataTemplate;
         }
 
         return GetDefault()!;
@@ -27,7 +27,7 @@ public class FeatureNameDataTemplateSelector : PlatformDataTemplateSelector<Feat
 
 }
 
-public class FeatureNameDataTemplate : PlatformDataTemplate
+public class FeatureNameDataTemplate : PlatformDataTemplateSelectorItem
 {
 
     public string FeatureName { get; set; } = string.Empty;

@@ -1,6 +1,6 @@
 ﻿namespace CelestialMapper.UI;
 
-public class DataTypeTemplateSelector : PlatformDataTemplateSelector<PlatformDataTemplate>
+public class DataTypeTemplateSelector : PlatformDataTemplateSelector<PlatformDataTemplateSelectorItem>
 {
 
     public override DataTemplate SelectTemplate(object item, DependencyObject container)
@@ -11,21 +11,21 @@ public class DataTypeTemplateSelector : PlatformDataTemplateSelector<PlatformDat
         }
 
         var itemType = item.GetType();
-        var exactTemplate = Templates.SingleOrDefault(template => (Type)template.DataType == itemType);
+        var exactTemplate = Templates.SingleOrDefault(template => (Type)template.DataTemplate.DataType == itemType);
         
         if (exactTemplate is not null)
         {
-            return exactTemplate;
+            return exactTemplate.DataTemplate;
         }
 
-        var relatedByInheritanceTemplate = Templates.SingleOrDefault(template => ((Type)template.DataType).IsAssignableFrom(itemType));
+        var relatedByInheritanceTemplate = Templates.SingleOrDefault(template => ((Type)template.DataTemplate.DataType).IsAssignableFrom(itemType));
 
         if (relatedByInheritanceTemplate is not null)
         {
-            return relatedByInheritanceTemplate;
+            return relatedByInheritanceTemplate.DataTemplate;
         }
 
-        return GetDefault()!;
+        return GetDefault();
     }
 
 }

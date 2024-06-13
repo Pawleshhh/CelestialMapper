@@ -11,4 +11,6 @@ public static class FeatureNames
 
     public static string Menu { get; } = nameof(Menu);
 
+    public static string ExportMenu { get; } = nameof(ExportMenu);
+
 }

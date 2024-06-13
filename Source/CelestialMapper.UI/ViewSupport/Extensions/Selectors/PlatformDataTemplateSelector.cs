@@ -5,21 +5,23 @@ namespace CelestialMapper.UI;
 
 [ContentProperty(nameof(Templates))]
 public abstract class PlatformDataTemplateSelector<TemplateType> : DataTemplateSelector
-    where TemplateType : PlatformDataTemplate
+    where TemplateType : PlatformDataTemplateSelectorItem
 {
 
-    public ObservableCollection<TemplateType> Templates { get; } = new();
+    public ObservableCollection<TemplateType> Templates { get; set; } = new();
 
-    protected TemplateType? GetDefault()
+    protected DataTemplate? GetDefault()
     {
-        return Templates.FirstOrDefault(template => template.IsDefault);
+        return Templates.FirstOrDefault(template => template.IsDefault)?.DataTemplate;
     }
 
 }
 
-public class PlatformDataTemplate : DataTemplate
+public class PlatformDataTemplateSelectorItem
 {
 
     public bool IsDefault { get; set; }
+
+    public DataTemplate DataTemplate { get; set; } = default!;
 
 }

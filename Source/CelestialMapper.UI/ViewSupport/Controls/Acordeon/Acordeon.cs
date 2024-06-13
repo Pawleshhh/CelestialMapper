@@ -23,14 +23,14 @@ public class Acordeon : PlatformUserControl
 
     #region Properties
 
-    public IList<AcordeonItemData> ItemsSource
+    public IList ItemsSource
     {
-        get { return (IList<AcordeonItemData>)GetValue(ItemsSourceProperty); }
+        get { return (IList)GetValue(ItemsSourceProperty); }
         set { SetValue(ItemsSourceProperty, value); }
     }
 
     public static readonly DependencyProperty ItemsSourceProperty =
-        Register(nameof(ItemsSource) , new PlatformPropertyMetadata<Acordeon, IList<AcordeonItemData>>(Array.Empty<AcordeonItemData>()));
+        Register(nameof(ItemsSource) , new PlatformPropertyMetadata<Acordeon, IList>(Array.Empty<object>()));
 
     #endregion
 

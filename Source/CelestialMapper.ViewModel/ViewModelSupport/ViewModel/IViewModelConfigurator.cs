@@ -14,6 +14,13 @@ public interface IViewModelConfigurator
             GetSubViewModelsFunc = Enumerable.Empty<IViewModel>
         };
 
+    public static IViewModelConfigurator Create(string featureName, Func<IEnumerable<IViewModel>> getSubViewModels)
+        => new GenericViewModelConfigurator
+        {
+            GetFeatureNameFunc = () => featureName,
+            GetSubViewModelsFunc = getSubViewModels
+        };
+
 }
 
 public class GenericViewModelConfigurator : IViewModelConfigurator

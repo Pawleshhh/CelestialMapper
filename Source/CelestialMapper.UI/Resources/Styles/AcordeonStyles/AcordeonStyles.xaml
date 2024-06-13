@@ -5,34 +5,22 @@
     xmlns:ui="clr-namespace:CelestialMapper.UI"
     xmlns:vm="clr-namespace:CelestialMapper.ViewModel;assembly=CelestialMapper.ViewModel">
 
-    <DataTemplate x:Key="Private.DataTemplate.Acordeon.AcordeonItemData" DataType="ui:AcordeonItemData">
-        <DockPanel LastChildFill="True">
-
-            <ToggleButton x:Name="AcordeonHeaderButton" Content="{Binding HeaderContent}" />
-
-            <ContentControl x:Name="AcordeonContent" Content="{Binding Content}" />
-
-        </DockPanel>
+    <DataTemplate x:Key="Private.DataTemplate.Acordeon.AcordeonItemData" DataType="{x:Type ui:AcordeonItemData}">
+        <Expander Content="{Binding Content}" Header="{Binding HeaderContent}" />
     </DataTemplate>
 
-    <DataTemplate x:Key="Private.DataTemplate.Acordeon.ViewModel" DataType="vm:IViewModel">
-        <DockPanel LastChildFill="True">
-
-            <ToggleButton x:Name="AcordeonHeaderButton" Content="{Binding Name}" />
-
-            <ContentControl x:Name="AcordeonViewModel" Content="{Binding .}" />
-
-        </DockPanel>
+    <DataTemplate x:Key="Private.DataTemplate.Acordeon.ViewModel" DataType="{x:Type vm:IViewModel}">
+        <Expander Content="{Binding .}" Header="{Binding Name}" />
     </DataTemplate>
 
     <ui:DataTypeTemplateSelector x:Key="Private.TemplateSelector.Acordeon">
-        <ui:PlatformDataTemplate IsDefault="True" Template="{StaticResource Private.DataTemplate.Acordeon.AcordeonItemData}" />
-        <ui:PlatformDataTemplate Template="{StaticResource Private.DataTemplate.Acordeon.ViewModel}" />
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Private.DataTemplate.Acordeon.AcordeonItemData}" IsDefault="True" />
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Private.DataTemplate.Acordeon.ViewModel}" />
     </ui:DataTypeTemplateSelector>
 
     <ControlTemplate x:Key="Private.ControlTemplate.Acordeon" TargetType="ui:Acordeon">
         <Grid>
-            <ItemsControl ItemsSource="{TemplateBinding ItemsSource}">
+            <ItemsControl ItemTemplateSelector="{StaticResource Private.TemplateSelector.Acordeon}" ItemsSource="{TemplateBinding ItemsSource}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel Orientation="Vertical" />
