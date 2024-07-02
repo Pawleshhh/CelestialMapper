@@ -16,7 +16,7 @@ public class MenuViewModel : ViewModelBase
 
     #region ViewModelBase
 
-    public override string DefaultFeatureName => FeatureNames.Menu;
+    public override FeatureName DefaultFeatureName => FeatureNames.Menu;
 
     public override void Initialize(IViewModelConfigurator configurator)
     {
@@ -25,7 +25,7 @@ public class MenuViewModel : ViewModelBase
         SubMenus.AddRange(configurator.GetSubViewModels());
     }
 
-    public override Dictionary<string, IViewModelConfigurator> InitializeConfigurators()
+    public override Dictionary<FeatureName, IViewModelConfigurator> InitializeConfigurators()
     {
         return new()
         {

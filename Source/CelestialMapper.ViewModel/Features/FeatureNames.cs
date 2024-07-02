@@ -1,16 +1,39 @@
 ﻿namespace CelestialMapper.ViewModel;
 
-public static class FeatureNames
+public record FeatureName
 {
 
-    public static string Shell { get; } = nameof(Shell);
+    public static FeatureName Unknown { get; } = new("Unknown");
 
-    public static string Map { get; } = nameof(Map);
+    public bool IsUnknown() => ReferenceEquals(this, Unknown);
 
-    public static string TimeMachine { get; } = nameof(TimeMachine);
+    public string Name { get; init; }
 
-    public static string Menu { get; } = nameof(Menu);
+    public string ViewName { get; }
 
-    public static string ExportMenu { get; } = nameof(ExportMenu);
+    public FeatureName(string name)
+    {
+        Name = name;
+        ViewName = name + "View";
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Name.GetHashCode());
+    }
+}
+
+public class FeatureNames
+{
+
+    public static FeatureName Shell { get; } = new(nameof(Shell));
+
+    public static FeatureName Map { get; } = new(nameof(Map));
+
+    public static FeatureName TimeMachine { get; } = new(nameof(TimeMachine));
+
+    public static FeatureName Menu { get; } = new(nameof(Menu));
+
+    public static FeatureName ExportMenu { get; } = new(nameof(ExportMenu));
 
 }

@@ -7,7 +7,7 @@ public class ExportMenuViewModel : ViewModelBase
     {
     }
 
-    public override string DefaultFeatureName => FeatureNames.ExportMenu;
+    public override FeatureName DefaultFeatureName => FeatureNames.ExportMenu;
 
     public override void Initialize(IViewModelConfigurator configurator)
     {

@@ -18,4 +18,6 @@ public class ExportAttribute : Attribute
 
     public bool IsSingleton { get; init; }
 
+    public bool IsKeyed { get; init; }
+
 }

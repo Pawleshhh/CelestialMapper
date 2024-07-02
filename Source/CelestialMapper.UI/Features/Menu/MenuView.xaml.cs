@@ -22,7 +22,7 @@ public partial class MenuView : FeatureViewBase
         InitializeComponent();
     }
 
-    public override string DefaultFeatureName => FeatureNames.Menu;
+    public override FeatureName DefaultFeatureName => FeatureNames.Menu;
 
     protected override Type ViewModelType => typeof(MenuViewModel);
 

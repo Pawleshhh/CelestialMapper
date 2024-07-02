@@ -22,7 +22,7 @@ public partial class MapView : FeatureViewBase
         InitializeComponent();
     }
 
-    public override string DefaultFeatureName => FeatureNames.Map;
+    public override FeatureName DefaultFeatureName => FeatureNames.Map;
 
     protected override Type ViewModelType => typeof(MapViewModel);
 

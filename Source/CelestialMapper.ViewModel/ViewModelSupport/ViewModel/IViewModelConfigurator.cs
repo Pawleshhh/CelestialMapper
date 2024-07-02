@@ -5,16 +5,16 @@ public interface IViewModelConfigurator
 
     IEnumerable<IViewModel> GetSubViewModels();
 
-    string GetFeatureName();
+    FeatureName GetFeatureName();
 
-    public static IViewModelConfigurator Create(string featureName)
+    public static IViewModelConfigurator Create(FeatureName featureName)
         => new GenericViewModelConfigurator
         { 
             GetFeatureNameFunc = () => featureName,
             GetSubViewModelsFunc = Enumerable.Empty<IViewModel>
         };
 
-    public static IViewModelConfigurator Create(string featureName, Func<IEnumerable<IViewModel>> getSubViewModels)
+    public static IViewModelConfigurator Create(FeatureName featureName, Func<IEnumerable<IViewModel>> getSubViewModels)
         => new GenericViewModelConfigurator
         {
             GetFeatureNameFunc = () => featureName,
@@ -26,11 +26,11 @@ public interface IViewModelConfigurator
 public class GenericViewModelConfigurator : IViewModelConfigurator
 {
 
-    public required Func<string> GetFeatureNameFunc { get; init; }
+    public required Func<FeatureName> GetFeatureNameFunc { get; init; }
 
     public required Func<IEnumerable<IViewModel>> GetSubViewModelsFunc { get; init; }
 
-    public string GetFeatureName() => GetFeatureNameFunc();
+    public FeatureName GetFeatureName() => GetFeatureNameFunc();
 
     public IEnumerable<IViewModel> GetSubViewModels() => GetSubViewModelsFunc();
 
