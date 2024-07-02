@@ -1,4 +1,4 @@
-﻿namespace CelestialMapper.ViewModel;
+﻿namespace CelestialMapper.ViewModel.Test;
 
 [TestFixture]
 public class FeatureNameTest

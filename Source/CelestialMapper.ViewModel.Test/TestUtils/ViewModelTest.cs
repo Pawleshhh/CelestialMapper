@@ -68,7 +68,9 @@ public abstract class ViewModelTest<TViewModel>
 
     protected TViewModel CreateSUTAndInitialize()
     {
-        return CreateSUTAndInitialize(DefaultViewModelConfigurator);
+        var sut = CreateSUT();
+        sut.Initialize(sut.GetViewModelConfigurator(DefaultFeatureName));
+        return sut;
     }
 
     protected TViewModel CreateSUTAndInitialize(IViewModelConfigurator viewModelConfigurator)
