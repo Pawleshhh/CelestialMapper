@@ -5,7 +5,7 @@ namespace CelestialMapper.ViewModel;
 public static class ServiceProviderExtensions
 {
 
-    public static T ResolveViewModel<T>(this IServiceProvider serviceProvider, string featureName)
+    public static T ResolveViewModel<T>(this IServiceProvider serviceProvider, FeatureName featureName)
         where T : IViewModel
     {
         var viewModel = serviceProvider.GetRequiredService<T>();
@@ -17,7 +17,7 @@ public static class ServiceProviderExtensions
         return viewModel;
     }
 
-    public static IViewModel ResolveViewModel(this IServiceProvider serviceProvider, Type vmType, string featureName)
+    public static IViewModel ResolveViewModel(this IServiceProvider serviceProvider, Type vmType, FeatureName featureName)
     {
         var viewModel = serviceProvider.GetRequiredService(vmType) as IViewModel;
 

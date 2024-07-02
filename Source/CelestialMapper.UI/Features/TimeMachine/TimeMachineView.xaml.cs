@@ -22,7 +22,7 @@ public partial class TimeMachineView : FeatureViewBase
         InitializeComponent();
     }
 
-    public override string DefaultFeatureName => FeatureNames.TimeMachine;
+    public override FeatureName DefaultFeatureName => FeatureNames.TimeMachine;
 
     protected override Type ViewModelType => typeof(TimeMachineViewModel);
 }

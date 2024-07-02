@@ -20,10 +20,10 @@ public abstract class ViewModelBase : NotifyPropertyChangedBase, IViewModel
 
     #region Properties
 
-    public abstract string DefaultFeatureName { get; }
-    public string FeatureName
+    public abstract FeatureName DefaultFeatureName { get; }
+    public FeatureName FeatureName
     {
-        get => GetPropertyValue<string>() ?? string.Empty;
+        get => GetPropertyValue<FeatureName>() ?? FeatureName.Unknown;
         private set => SetPropertyValue(value);
     }
     public string Name
@@ -61,11 +61,11 @@ public abstract class ViewModelBase : NotifyPropertyChangedBase, IViewModel
 
     protected virtual string GetName()
     {
-        this.viewModelSupport.ResourceResolver.TryResolveString($"String.FeatureName.{FeatureName}", out var name);
+        this.viewModelSupport.ResourceResolver.TryResolveString($"String.FeatureName.{FeatureName.Name}", out var name);
         return name;
     }
 
-    public virtual Dictionary<string, IViewModelConfigurator> InitializeConfigurators()
+    public virtual Dictionary<FeatureName, IViewModelConfigurator> InitializeConfigurators()
     {
         return new()
         {

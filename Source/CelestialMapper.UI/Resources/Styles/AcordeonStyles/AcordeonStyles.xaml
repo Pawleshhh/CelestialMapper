@@ -1,0 +1,44 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:ui="clr-namespace:CelestialMapper.UI"
+    xmlns:vm="clr-namespace:CelestialMapper.ViewModel;assembly=CelestialMapper.ViewModel">
+
+    <DataTemplate x:Key="Private.DataTemplate.Acordeon.AcordeonItemData" DataType="{x:Type ui:AcordeonItemData}">
+        <Expander Content="{Binding Content}" Header="{Binding HeaderContent}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="Private.DataTemplate.Acordeon.Expander.ContentTemplate" DataType="{x:Type vm:IViewModel}">
+        <ui:FactoryView FeatureName="{Binding FeatureName}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="Private.DataTemplate.Acordeon.ViewModel" DataType="{x:Type vm:IViewModel}">
+        <Expander
+            Content="{Binding .}"
+            ContentTemplate="{StaticResource Private.DataTemplate.Acordeon.Expander.ContentTemplate}"
+            Header="{Binding Name}" />
+    </DataTemplate>
+
+    <ui:DataTypeTemplateSelector x:Key="Private.TemplateSelector.Acordeon">
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Private.DataTemplate.Acordeon.AcordeonItemData}" IsDefault="True" />
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Private.DataTemplate.Acordeon.ViewModel}" />
+    </ui:DataTypeTemplateSelector>
+
+    <ControlTemplate x:Key="Private.ControlTemplate.Acordeon" TargetType="ui:Acordeon">
+        <Grid>
+            <ItemsControl ItemTemplateSelector="{StaticResource Private.TemplateSelector.Acordeon}" ItemsSource="{TemplateBinding ItemsSource}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </Grid>
+    </ControlTemplate>
+
+    <Style x:Key="Style.Acordeon" TargetType="ui:Acordeon">
+        <Setter Property="Template" Value="{StaticResource Private.ControlTemplate.Acordeon}" />
+    </Style>
+
+</ResourceDictionary>

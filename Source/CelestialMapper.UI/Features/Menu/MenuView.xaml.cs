@@ -3,15 +3,15 @@
 /// <summary>
 /// Interaction logic for MapView.xaml
 /// </summary>
-public partial class MapView : FeatureViewBase
+public partial class MenuView : FeatureViewBase
 {
 
-    public MapView()
+    public MenuView()
     {
         InitializeComponent();
     }
 
-    public MapView(IServiceProvider serviceProvider, bool allowInitializeComponent = true)
+    public MenuView(IServiceProvider serviceProvider, bool allowInitializeComponent = true)
         : base(serviceProvider, allowInitializeComponent)
     {
         if (!AllowInitializeComponent)
@@ -22,8 +22,8 @@ public partial class MapView : FeatureViewBase
         InitializeComponent();
     }
 
-    public override FeatureName DefaultFeatureName => FeatureNames.Map;
+    public override FeatureName DefaultFeatureName => FeatureNames.Menu;
 
-    protected override Type ViewModelType => typeof(MapViewModel);
+    protected override Type ViewModelType => typeof(MenuViewModel);
 
 }

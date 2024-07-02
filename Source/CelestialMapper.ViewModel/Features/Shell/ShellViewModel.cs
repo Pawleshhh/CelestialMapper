@@ -14,7 +14,7 @@ public class ShellViewModel : ViewModelBase
 
     #region Base
 
-    public override string DefaultFeatureName => FeatureNames.Shell;
+    public override FeatureName DefaultFeatureName => FeatureNames.Shell;
 
     public override void Initialize(IViewModelConfigurator configurator)
     {

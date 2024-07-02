@@ -20,16 +20,16 @@ public abstract class FeatureViewBase : PlatformUserControl
 
     protected abstract Type ViewModelType { get; }
 
-    public abstract string DefaultFeatureName { get; }
+    public abstract FeatureName DefaultFeatureName { get; }
 
-    public string FeatureName
+    public FeatureName FeatureName
     {
-        get => this.GetValue<string>(FeatureNameProperty);
+        get => this.GetValue<FeatureName>(FeatureNameProperty);
         set => SetValue(FeatureNameProperty, value);
     }
 
     public static readonly DependencyProperty FeatureNameProperty =
-        Register(nameof(FeatureName), new PlatformPropertyMetadata<FeatureViewBase, string>(string.Empty));
+        Register(nameof(FeatureName), new PlatformPropertyMetadata<FeatureViewBase, FeatureName>(FeatureName.Unknown));
 
     protected override void OnInitialized(EventArgs e)
     {
@@ -41,7 +41,7 @@ public abstract class FeatureViewBase : PlatformUserControl
     {
         DataContext = ServiceProvider.ResolveViewModel(
             ViewModelType,
-            FeatureName.IsNullOrEmpty()
+            FeatureName.IsUnknown()
             ? DefaultFeatureName
             : FeatureName);
     }

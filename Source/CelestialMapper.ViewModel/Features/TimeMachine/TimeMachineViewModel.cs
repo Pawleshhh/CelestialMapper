@@ -29,7 +29,7 @@ public class TimeMachineViewModel : ViewModelBase
 
     #region ViewModelBase
 
-    public override string DefaultFeatureName => FeatureNames.TimeMachine;
+    public override FeatureName DefaultFeatureName => FeatureNames.TimeMachine;
 
     public override void Initialize(IViewModelConfigurator configurator)
     {
