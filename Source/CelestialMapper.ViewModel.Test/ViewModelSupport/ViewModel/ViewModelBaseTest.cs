@@ -11,7 +11,7 @@ public class ViewModelBaseTest
         {
         }
 
-        public override string DefaultFeatureName => "DefaultFeature";
+        public override FeatureName DefaultFeatureName => new("DefaultFeature");
     }
 
     [Test]
@@ -25,14 +25,14 @@ public class ViewModelBaseTest
             .Returns(true);
 
         var configuratorMock = new Mock<IViewModelConfigurator>();
-        configuratorMock.Setup(configurator => configurator.GetFeatureName()).Returns("TestFeature");
+        configuratorMock.Setup(configurator => configurator.GetFeatureName()).Returns(new FeatureName("TestFeature"));
 
         var viewModel = new TestViewModel(viewModelSupportMock.Object);
         viewModel.Initialize(configuratorMock.Object);
         
         Assert.Multiple(() =>
         {
-            Assert.That(viewModel.FeatureName, Is.EqualTo("TestFeature"));
+            Assert.That(viewModel.FeatureName, Is.EqualTo(new FeatureName("TestFeature")));
             Assert.That(viewModel.Name, Is.EqualTo(featureName));
         });
     }
@@ -52,7 +52,7 @@ public class ViewModelBaseTest
         var viewModelSupportMock = new Mock<IViewModelSupport>();
         var viewModel = new TestViewModel(viewModelSupportMock.Object);
 
-        Dictionary<string, IViewModelConfigurator> configurators = viewModel.InitializeConfigurators();
+        Dictionary<FeatureName, IViewModelConfigurator> configurators = viewModel.InitializeConfigurators();
 
         Assert.That(configurators, Is.Not.Null.And.Not.Empty);
         Assert.That(configurators.ContainsKey(viewModel.DefaultFeatureName), Is.True);

@@ -9,14 +9,14 @@ public class GenericViewModelConfiguratorTest
     [Test]
     public void GetFeatureName_ReturnsExpectedValue()
     {
-        string featureName = "TestFeature";
+        FeatureName featureName = new("TestFeature");
         IViewModelConfigurator configurator = new GenericViewModelConfigurator
         {
             GetFeatureNameFunc = () => featureName,
             GetSubViewModelsFunc = Enumerable.Empty<IViewModel>
         };
 
-        string result = configurator.GetFeatureName();
+        var result = configurator.GetFeatureName();
 
         Assert.That(result, Is.EqualTo(featureName));
     }
@@ -26,7 +26,7 @@ public class GenericViewModelConfiguratorTest
     {
         IViewModelConfigurator configurator = new GenericViewModelConfigurator
         {
-            GetFeatureNameFunc = () => "TestFeature",
+            GetFeatureNameFunc = () => new("TestFeature"),
             GetSubViewModelsFunc = Enumerable.Empty<IViewModel>
         };
 
@@ -47,7 +47,7 @@ public class GenericViewModelConfiguratorTest
 
         IViewModelConfigurator configurator = new GenericViewModelConfigurator
         {
-            GetFeatureNameFunc = () => "TestFeature",
+            GetFeatureNameFunc = () => new("TestFeature"),
             GetSubViewModelsFunc = () => subViewModels
         };
 
@@ -59,7 +59,7 @@ public class GenericViewModelConfiguratorTest
     [Test]
     public void Create_CreatesConfiguratorWithFeatureNameOnly()
     {
-        string featureName = "TestFeature";
+        FeatureName featureName = new("TestFeature");
         var configurator = IViewModelConfigurator.Create(featureName);
 
         var result = configurator.GetFeatureName();
@@ -69,7 +69,7 @@ public class GenericViewModelConfiguratorTest
 
     private class TestViewModel : IViewModel
     {
-        public string FeatureName { get; set; } = string.Empty;
+        public FeatureName FeatureName { get; set; } = FeatureName.Unknown;
         public string Name { get; set; } = string.Empty;
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -84,9 +84,9 @@ public class GenericViewModelConfiguratorTest
 
         }
 
-        public Dictionary<string, IViewModelConfigurator> InitializeConfigurators()
+        public Dictionary<FeatureName, IViewModelConfigurator> InitializeConfigurators()
         {
-            return new Dictionary<string, IViewModelConfigurator>();
+            return new Dictionary<FeatureName, IViewModelConfigurator>();
         }
     }
 

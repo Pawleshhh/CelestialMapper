@@ -8,12 +8,12 @@ public abstract class ViewModelTest<TViewModel>
 
     public abstract Func<TViewModel> CreateSUT { get; }
 
-    public abstract string DefaultFeatureName { get; }
+    public abstract FeatureName DefaultFeatureName { get; }
 
     public virtual IViewModelConfigurator DefaultViewModelConfigurator 
         => IViewModelConfigurator.Create(DefaultFeatureName);
 
-    public virtual Dictionary<string, IViewModelConfigurator> AllConfigurators
+    public virtual Dictionary<FeatureName, IViewModelConfigurator> AllConfigurators
         => new()
         {
             [DefaultFeatureName] = DefaultViewModelConfigurator
@@ -34,9 +34,9 @@ public abstract class ViewModelTest<TViewModel>
     {
         foreach (var config in AllConfigurators)
         {
-            var value = config.Key;
+            var value = config.Key.Name;
             ResourceResolver
-                .Setup(x => x.TryResolveString($"String.FeatureName.{config.Key}", out value))
+                .Setup(x => x.TryResolveString($"String.FeatureName.{config.Key.Name}", out value))
                 .Returns(true);
         }
 

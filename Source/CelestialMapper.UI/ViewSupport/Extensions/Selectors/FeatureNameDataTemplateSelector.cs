@@ -10,9 +10,9 @@ public class FeatureNameDataTemplateSelector : PlatformDataTemplateSelector<Feat
             return base.SelectTemplate(item, container);
         }
 
-        if (item is not string id)
+        if (item is not FeatureName id)
         {
-            throw new ArgumentException($"Item is expected to be string with feature name but received {item.GetType()}", nameof(item));
+            throw new ArgumentException($"Item is expected to be {typeof(FeatureName).Name} but received {item.GetType()}", nameof(item));
         }
 
         var result = Templates.SingleOrDefault(x => x.FeatureName == id);
@@ -30,6 +30,6 @@ public class FeatureNameDataTemplateSelector : PlatformDataTemplateSelector<Feat
 public class FeatureNameDataTemplate : PlatformDataTemplateSelectorItem
 {
 
-    public string FeatureName { get; set; } = string.Empty;
+    public FeatureName FeatureName { get; set; } = FeatureName.Unknown;
 
 }
