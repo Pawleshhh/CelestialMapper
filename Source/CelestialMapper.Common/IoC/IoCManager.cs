@@ -50,6 +50,20 @@ public class IoCManager : IIoCManager
 
     private void Register(ExportAttribute exportAttribute)
     {
+        if (exportAttribute.IsKeyed)
+        {
+            if (exportAttribute.IsSingleton)
+            {
+                this.services.AddKeyedSingleton(exportAttribute.Interface, exportAttribute.Key, exportAttribute.Implementation);
+            }
+            else
+            {
+                this.services.AddKeyedTransient(exportAttribute.Interface, exportAttribute.Key, exportAttribute.Implementation);
+            }
+
+            return;
+        }
+
         if (exportAttribute.IsSingleton)
         {
             this.services.AddSingleton(exportAttribute.Interface, exportAttribute.Implementation);

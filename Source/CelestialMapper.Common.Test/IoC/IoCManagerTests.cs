@@ -12,6 +12,12 @@ public class SingletonService : IMyService { }
 [Export(typeof(IMyService), typeof(NonSingletonService), IsSingleton = false, Key = nameof(NonSingletonService))]
 public class NonSingletonService : IMyService { }
 
+[Export(typeof(IMyService), typeof(KeyedSingletonService), IsSingleton = true, IsKeyed = true, Key = nameof(KeyedSingletonService))]
+public class KeyedSingletonService : IMyService { }
+
+[Export(typeof(IMyService), typeof(KeyedNonSingletonService), IsSingleton = false, IsKeyed = true, Key = nameof(KeyedNonSingletonService))]
+public class KeyedNonSingletonService : IMyService { }
+
 [TestFixture]
 public class IoCManagerTests
 {
@@ -61,6 +67,20 @@ public class IoCManagerTests
             typeof(IMyService),
             typeof(NonSingletonService),
             ServiceLifetime.Transient);
+
+        VerifyKeyedTypeRegistration(
+            servicesMock,
+            typeof(IMyService),
+            typeof(KeyedSingletonService),
+            nameof(KeyedSingletonService),
+            ServiceLifetime.Singleton);
+
+        VerifyKeyedTypeRegistration(
+            servicesMock,
+            typeof(IMyService),
+            typeof(KeyedNonSingletonService),
+            nameof(KeyedNonSingletonService),
+            ServiceLifetime.Transient);
     }
 
     [Test]
@@ -84,9 +104,23 @@ public class IoCManagerTests
         Type implementationType,
         ServiceLifetime serviceLifetime = ServiceLifetime.Singleton)
         => serviceCollection.Verify(s => s.Add(It.Is<ServiceDescriptor>(sd =>
+            !sd.IsKeyedService &&
             sd.ServiceType == serviceType &&
             sd.ImplementationType == implementationType &&
             sd.Lifetime == serviceLifetime)));
+
+    private void VerifyKeyedTypeRegistration(
+       Mock<IServiceCollection> serviceCollection,
+       Type serviceType,
+       Type implementationType,
+       string serviceKey,
+       ServiceLifetime serviceLifetime = ServiceLifetime.Singleton)
+       => serviceCollection.Verify(s => s.Add(It.Is<ServiceDescriptor>(sd =>
+           sd.IsKeyedService &&
+           sd.ServiceType == serviceType &&
+           sd.KeyedImplementationType == implementationType &&
+           sd.Lifetime == serviceLifetime &&
+           sd.ServiceKey as string == serviceKey)));
 
     private void VerifyInstanceRegistration(
         Mock<IServiceCollection> serviceCollection,

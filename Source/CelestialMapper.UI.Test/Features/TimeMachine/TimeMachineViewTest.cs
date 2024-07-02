@@ -6,7 +6,7 @@ namespace CelestialMapper.UI.Test;
 public class TimeMachineViewTest : FeatureViewTest<TimeMachineView, TimeMachineViewModel>
 {
 
-    public override string DefaultFeatureName => "TimeMachine";
+    public override FeatureName DefaultFeatureName => new("TimeMachine");
 
     public override Func<IServiceProvider, TimeMachineView> FeatureViewFactory
         => s => new TimeMachineView(ServiceProvider.Object, false);

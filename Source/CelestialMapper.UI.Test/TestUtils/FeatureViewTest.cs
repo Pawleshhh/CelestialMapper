@@ -21,7 +21,7 @@ public abstract class FeatureViewTest<TFeatureView, TViewModel>
     #region FeatureViewBase
 
     public Type ViewModelType => typeof(TViewModel);
-    public abstract string DefaultFeatureName { get; }
+    public abstract FeatureName DefaultFeatureName { get; }
 
     #endregion
 
@@ -81,7 +81,7 @@ public abstract class FeatureViewTest<TFeatureView, TViewModel>
         {
             // Arrange
             var featureView = CreateFeatureView();
-            const string expectedFeatureName = "TestFeature";
+            FeatureName expectedFeatureName = new("TestFeature");
 
             // Act
             featureView.FeatureName = expectedFeatureName;

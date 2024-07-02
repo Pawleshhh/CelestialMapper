@@ -8,7 +8,7 @@ public class ServiceProviderExtensionsTest
 
     #region Mocks
 
-    private const string ViewModelName = "ViewModelName";
+    private static FeatureName ViewModelName = new("ViewModelName");
 
     #endregion
 
@@ -20,7 +20,7 @@ public class ServiceProviderExtensionsTest
         var viewModelMock = new Mock<IViewModel>();
 
         viewModelMock
-            .Setup(vm => vm.GetViewModelConfigurator(It.IsAny<string>()))
+            .Setup(vm => vm.GetViewModelConfigurator(It.IsAny<FeatureName>()))
             .Returns(IViewModelConfigurator.Create(ViewModelName));
         serviceProviderMock
             .Setup(sp => sp.GetService(typeof(IViewModel)))
@@ -60,7 +60,7 @@ public class ServiceProviderExtensionsTest
         var viewModelMock = new Mock<IViewModel>();
 
         viewModelMock
-            .Setup(vm => vm.GetViewModelConfigurator(It.IsAny<string>()))
+            .Setup(vm => vm.GetViewModelConfigurator(It.IsAny<FeatureName>()))
             .Returns(IViewModelConfigurator.Create(ViewModelName));
         serviceProviderMock
             .Setup(sp => sp.GetService(typeof(IViewModel)))

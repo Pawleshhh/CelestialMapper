@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using CelestialMapper.ViewModel;
+using System.Windows;
 
 namespace CelestialMapper.UI.Test;
 
@@ -32,15 +33,15 @@ public class FeatureNameDataTemplateSelectorTest
         var selector = new FeatureNameDataTemplateSelector();
         var container = new DependencyObject();
 
-        var template1 = new FeatureNameDataTemplate { FeatureName = "Feature1" };
-        var template2 = new FeatureNameDataTemplate { FeatureName = "Feature2" };
+        var template1 = new FeatureNameDataTemplate { FeatureName = new("Feature1") };
+        var template2 = new FeatureNameDataTemplate { FeatureName = new("Feature2") };
 
         selector.Templates.Add(template1);
         selector.Templates.Add(template2);
 
-        var result = selector.SelectTemplate("Feature2", container);
+        var result = selector.SelectTemplate(new FeatureName("Feature2"), container);
 
-        Assert.That(result, Is.EqualTo(template2));
+        Assert.That(result, Is.SameAs(template2.DataTemplate));
     }
 
     [Test]
@@ -49,10 +50,12 @@ public class FeatureNameDataTemplateSelectorTest
         var selector = new FeatureNameDataTemplateSelector();
         var container = new DependencyObject();
 
-        var template1 = new FeatureNameDataTemplate { FeatureName = "Feature1" };
+        var template1 = new FeatureNameDataTemplate { FeatureName = new("Feature1") };
 
         selector.Templates.Add(template1);
 
-        Assert.Throws<InvalidOperationException>(() => selector.SelectTemplate("Feature2", container));
+        var result = selector.SelectTemplate(new FeatureName("Feature2"), container);
+
+        Assert.That(result, Is.Null);
     }
 }

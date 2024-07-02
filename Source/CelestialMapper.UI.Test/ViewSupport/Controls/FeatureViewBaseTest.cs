@@ -12,7 +12,7 @@ class MockFeatureViewBase : FeatureViewBase
     }
 
     protected override Type ViewModelType => typeof(IViewModel);
-    public override string DefaultFeatureName => "DefaultFeature";
+    public override FeatureName DefaultFeatureName => new("DefaultFeature");
 
 }
 
@@ -25,8 +25,8 @@ public class FeatureViewBaseTest : FeatureViewTest<FeatureViewBase, IViewModel>
     public override Func<IServiceProvider, FeatureViewBase> FeatureViewFactory 
         => sp => new MockFeatureViewBase(sp);
 
-    public override string DefaultFeatureName => "DefaultFeature";
-
+    public override FeatureName DefaultFeatureName => new("DefaultFeature");
+        
     #endregion
 
 }

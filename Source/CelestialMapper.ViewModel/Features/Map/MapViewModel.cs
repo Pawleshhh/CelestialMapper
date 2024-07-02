@@ -33,7 +33,7 @@ public class MapViewModel : ViewModelBase
 
     #region Base
 
-    public override string DefaultFeatureName => FeatureNames.Map;
+    public override FeatureName DefaultFeatureName => FeatureNames.Map;
 
     public override void Initialize(IViewModelConfigurator configurator)
     {

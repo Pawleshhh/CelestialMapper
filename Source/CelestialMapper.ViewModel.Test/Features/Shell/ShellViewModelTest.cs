@@ -8,7 +8,7 @@ public class ShellViewModelTest : ViewModelTest<ShellViewModel>
 
     public override Func<ShellViewModel> CreateSUT => () => new ShellViewModel(ViewModelSupport.Object);
 
-    public override string DefaultFeatureName => "Shell";
+    public override FeatureName DefaultFeatureName => new("Shell");
 
     #endregion
 

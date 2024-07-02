@@ -20,7 +20,7 @@ public class MapViewModelTest : ViewModelTest<MapViewModel>
         TimeMachineManager.Object, 
         ViewModelSupport.Object);
 
-    public override string DefaultFeatureName => "Map";
+    public override FeatureName DefaultFeatureName => new("Map");
 
     #region SetUp
 
