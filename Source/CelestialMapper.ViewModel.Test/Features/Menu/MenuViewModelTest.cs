@@ -1,6 +1,5 @@
 ﻿using CelestialMapper.Common;
 using Moq;
-using Newtonsoft.Json.Linq;
 
 namespace CelestialMapper.ViewModel.Test;
 
