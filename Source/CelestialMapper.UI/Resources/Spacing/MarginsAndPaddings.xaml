@@ -46,6 +46,20 @@
     <Thickness x:Key="Margin.Twos.Large.Vertical">0, 16</Thickness>
     <Thickness x:Key="Margin.Twos.ExtraLarge.Vertical">0, 24</Thickness>
     <Thickness x:Key="Margin.Twos.Huge.Vertical">0, 32</Thickness>
+
+    <GridLength x:Key="GridLength.Fives.ExtraSmall">5</GridLength>
+    <GridLength x:Key="GridLength.Fives.Small">10</GridLength>
+    <GridLength x:Key="GridLength.Fives.Medium">15</GridLength>
+    <GridLength x:Key="GridLength.Fives.Large">20</GridLength>
+    <GridLength x:Key="GridLength.Fives.ExtraLarge">25</GridLength>
+    <GridLength x:Key="GridLength.Fives.Huge">30</GridLength>
+
+    <GridLength x:Key="GridLength.Twos.ExtraSmall">2</GridLength>
+    <GridLength x:Key="GridLength.Twos.Small">4</GridLength>
+    <GridLength x:Key="GridLength.Twos.Medium">8</GridLength>
+    <GridLength x:Key="GridLength.Twos.Large">16</GridLength>
+    <GridLength x:Key="GridLength.Twos.ExtraLarge">24</GridLength>
+    <GridLength x:Key="GridLength.Twos.Huge">32</GridLength>
     <!--#endregion-->
 
     <!--#region Paddings-->
