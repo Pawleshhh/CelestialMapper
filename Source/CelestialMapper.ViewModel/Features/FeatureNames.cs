@@ -36,4 +36,6 @@ public class FeatureNames
 
     public static FeatureName ExportMenu { get; } = new(nameof(ExportMenu));
 
+    public static FeatureName Paper { get; } = new(nameof(Paper));
+
 }

@@ -20,7 +20,7 @@
 
         <local:MenuView Width="{DynamicResource Double.MainWindow.Menu.Width}" DockPanel.Dock="Right" />
 
-        <local:MapView />
+        <local:PaperView />
 
     </DockPanel>
 </Window>

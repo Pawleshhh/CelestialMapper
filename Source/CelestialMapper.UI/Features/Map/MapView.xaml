@@ -11,21 +11,8 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <ScrollViewer HorizontalScrollBarVisibility="Auto">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="{DynamicResource GridLength.Twos.Huge}" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="{DynamicResource GridLength.Twos.Huge}" />
-            </Grid.RowDefinitions>
-
-            <!--  MapView should contain map ONLY. Let's create PaperView view with collection of subViewmodels so it will be much more controlable  -->
-            <local:Paper Grid.Row="1">
-                <local:CelestialMap
-                    x:Name="celestialMap"
-                    CelestialObjects="{Binding CelestialObjects, UpdateSourceTrigger=PropertyChanged}"
-                    Constellations="{Binding Constellations, UpdateSourceTrigger=PropertyChanged}" />
-            </local:Paper>
-        </Grid>
-    </ScrollViewer>
+    <local:CelestialMap
+        x:Name="celestialMap"
+        CelestialObjects="{Binding CelestialObjects, UpdateSourceTrigger=PropertyChanged}"
+        Constellations="{Binding Constellations, UpdateSourceTrigger=PropertyChanged}" />
 </local:FeatureViewBase>

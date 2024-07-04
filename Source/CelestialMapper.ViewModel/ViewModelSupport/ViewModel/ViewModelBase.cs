@@ -73,6 +73,11 @@ public abstract class ViewModelBase : NotifyPropertyChangedBase, IViewModel
         };
     }
 
+    protected TViewModel GetViewModel<TViewModel>(FeatureName featureName)
+        where TViewModel : IViewModel
+    {
+        return this.viewModelSupport.IoCManager.ServiceProvider.ResolveViewModel<TViewModel>(featureName);
+    }
     #endregion
 
 }
