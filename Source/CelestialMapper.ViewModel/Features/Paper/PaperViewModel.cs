@@ -1,6 +1,7 @@
 ﻿namespace CelestialMapper.ViewModel;
 
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 [Export(typeof(PaperViewModel), IsSingleton = false, Key = nameof(PaperViewModel))]
 public class PaperViewModel : ViewModelBase
@@ -23,7 +24,10 @@ public class PaperViewModel : ViewModelBase
         base.Initialize(configurator);
 
         PaperItems = new();
-        PaperItems.AddRange(configurator.GetSubViewModels());
+        PaperItems.AddRange(configurator.GetSubViewModels().OfType<IPaperItem>());
+
+        var txt = new TextItem { Text = "Hello World!", X = 40, Y = 67 };
+        PaperItems.Add(txt);
     }
 
     public override Dictionary<FeatureName, IViewModelConfigurator> InitializeConfigurators()
@@ -43,9 +47,9 @@ public class PaperViewModel : ViewModelBase
 
     #region Properties
 
-    public ObservableCollection<IViewModel> PaperItems
+    public ObservableCollection<IPaperItem> PaperItems
     {
-        get => GetPropertyValue<ObservableCollection<IViewModel>>()!;
+        get => GetPropertyValue<ObservableCollection<IPaperItem>>()!;
         private set => SetPropertyValue(value);
     }
 

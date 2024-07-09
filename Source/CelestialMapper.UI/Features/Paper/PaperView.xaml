@@ -19,13 +19,7 @@
                 <RowDefinition Height="{DynamicResource GridLength.Twos.Huge}" />
             </Grid.RowDefinitions>
 
-            <local:Paper Grid.Row="1" ItemsSource="{Binding PaperItems}">
-                <local:Paper.ItemTemplate>
-                    <DataTemplate DataType="{x:Type vm:IViewModel}">
-                        <local:FactoryView FeatureName="{Binding FeatureName}" />
-                    </DataTemplate>
-                </local:Paper.ItemTemplate>
-            </local:Paper>
+            <local:Paper Grid.Row="1" ItemsSource="{Binding PaperItems}" />
         </Grid>
     </ScrollViewer>
 </local:FeatureViewBase>

@@ -73,10 +73,10 @@ public abstract class ViewModelBase : NotifyPropertyChangedBase, IViewModel
         };
     }
 
-    protected TViewModel GetViewModel<TViewModel>(FeatureName featureName)
+    protected TViewModel GetViewModel<TViewModel>(FeatureName featureName, Action<TViewModel>? postConfigure = null)
         where TViewModel : IViewModel
     {
-        return this.viewModelSupport.IoCManager.ServiceProvider.ResolveViewModel<TViewModel>(featureName);
+        return this.viewModelSupport.IoCManager.ServiceProvider.ResolveViewModel<TViewModel>(featureName, postConfigure);
     }
     #endregion
 
