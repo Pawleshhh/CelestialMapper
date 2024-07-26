@@ -5,6 +5,8 @@ public interface IPaperItem : IVisualData
     public int Id { get; }
 
     public PaperItemType ItemType { get; }
+
+    public bool IsSelected { get; set; }
 }
 
 public abstract class PaperItemBase : VisualDataBase, IPaperItem
@@ -20,6 +22,12 @@ public abstract class PaperItemBase : VisualDataBase, IPaperItem
     }
 
     public abstract PaperItemType ItemType { get; }
+
+    public bool IsSelected
+    {
+        get => GetPropertyValue<bool>();
+        set => SetPropertyValue(value);
+    }
 }
 
 public abstract class PaperItemBaseViewModel : VisualDataViewModelBase, IPaperItem
@@ -36,4 +44,10 @@ public abstract class PaperItemBaseViewModel : VisualDataViewModelBase, IPaperIt
     }
 
     public abstract PaperItemType ItemType { get; }
+
+    public bool IsSelected
+    {
+        get => GetPropertyValue<bool>();
+        set => SetPropertyValue(value);
+    }
 }

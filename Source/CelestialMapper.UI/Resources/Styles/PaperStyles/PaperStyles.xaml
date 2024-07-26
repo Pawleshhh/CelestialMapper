@@ -21,6 +21,15 @@
         <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Private.DataTemplate.PaperItem.Text}" />
     </ui:DataTypeTemplateSelector>
 
+    <Style x:Key="Style.DragContainer" TargetType="{x:Type ui:DragContainer}">
+        <Setter Property="BorderBrush" Value="Black" />
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="BorderThickness" Value="2" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="Private.Style.PaperItemControl" TargetType="{x:Type ui:PaperItemControl}">
         <Setter Property="ContentTemplateSelector" Value="{StaticResource DataTemplateSelector.PaperItems}" />
         <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.Width}" />
@@ -42,16 +51,24 @@
         </Setter>
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
-                <Style>
-                    <Setter Property="Canvas.Left" Value="{Binding X}" />
-                    <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding X, Mode=TwoWay}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Y, Mode=TwoWay}" />
                 </Style>
             </Setter.Value>
         </Setter>
         <Setter Property="ItemTemplate">
             <Setter.Value>
-                <DataTemplate>
-                    <ui:PaperItemControl Content="{Binding .}" Style="{StaticResource Private.Style.PaperItemControl}" />
+                <DataTemplate DataType="{x:Type vm:IPaperItem}">
+                    <ui:DragContainer
+                        x:Name="PaperItemDragContainer"
+                        IsSelected="{Binding IsSelected, Mode=TwoWay}"
+                        RelativeParent="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ui:Paper}}}"
+                        Style="{StaticResource Style.DragContainer}"
+                        XPos="{Binding X, Mode=TwoWay}"
+                        YPos="{Binding Y, Mode=TwoWay}">
+                        <ui:PaperItemControl Content="{Binding .}" Style="{StaticResource Private.Style.PaperItemControl}" />
+                    </ui:DragContainer>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
