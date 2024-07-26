@@ -6,6 +6,12 @@ using static CelestialMapper.UI.DependencyPropertyHelper;
 
 public class DragContainer : PlatformUserControl
 {
+
+    private const string TopLeftResizePart = "PART_TopLeftResize";
+    private const string TopRightResizePart = "PART_TopRightResize";
+    private const string BottomRightResizePart = "PART_BottomRightResize";
+    private const string BottomLeftResizePart = "PART_BottomLeftResize";
+
     private Point clickPosition;
     private Point initialMousePosition;
     private const double DragThreshold = 1.0; // Threshold in pixels to start dragging
@@ -69,6 +75,38 @@ public class DragContainer : PlatformUserControl
     public static DependencyProperty IsSelectedProperty =
         Register(nameof(IsSelected), new PlatformPropertyMetadata<DragContainer, bool>(false));
 
+    public override void OnApplyTemplate()
+    {
+        base.OnApplyTemplate();
+
+        //var resizeButtons = new[]
+        //{ 
+        //    TopLeftResizePart, TopRightResizePart, 
+        //    BottomLeftResizePart, BottomRightResizePart
+        //};
+
+        //foreach (var partName in resizeButtons)
+        //{
+        //    var part = Template.FindName(partName, this) as ResizeButton;
+
+        //    if (part is null)
+        //    {
+        //        continue;
+        //    }
+
+        //    part.RenderTransform = part.ResizeDirection switch
+        //    {
+        //        ResizeDirection.TopLeft     => Translate.To(-part.ActualWidth, -part.ActualHeight),
+        //        ResizeDirection.TopRight    => Translate.To(part.ActualWidth, -part.ActualHeight),
+        //        ResizeDirection.BottomRight => Translate.To(part.ActualWidth, part.ActualHeight),
+        //        ResizeDirection.BottomLeft  => Translate.To(-part.ActualWidth, part.ActualHeight),
+        //        _ => Translate.To(0, 0)
+        //    };
+        //}
+    }
+
+    #region Drag & Select
+
     private void DragContainer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         IsDragging = false;
@@ -119,4 +157,5 @@ public class DragContainer : PlatformUserControl
             }
         }
     }
+    #endregion
 }

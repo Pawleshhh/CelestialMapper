@@ -27,6 +27,11 @@ public abstract class ValueConverterBase<TFrom, TTo, TParameter> : IValueConvert
             return HandleWrongParameterType(parameter);
         }
 
+        if (parameter is null)
+        {
+            return Convert(from, targetType, default!, culture);
+        }
+
         var param = (TParameter)parameter;
 
         return Convert(from, targetType, param, culture);
@@ -41,6 +46,11 @@ public abstract class ValueConverterBase<TFrom, TTo, TParameter> : IValueConvert
         if (ExpectsParameter && parameter is not TParameter)
         {
             return HandleWrongParameterType(parameter);
+        }
+
+        if (parameter is null)
+        {
+            return ConvertBack(to, targetType, default!, culture);
         }
 
         var param = (TParameter)parameter;

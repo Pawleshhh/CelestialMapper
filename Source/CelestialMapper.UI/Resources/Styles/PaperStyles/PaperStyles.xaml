@@ -21,11 +21,116 @@
         <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Private.DataTemplate.PaperItem.Text}" />
     </ui:DataTypeTemplateSelector>
 
+    <Style x:Key="Private.Style.Button.DragContainer.ResizeGrip" TargetType="{x:Type ui:ResizeButton}">
+        <Setter Property="Height" Value="16" />
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ui:ResizeButton}">
+                    <Grid>
+                        <ContentPresenter />
+                        <Ellipse
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            Fill="Red" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="ResizeDirection" Value="TopRight" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Cursor" Value="SizeNESW" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="ResizeDirection" Value="BottomRight" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Cursor" Value="SizeNWSE" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="ResizeDirection" Value="BottomLeft" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Cursor" Value="SizeNESW" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="ResizeDirection" Value="TopLeft" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Cursor" Value="SizeNWSE" />
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="Style.DragContainer" TargetType="{x:Type ui:DragContainer}">
         <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ui:DragContainer}">
+                    <Grid>
+                        <Border
+                            x:Name="DragContainerBorder"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter Content="{TemplateBinding Content}" />
+                        </Border>
+
+                        <ui:ResizeButton
+                            x:Name="PART_TopLeftResize"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            ResizeDirection="TopLeft"
+                            Style="{StaticResource Private.Style.Button.DragContainer.ResizeGrip}">
+                            <ui:ResizeButton.RenderTransform>
+                                <TranslateTransform X="{Binding ElementName=PART_TopLeftResize, Path=Width, Converter={x:Static ui:Converters.NegateHalfValue}}" Y="{Binding ElementName=PART_TopLeftResize, Path=Height, Converter={x:Static ui:Converters.NegateHalfValue}}" />
+                            </ui:ResizeButton.RenderTransform>
+                        </ui:ResizeButton>
+                        <ui:ResizeButton
+                            x:Name="PART_TopRightResize"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            ResizeDirection="TopRight"
+                            Style="{StaticResource Private.Style.Button.DragContainer.ResizeGrip}">
+                            <ui:ResizeButton.RenderTransform>
+                                <TranslateTransform X="{Binding ElementName=PART_TopRightResize, Path=Width, Converter={x:Static ui:Converters.HalfValue}}" Y="{Binding ElementName=PART_TopRightResize, Path=Height, Converter={x:Static ui:Converters.NegateHalfValue}}" />
+                            </ui:ResizeButton.RenderTransform>
+                        </ui:ResizeButton>
+                        <ui:ResizeButton
+                            x:Name="PART_BottomRightResize"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            ResizeDirection="BottomRight"
+                            Style="{StaticResource Private.Style.Button.DragContainer.ResizeGrip}">
+                            <ui:ResizeButton.RenderTransform>
+                                <TranslateTransform X="{Binding ElementName=PART_BottomRightResize, Path=Width, Converter={x:Static ui:Converters.HalfValue}}" Y="{Binding ElementName=PART_TopLeftResize, Path=Height, Converter={x:Static ui:Converters.HalfValue}}" />
+                            </ui:ResizeButton.RenderTransform>
+                        </ui:ResizeButton>
+                        <ui:ResizeButton
+                            x:Name="PART_BottomLeftResize"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            ResizeDirection="BottomLeft"
+                            Style="{StaticResource Private.Style.Button.DragContainer.ResizeGrip}">
+                            <ui:ResizeButton.RenderTransform>
+                                <TranslateTransform X="{Binding ElementName=PART_BottomLeftResize, Path=Width, Converter={x:Static ui:Converters.NegateHalfValue}}" Y="{Binding ElementName=PART_BottomLeftResize, Path=Height, Converter={x:Static ui:Converters.HalfValue}}" />
+                            </ui:ResizeButton.RenderTransform>
+                        </ui:ResizeButton>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="BorderThickness" Value="2" />
+                <Setter Property="BorderThickness" Value="1" />
             </Trigger>
         </Style.Triggers>
     </Style>
