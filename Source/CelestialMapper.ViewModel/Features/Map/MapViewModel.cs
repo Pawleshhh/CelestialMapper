@@ -6,7 +6,7 @@ using System.Windows.Input;
 namespace CelestialMapper.ViewModel;
 
 [Export(typeof(MapViewModel), IsSingleton = true, Key = nameof(MapViewModel))]
-public class MapViewModel : ViewModelBase
+public class MapViewModel : PaperItemBaseViewModel
 {
 
     #region Fields

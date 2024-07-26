@@ -3,7 +3,7 @@
 public record FeatureName
 {
 
-    public static FeatureName Unknown { get; } = new("Unknown");
+    public static FeatureName Unknown { get; } = new(nameof(Unknown));
 
     public bool IsUnknown() => ReferenceEquals(this, Unknown);
 
@@ -35,5 +35,9 @@ public class FeatureNames
     public static FeatureName Menu { get; } = new(nameof(Menu));
 
     public static FeatureName ExportMenu { get; } = new(nameof(ExportMenu));
+
+    public static FeatureName Paper { get; } = new(nameof(Paper));
+    
+    public static FeatureName TextItem { get; } = new(nameof(TextItem));
 
 }

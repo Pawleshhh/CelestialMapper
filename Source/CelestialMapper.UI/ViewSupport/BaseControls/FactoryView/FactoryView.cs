@@ -36,6 +36,7 @@ public class FactoryView : ContentControl
         if (view is null)
         {
             // TODO: Create unknown view for such cases
+            return;
         }
 
         Content = view;

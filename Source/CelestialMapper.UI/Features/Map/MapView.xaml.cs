@@ -3,6 +3,7 @@
 /// <summary>
 /// Interaction logic for MapView.xaml
 /// </summary>
+[Export(typeof(FeatureViewBase), typeof(MapView), IsSingleton = false, Key = nameof(MapView), IsKeyed = true)]
 public partial class MapView : FeatureViewBase
 {
 
