@@ -3,6 +3,8 @@
 public interface IPaperItem : IVisualData
 {
     public int Id { get; }
+
+    public PaperItemType ItemType { get; }
 }
 
 public abstract class PaperItemBase : VisualDataBase, IPaperItem
@@ -16,6 +18,8 @@ public abstract class PaperItemBase : VisualDataBase, IPaperItem
         get => GetPropertyValue<int>();
         init => SetPropertyValue(value);
     }
+
+    public abstract PaperItemType ItemType { get; }
 }
 
 public abstract class PaperItemBaseViewModel : VisualDataViewModelBase, IPaperItem
@@ -30,4 +34,6 @@ public abstract class PaperItemBaseViewModel : VisualDataViewModelBase, IPaperIt
         get => GetPropertyValue<int>();
         init => SetPropertyValue(value);
     }
+
+    public abstract PaperItemType ItemType { get; }
 }

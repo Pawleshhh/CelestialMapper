@@ -92,6 +92,8 @@ public class MapViewModel : PaperItemBaseViewModel
 
     public IReadOnlySet<Constellation> Constellations => this.map?.Constellations ?? new HashSet<Constellation>();
 
+    public override PaperItemType ItemType => PaperItemType.Map;
+
     #endregion
 
     #region Methods

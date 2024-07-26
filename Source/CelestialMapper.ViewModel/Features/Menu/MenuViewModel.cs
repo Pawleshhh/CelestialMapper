@@ -34,6 +34,7 @@ public class MenuViewModel : ViewModelBase
 
         IEnumerable<IViewModel> GetSubMenuViewModels()
         {
+            yield return this.ioCManager.ServiceProvider.ResolveViewModel<PaperEditorMenuViewModel>(FeatureNames.PaperEditorMenu);
             yield return this.ioCManager.ServiceProvider.ResolveViewModel<ExportMenuViewModel>(FeatureNames.ExportMenu);
         }
     }

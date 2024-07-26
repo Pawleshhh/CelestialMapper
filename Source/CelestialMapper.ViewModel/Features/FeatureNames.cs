@@ -38,6 +38,8 @@ public class FeatureNames
 
     public static FeatureName Paper { get; } = new(nameof(Paper));
     
+    public static FeatureName PaperEditorMenu { get; } = new(nameof(PaperEditorMenu));
+
     public static FeatureName TextItem { get; } = new(nameof(TextItem));
 
 }
