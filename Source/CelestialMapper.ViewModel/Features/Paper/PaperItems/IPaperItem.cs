@@ -2,7 +2,7 @@
 
 public interface IPaperItem : IVisualData
 {
-    public int Id { get; }
+    public Guid Id { get; }
 
     public PaperItemType ItemType { get; }
 
@@ -15,9 +15,9 @@ public abstract class PaperItemBase : VisualDataBase, IPaperItem
     {
     }
 
-    public int Id
+    public required Guid Id
     {
-        get => GetPropertyValue<int>();
+        get => GetPropertyValue<Guid>();
         init => SetPropertyValue(value);
     }
 
@@ -37,9 +37,9 @@ public abstract class PaperItemBaseViewModel : VisualDataViewModelBase, IPaperIt
     {
     }
 
-    public int Id
+    public Guid Id
     {
-        get => GetPropertyValue<int>();
+        get => GetPropertyValue<Guid>();
         init => SetPropertyValue(value);
     }
 

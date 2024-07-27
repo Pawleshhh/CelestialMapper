@@ -32,7 +32,11 @@ public class PaperItemFactory : IPaperItemFactory
         return type switch
         {
             PaperItemType.Map => this.ioCManager.ServiceProvider.ResolveViewModel<MapViewModel>(FeatureNames.Map),
-            PaperItemType.Text => new TextItem { Text = (string)value },
+            PaperItemType.Text => new TextItem 
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Text = (string)value,
+                                },
             _ => ThrowWhenTypeNotHandled(type)
         };
     }
