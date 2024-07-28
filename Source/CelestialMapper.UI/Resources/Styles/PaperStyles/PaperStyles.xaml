@@ -13,7 +13,10 @@
     </DataTemplate>
 
     <DataTemplate x:Key="Private.DataTemplate.PaperItem.Text" DataType="{x:Type vm:TextItem}">
-        <TextBlock Style="{DynamicResource Style.TextBlock.Regular}" Text="{Binding Text}" />
+        <TextBlock
+            Style="{DynamicResource Style.TextBlock.Regular}"
+            Text="{Binding Text}"
+            TextWrapping="Wrap" />
     </DataTemplate>
 
     <ui:DataTypeTemplateSelector x:Key="DataTemplateSelector.PaperItems">
