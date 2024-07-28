@@ -22,8 +22,8 @@
     </ui:DataTypeTemplateSelector>
 
     <Style x:Key="Private.Style.Button.DragContainer.ResizeGrip" TargetType="{x:Type ui:ResizeButton}">
-        <Setter Property="Height" Value="16" />
-        <Setter Property="Width" Value="16" />
+        <Setter Property="Height" Value="8" />
+        <Setter Property="Width" Value="8" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ui:ResizeButton}">
@@ -70,6 +70,9 @@
     </Style>
 
     <Style x:Key="Style.DragContainer" TargetType="{x:Type ui:DragContainer}">
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="MinWidth" Value="24" />
+
         <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="Template">
             <Setter.Value>
@@ -167,12 +170,17 @@
                 <DataTemplate DataType="{x:Type vm:IPaperItem}">
                     <ui:DragContainer
                         x:Name="PaperItemDragContainer"
+                        Width="{Binding Width, Mode=TwoWay}"
+                        Height="{Binding Height, Mode=TwoWay}"
                         IsSelected="{Binding IsSelected, Mode=TwoWay}"
                         RelativeParent="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ui:Paper}}}"
                         Style="{StaticResource Style.DragContainer}"
                         XPos="{Binding X, Mode=TwoWay}"
                         YPos="{Binding Y, Mode=TwoWay}">
-                        <ui:PaperItemControl Content="{Binding .}" Style="{StaticResource Private.Style.PaperItemControl}" />
+                        <ui:PaperItemControl
+                            x:Name="PaperItemControl"
+                            Content="{Binding .}"
+                            Style="{StaticResource Private.Style.PaperItemControl}" />
                     </ui:DragContainer>
                 </DataTemplate>
             </Setter.Value>

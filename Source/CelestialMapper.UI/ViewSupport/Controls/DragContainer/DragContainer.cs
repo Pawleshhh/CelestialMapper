@@ -14,21 +14,65 @@ public class DragContainer : PlatformUserControl
 
     private Point clickPosition;
     private Point initialMousePosition;
+    private Point lastMousePosition;
+    private ResizeDirection currentResizeDirection;
     private const double DragThreshold = 1.0; // Threshold in pixels to start dragging
 
     public DragContainer()
     {
-        this.MouseLeftButtonDown += DragContainer_MouseLeftButtonDown;
+        this.PreviewMouseLeftButtonDown += DragContainer_MouseLeftButtonDown;
         this.MouseLeftButtonUp += DragContainer_MouseLeftButtonUp;
         this.MouseMove += DragContainer_MouseMove;
+
+        this.Loaded += DragContainer_Loaded;
+        this.Unloaded += DragContainer_Unloaded;
     }
 
     public DragContainer(IServiceProvider serviceProvider) : base(serviceProvider)
     {
-        this.MouseLeftButtonDown += DragContainer_MouseLeftButtonDown;
+        this.PreviewMouseLeftButtonDown += DragContainer_MouseLeftButtonDown;
         this.MouseLeftButtonUp += DragContainer_MouseLeftButtonUp;
         this.MouseMove += DragContainer_MouseMove;
+
+        this.Loaded += DragContainer_Loaded;
+        this.Unloaded += DragContainer_Unloaded;
     }
+
+    private void DragContainer_Loaded(object sender, RoutedEventArgs e)
+    {
+        TopLeftResizeButton!.PreviewMouseLeftButtonDown += ResizeButton_MouseLeftButtonDown;
+        TopRightResizeButton!.PreviewMouseLeftButtonDown += ResizeButton_MouseLeftButtonDown;
+        BottomRightResizeButton!.PreviewMouseLeftButtonDown += ResizeButton_MouseLeftButtonDown;
+        BottomLeftResizeButton!.PreviewMouseLeftButtonDown += ResizeButton_MouseLeftButtonDown;
+
+        TopLeftResizeButton!.MouseLeftButtonUp += ResizeButton_MouseLeftButtonUp;
+        TopRightResizeButton!.MouseLeftButtonUp += ResizeButton_MouseLeftButtonUp;
+        BottomRightResizeButton!.MouseLeftButtonUp += ResizeButton_MouseLeftButtonUp;
+        BottomLeftResizeButton!.MouseLeftButtonUp += ResizeButton_MouseLeftButtonUp;
+    }
+
+    private void DragContainer_Unloaded(object sender, RoutedEventArgs e)
+    {
+        TopLeftResizeButton!.PreviewMouseLeftButtonDown -= ResizeButton_MouseLeftButtonDown;
+        TopRightResizeButton!.PreviewMouseLeftButtonDown -= ResizeButton_MouseLeftButtonDown;
+        BottomRightResizeButton!.PreviewMouseLeftButtonDown -= ResizeButton_MouseLeftButtonDown;
+        BottomLeftResizeButton!.PreviewMouseLeftButtonDown -= ResizeButton_MouseLeftButtonDown;
+
+        TopLeftResizeButton!.MouseLeftButtonUp -= ResizeButton_MouseLeftButtonUp;
+        TopRightResizeButton!.MouseLeftButtonUp -= ResizeButton_MouseLeftButtonUp;
+        BottomRightResizeButton!.MouseLeftButtonUp -= ResizeButton_MouseLeftButtonUp;
+        BottomLeftResizeButton!.MouseLeftButtonUp -= ResizeButton_MouseLeftButtonUp;
+    }
+
+    private ResizeButton? topLeftResizeButton;
+    private ResizeButton? topRightResizeButton;
+    private ResizeButton? bottomRightResizeButton;
+    private ResizeButton? bottomLeftResizeButton;
+
+    public ResizeButton TopLeftResizeButton => this.topLeftResizeButton ??= (Template.FindName(TopLeftResizePart, this) as ResizeButton)!;
+    public ResizeButton TopRightResizeButton => this.topRightResizeButton ??= (Template.FindName(TopRightResizePart, this) as ResizeButton)!;
+    public ResizeButton BottomRightResizeButton => this.bottomRightResizeButton ??= (Template.FindName(BottomRightResizePart, this) as ResizeButton)!;
+    public ResizeButton BottomLeftResizeButton => this.bottomLeftResizeButton ??= (Template.FindName(BottomLeftResizePart, this) as ResizeButton)!;
 
     public UIElement RelativeParent
     {
@@ -66,6 +110,15 @@ public class DragContainer : PlatformUserControl
     public static DependencyProperty IsDraggingProperty =
         Register(nameof(IsDragging), new PlatformPropertyMetadata<DragContainer, bool>(false));
 
+    public bool IsResizing
+    {
+        get => this.GetValue<bool>(IsResizingProperty);
+        set => this.SetValue(IsResizingProperty, value);
+    }
+
+    public static DependencyProperty IsResizingProperty =
+        Register(nameof(IsResizing), new PlatformPropertyMetadata<DragContainer, bool>(false));
+
     public bool IsSelected
     {
         get => this.GetValue<bool>(IsSelectedProperty);
@@ -75,41 +128,11 @@ public class DragContainer : PlatformUserControl
     public static DependencyProperty IsSelectedProperty =
         Register(nameof(IsSelected), new PlatformPropertyMetadata<DragContainer, bool>(false));
 
-    public override void OnApplyTemplate()
-    {
-        base.OnApplyTemplate();
-
-        //var resizeButtons = new[]
-        //{ 
-        //    TopLeftResizePart, TopRightResizePart, 
-        //    BottomLeftResizePart, BottomRightResizePart
-        //};
-
-        //foreach (var partName in resizeButtons)
-        //{
-        //    var part = Template.FindName(partName, this) as ResizeButton;
-
-        //    if (part is null)
-        //    {
-        //        continue;
-        //    }
-
-        //    part.RenderTransform = part.ResizeDirection switch
-        //    {
-        //        ResizeDirection.TopLeft     => Translate.To(-part.ActualWidth, -part.ActualHeight),
-        //        ResizeDirection.TopRight    => Translate.To(part.ActualWidth, -part.ActualHeight),
-        //        ResizeDirection.BottomRight => Translate.To(part.ActualWidth, part.ActualHeight),
-        //        ResizeDirection.BottomLeft  => Translate.To(-part.ActualWidth, part.ActualHeight),
-        //        _ => Translate.To(0, 0)
-        //    };
-        //}
-    }
-
     #region Drag & Select
 
     private void DragContainer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        IsDragging = false;
+        IsDragging = true;
         IsSelected = true;
         this.clickPosition = e.GetPosition(this);
         this.initialMousePosition = e.GetPosition(RelativeParent);
@@ -119,42 +142,108 @@ public class DragContainer : PlatformUserControl
     private void DragContainer_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
         IsDragging = false;
+        IsResizing = false;
+        this.ReleaseMouseCapture();
+    }
+
+    private void ResizeButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        var button = (ResizeButton)sender;
+
+        this.currentResizeDirection = button.ResizeDirection;
+        this.lastMousePosition = e.GetPosition(RelativeParent);
+        IsResizing = true;
+        IsSelected = true;
+
+        this.CaptureMouse();
+    }
+
+    private void ResizeButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        var button = (ResizeButton)sender;
+
+        IsResizing = false;
+
         this.ReleaseMouseCapture();
     }
 
     private void DragContainer_MouseMove(object sender, MouseEventArgs e)
     {
-        if (this.IsMouseCaptured)
+        if (!this.IsMouseCaptured)
         {
-            Point currentPosition = e.GetPosition(RelativeParent);
+            return;
+        }
 
-            if (!IsDragging)
+        PositionInfo positionInfo = this.GetPositionInfo(RelativeParent);
+        Point mousePosition = e.GetPosition(RelativeParent);
+
+        if (IsResizing)
+        {
+            double deltaX, deltaY;
+            (deltaX, deltaY) = this.currentResizeDirection switch
             {
-                if (Math.Abs(currentPosition.X - this.initialMousePosition.X) > DragThreshold ||
-                    Math.Abs(currentPosition.Y - this.initialMousePosition.Y) > DragThreshold)
-                {
-                    IsDragging = true;
-                }
+                ResizeDirection.TopLeft => (mousePosition.X - positionInfo.TopLeft.X, mousePosition.Y - positionInfo.TopLeft.Y),
+                ResizeDirection.TopRight => (mousePosition.X - positionInfo.TopRight.X, mousePosition.Y - positionInfo.TopLeft.Y),
+                ResizeDirection.BottomRight => (mousePosition.X - positionInfo.BottomRight.X, mousePosition.Y - positionInfo.BottomRight.Y),
+                ResizeDirection.BottomLeft => (mousePosition.X - positionInfo.BottomLeft.X, mousePosition.Y - positionInfo.BottomLeft.Y),
+                _ => (0, 0)
+            };
+
+            // Update the last mouse position for the next movement
+            this.lastMousePosition = mousePosition;
+
+            // Calculate new size and position based on the resize direction
+            switch (this.currentResizeDirection)
+            {
+                case ResizeDirection.TopLeft:
+                    Width = Math.Max(Width - deltaX, MinWidth); // Prevent negative width
+                    Height = Math.Max(Height - deltaY, MinHeight); // Prevent negative height
+                    XPos += deltaX;
+                    YPos += deltaY;
+                    break;
+                case ResizeDirection.TopRight:
+                    Width = Math.Max(Width + deltaX, MinWidth); // Prevent negative width
+                    Height = Math.Max(Height - deltaY, MinHeight); // Prevent negative height
+                    YPos += deltaY;
+                    break;
+                case ResizeDirection.BottomRight:
+                    Width = Math.Max(Width + deltaX, MinWidth); // Prevent negative width
+                    Height = Math.Max(Height + deltaY, MinHeight); // Prevent negative height
+                    break;
+                case ResizeDirection.BottomLeft:
+                    Width = Math.Max(Width - deltaX, MinWidth); // Prevent negative width
+                    Height = Math.Max(Height + deltaY, MinHeight); // Prevent negative height
+                    XPos += deltaX;
+                    break;
+                default:
+                    break;
+            }
+            return;
+        }
+
+        if (Math.Abs(mousePosition.X - this.initialMousePosition.X) <= DragThreshold &&
+            Math.Abs(mousePosition.Y - this.initialMousePosition.Y) <= DragThreshold)
+        {
+            return;
+        }
+
+        if (IsDragging)
+        {
+            double newXPos = mousePosition.X - this.clickPosition.X;
+            double newYPos = mousePosition.Y - this.clickPosition.Y;
+
+            // Clamp the position to stay within the bounds of the RelativeParent
+            if (RelativeParent is FrameworkElement parentElement)
+            {
+                double parentWidth = parentElement.ActualWidth;
+                double parentHeight = parentElement.ActualHeight;
+
+                newXPos = Math.Max(0, Math.Min(newXPos, parentWidth - this.ActualWidth));
+                newYPos = Math.Max(0, Math.Min(newYPos, parentHeight - this.ActualHeight));
             }
 
-            if (IsDragging)
-            {
-                double newXPos = currentPosition.X - this.clickPosition.X;
-                double newYPos = currentPosition.Y - this.clickPosition.Y;
-
-                // Clamp the position to stay within the bounds of the RelativeParent
-                if (RelativeParent is FrameworkElement parentElement)
-                {
-                    double parentWidth = parentElement.ActualWidth;
-                    double parentHeight = parentElement.ActualHeight;
-
-                    newXPos = Math.Max(0, Math.Min(newXPos, parentWidth - this.ActualWidth));
-                    newYPos = Math.Max(0, Math.Min(newYPos, parentHeight - this.ActualHeight));
-                }
-
-                XPos = newXPos;
-                YPos = newYPos;
-            }
+            XPos = newXPos;
+            YPos = newYPos;
         }
     }
     #endregion

@@ -31,11 +31,6 @@ public class PaperViewModel : ViewModelBase
         PaperItems = new();
         this.paperEditor.AddPaperItem(PaperItemType.Map);
         this.paperEditor.AddPaperItem(PaperItemType.Text, "Hello World");
-
-        //PaperItems.AddRange(configurator.GetSubViewModels().OfType<IPaperItem>());
-
-        //var txt = new TextItem { Id = Guid.NewGuid(), Text = "Hello World!", X = 40, Y = 67 };
-        //PaperItems.Add(txt);
     }
 
     public override Dictionary<FeatureName, IViewModelConfigurator> InitializeConfigurators()
