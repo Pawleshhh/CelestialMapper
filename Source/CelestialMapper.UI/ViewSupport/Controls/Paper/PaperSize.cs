@@ -18,8 +18,8 @@ public static class PaperSizeExtensions
     {
         var paperSizeCm = paperSize.GetPaperSizeInCentimeters();
 
-        var widthInvariant = paperSizeCm.Width.ToString(CultureInfo.InvariantCulture);
-        var heightInvariant = paperSizeCm.Height.ToString(CultureInfo.InvariantCulture);
+        var widthInvariant = paperSizeCm.Width.ToString();
+        var heightInvariant = paperSizeCm.Height.ToString();
 
         var width = (double)converter.ConvertFrom($"{widthInvariant}cm")!;
         var height = (double)converter.ConvertFrom($"{heightInvariant}cm")!;

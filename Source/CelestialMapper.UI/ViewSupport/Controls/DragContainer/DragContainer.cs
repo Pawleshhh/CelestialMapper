@@ -198,13 +198,24 @@ public class DragContainer : PlatformUserControl
                 case ResizeDirection.TopLeft:
                     Width = Math.Max(Width - deltaX, MinWidth); // Prevent negative width
                     Height = Math.Max(Height - deltaY, MinHeight); // Prevent negative height
-                    XPos += deltaX;
-                    YPos += deltaY;
+
+                    if (!IsWidthAtMin())
+                    {
+                        XPos += deltaX;
+                    }
+                    if (!IsHeightAtMin())
+                    {
+                        YPos += deltaY;
+                    }
                     break;
                 case ResizeDirection.TopRight:
                     Width = Math.Max(Width + deltaX, MinWidth); // Prevent negative width
                     Height = Math.Max(Height - deltaY, MinHeight); // Prevent negative height
-                    YPos += deltaY;
+
+                    if (!IsHeightAtMin())
+                    {
+                        YPos += deltaY;
+                    }
                     break;
                 case ResizeDirection.BottomRight:
                     Width = Math.Max(Width + deltaX, MinWidth); // Prevent negative width
@@ -213,11 +224,17 @@ public class DragContainer : PlatformUserControl
                 case ResizeDirection.BottomLeft:
                     Width = Math.Max(Width - deltaX, MinWidth); // Prevent negative width
                     Height = Math.Max(Height + deltaY, MinHeight); // Prevent negative height
-                    XPos += deltaX;
+                    if (!IsWidthAtMin())
+                    {
+                        XPos += deltaX;
+                    }
                     break;
                 default:
                     break;
             }
+
+            bool IsWidthAtMin() => Width <= MinWidth;
+            bool IsHeightAtMin() => Height <= MinHeight;
             return;
         }
 
