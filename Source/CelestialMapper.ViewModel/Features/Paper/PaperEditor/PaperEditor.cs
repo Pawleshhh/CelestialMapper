@@ -1,4 +1,6 @@
-﻿namespace CelestialMapper.ViewModel;
+﻿using System.ComponentModel;
+
+namespace CelestialMapper.ViewModel;
 
 [Export(typeof(IPaperEditor), typeof(PaperEditor), IsKeyed = false, IsSingleton = true, Key = nameof(PaperEditor))]
 public class PaperEditor : IPaperEditor
@@ -12,21 +14,38 @@ public class PaperEditor : IPaperEditor
 
         PaperItemAdded += (s, e) => { };
         PaperItemRemoved += (s, e) => { };
+        PaperItemSelected += (s, e) => { };
     }
 
     public IDictionary<Guid, IPaperItem> PaperItems { get; } = new Dictionary<Guid, IPaperItem>();
 
     public event PlatformEventHandler<IPaperEditor, PlatformEventArgs<IPaperItem>> PaperItemAdded;
     public event PlatformEventHandler<IPaperEditor, PlatformEventArgs<IPaperItem>> PaperItemRemoved;
+    public event PlatformEventHandler<IPaperEditor, PlatformEventArgs<IPaperItem>> PaperItemSelected;
 
     protected virtual void OnPaperItemAdded(IPaperItem item)
     {
         PaperItemAdded(this, new(item));
+
+        if (item is INotifyPropertyChanged notifyPropertyChanged)
+        {
+            notifyPropertyChanged.PropertyChanged += PaperItem_PropertyChanged;
+        }
     }
 
     protected virtual void OnPaperItemRemoved(IPaperItem item)
     {
         PaperItemRemoved(this, new(item));
+
+        if (item is INotifyPropertyChanged notifyPropertyChanged)
+        {
+            notifyPropertyChanged.PropertyChanged -= PaperItem_PropertyChanged;
+        }
+    }
+
+    protected virtual void OnPaperItemSelected(IPaperItem item)
+    {
+        PaperItemSelected(this, new(item));
     }
 
     public void AddPaperItem(PaperItemType itemType)
@@ -51,6 +70,23 @@ public class PaperEditor : IPaperEditor
         if (item is not null)
         {
             OnPaperItemRemoved(item);
+        }
+    }
+
+    private void PaperItem_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (sender is not IPaperItem item)
+        {
+            return;
+        }
+        if (e.PropertyName != nameof(IPaperItem.IsSelected))
+        {
+            return;
+        }
+
+        if (item.IsSelected)
+        {
+            OnPaperItemSelected(item);
         }
     }
 }

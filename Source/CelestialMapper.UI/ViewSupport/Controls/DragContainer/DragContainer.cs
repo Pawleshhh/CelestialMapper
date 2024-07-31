@@ -18,6 +18,10 @@ public class DragContainer : PlatformUserControl
     private ResizeDirection currentResizeDirection;
     private const double DragThreshold = 1.0; // Threshold in pixels to start dragging
 
+    private bool wantsToDrag;
+    private bool wantsToResize;
+    private bool wasSelected;
+
     public DragContainer()
     {
         this.PreviewMouseLeftButtonDown += DragContainer_MouseLeftButtonDown;
@@ -128,12 +132,16 @@ public class DragContainer : PlatformUserControl
     public static DependencyProperty IsSelectedProperty =
         Register(nameof(IsSelected), new PlatformPropertyMetadata<DragContainer, bool>(false));
 
-    #region Drag & Select
+    #region Drag, Resize & Select
 
     private void DragContainer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        IsDragging = true;
-        IsSelected = true;
+        SetIsSelected(true);
+
+        IsDragging = false;
+        this.wantsToDrag = true;
+        this.wantsToResize = false;
+
         this.clickPosition = e.GetPosition(this);
         this.initialMousePosition = e.GetPosition(RelativeParent);
         this.CaptureMouse();
@@ -141,8 +149,16 @@ public class DragContainer : PlatformUserControl
 
     private void DragContainer_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
+        if (IsSelected && this.wasSelected && !IsDragging && !this.wantsToResize)
+        {
+            SetIsSelected(false);
+        }
+
         IsDragging = false;
         IsResizing = false;
+        this.wantsToDrag = false;
+        this.wantsToResize = false;
+
         this.ReleaseMouseCapture();
     }
 
@@ -150,10 +166,12 @@ public class DragContainer : PlatformUserControl
     {
         var button = (ResizeButton)sender;
 
+        IsResizing = false;
+        this.wantsToDrag = false;
+        this.wantsToResize = true;
+
         this.currentResizeDirection = button.ResizeDirection;
         this.lastMousePosition = e.GetPosition(RelativeParent);
-        IsResizing = true;
-        IsSelected = true;
 
         this.CaptureMouse();
     }
@@ -163,19 +181,23 @@ public class DragContainer : PlatformUserControl
         var button = (ResizeButton)sender;
 
         IsResizing = false;
+        this.wantsToDrag = false;
+        this.wantsToResize = false;
 
         this.ReleaseMouseCapture();
     }
 
     private void DragContainer_MouseMove(object sender, MouseEventArgs e)
     {
-        if (!this.IsMouseCaptured)
+        if (!this.IsMouseCaptured || !this.IsSelected)
         {
             return;
         }
 
         PositionInfo positionInfo = this.GetPositionInfo(RelativeParent);
         Point mousePosition = e.GetPosition(RelativeParent);
+
+        IsResizing = this.wantsToResize;
 
         if (IsResizing)
         {
@@ -238,10 +260,9 @@ public class DragContainer : PlatformUserControl
             return;
         }
 
-        if (Math.Abs(mousePosition.X - this.initialMousePosition.X) <= DragThreshold &&
-            Math.Abs(mousePosition.Y - this.initialMousePosition.Y) <= DragThreshold)
+        if (ThresholdCondition() && this.wantsToDrag)
         {
-            return;
+            IsDragging = true;
         }
 
         if (IsDragging)
@@ -262,6 +283,18 @@ public class DragContainer : PlatformUserControl
             XPos = newXPos;
             YPos = newYPos;
         }
+
+        bool ThresholdCondition()
+        {
+            return Math.Abs(mousePosition.X - this.initialMousePosition.X) > DragThreshold ||
+                   Math.Abs(mousePosition.Y - this.initialMousePosition.Y) > DragThreshold;
+        }
+    }
+
+    private void SetIsSelected(bool value)
+    {
+        this.wasSelected = IsSelected;
+        IsSelected = value;
     }
     #endregion
 }

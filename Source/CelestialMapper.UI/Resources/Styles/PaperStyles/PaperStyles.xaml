@@ -131,6 +131,14 @@
                             </ui:ResizeButton.RenderTransform>
                         </ui:ResizeButton>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter TargetName="PART_TopLeftResize" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_TopRightResize" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_BottomRightResize" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_BottomLeftResize" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
