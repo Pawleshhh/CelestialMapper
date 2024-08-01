@@ -24,7 +24,7 @@ public class DragContainer : PlatformUserControl
 
     public DragContainer()
     {
-        this.PreviewMouseLeftButtonDown += DragContainer_MouseLeftButtonDown;
+        this.PreviewMouseLeftButtonDown += DragContainer_PreviewMouseLeftButtonDown;
         this.MouseLeftButtonUp += DragContainer_MouseLeftButtonUp;
         this.MouseMove += DragContainer_MouseMove;
 
@@ -34,7 +34,7 @@ public class DragContainer : PlatformUserControl
 
     public DragContainer(IServiceProvider serviceProvider) : base(serviceProvider)
     {
-        this.PreviewMouseLeftButtonDown += DragContainer_MouseLeftButtonDown;
+        this.PreviewMouseLeftButtonDown += DragContainer_PreviewMouseLeftButtonDown;
         this.MouseLeftButtonUp += DragContainer_MouseLeftButtonUp;
         this.MouseMove += DragContainer_MouseMove;
 
@@ -44,28 +44,18 @@ public class DragContainer : PlatformUserControl
 
     private void DragContainer_Loaded(object sender, RoutedEventArgs e)
     {
-        TopLeftResizeButton!.PreviewMouseLeftButtonDown += ResizeButton_MouseLeftButtonDown;
-        TopRightResizeButton!.PreviewMouseLeftButtonDown += ResizeButton_MouseLeftButtonDown;
-        BottomRightResizeButton!.PreviewMouseLeftButtonDown += ResizeButton_MouseLeftButtonDown;
-        BottomLeftResizeButton!.PreviewMouseLeftButtonDown += ResizeButton_MouseLeftButtonDown;
-
-        TopLeftResizeButton!.MouseLeftButtonUp += ResizeButton_MouseLeftButtonUp;
-        TopRightResizeButton!.MouseLeftButtonUp += ResizeButton_MouseLeftButtonUp;
-        BottomRightResizeButton!.MouseLeftButtonUp += ResizeButton_MouseLeftButtonUp;
-        BottomLeftResizeButton!.MouseLeftButtonUp += ResizeButton_MouseLeftButtonUp;
+        TopLeftResizeButton!.PreviewMouseLeftButtonDown += ResizeButton_PreviewMouseLeftButtonDown;
+        TopRightResizeButton!.PreviewMouseLeftButtonDown += ResizeButton_PreviewMouseLeftButtonDown;
+        BottomRightResizeButton!.PreviewMouseLeftButtonDown += ResizeButton_PreviewMouseLeftButtonDown;
+        BottomLeftResizeButton!.PreviewMouseLeftButtonDown += ResizeButton_PreviewMouseLeftButtonDown;
     }
 
     private void DragContainer_Unloaded(object sender, RoutedEventArgs e)
     {
-        TopLeftResizeButton!.PreviewMouseLeftButtonDown -= ResizeButton_MouseLeftButtonDown;
-        TopRightResizeButton!.PreviewMouseLeftButtonDown -= ResizeButton_MouseLeftButtonDown;
-        BottomRightResizeButton!.PreviewMouseLeftButtonDown -= ResizeButton_MouseLeftButtonDown;
-        BottomLeftResizeButton!.PreviewMouseLeftButtonDown -= ResizeButton_MouseLeftButtonDown;
-
-        TopLeftResizeButton!.MouseLeftButtonUp -= ResizeButton_MouseLeftButtonUp;
-        TopRightResizeButton!.MouseLeftButtonUp -= ResizeButton_MouseLeftButtonUp;
-        BottomRightResizeButton!.MouseLeftButtonUp -= ResizeButton_MouseLeftButtonUp;
-        BottomLeftResizeButton!.MouseLeftButtonUp -= ResizeButton_MouseLeftButtonUp;
+        TopLeftResizeButton!.PreviewMouseLeftButtonDown -= ResizeButton_PreviewMouseLeftButtonDown;
+        TopRightResizeButton!.PreviewMouseLeftButtonDown -= ResizeButton_PreviewMouseLeftButtonDown;
+        BottomRightResizeButton!.PreviewMouseLeftButtonDown -= ResizeButton_PreviewMouseLeftButtonDown;
+        BottomLeftResizeButton!.PreviewMouseLeftButtonDown -= ResizeButton_PreviewMouseLeftButtonDown;
     }
 
     private ResizeButton? topLeftResizeButton;
@@ -77,6 +67,14 @@ public class DragContainer : PlatformUserControl
     public ResizeButton TopRightResizeButton => this.topRightResizeButton ??= (Template.FindName(TopRightResizePart, this) as ResizeButton)!;
     public ResizeButton BottomRightResizeButton => this.bottomRightResizeButton ??= (Template.FindName(BottomRightResizePart, this) as ResizeButton)!;
     public ResizeButton BottomLeftResizeButton => this.bottomLeftResizeButton ??= (Template.FindName(BottomLeftResizePart, this) as ResizeButton)!;
+
+    private Dictionary<ResizeDirection, ResizeButton> ResizeButtonsByDirection => new()
+    {
+        [ResizeDirection.TopLeft] = this.TopLeftResizeButton,
+        [ResizeDirection.TopRight] = this.TopRightResizeButton,
+        [ResizeDirection.BottomRight] = this.BottomRightResizeButton,
+        [ResizeDirection.BottomLeft] = this.BottomLeftResizeButton,
+    };
 
     public UIElement RelativeParent
     {
@@ -134,7 +132,7 @@ public class DragContainer : PlatformUserControl
 
     #region Drag, Resize & Select
 
-    private void DragContainer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void DragContainer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         SetIsSelected(true);
 
@@ -162,7 +160,7 @@ public class DragContainer : PlatformUserControl
         this.ReleaseMouseCapture();
     }
 
-    private void ResizeButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void ResizeButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         var button = (ResizeButton)sender;
 
@@ -174,17 +172,6 @@ public class DragContainer : PlatformUserControl
         this.lastMousePosition = e.GetPosition(RelativeParent);
 
         this.CaptureMouse();
-    }
-
-    private void ResizeButton_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-    {
-        var button = (ResizeButton)sender;
-
-        IsResizing = false;
-        this.wantsToDrag = false;
-        this.wantsToResize = false;
-
-        this.ReleaseMouseCapture();
     }
 
     private void DragContainer_MouseMove(object sender, MouseEventArgs e)

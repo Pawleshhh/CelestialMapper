@@ -27,17 +27,21 @@
     <Style x:Key="Private.Style.Button.DragContainer.ResizeGrip" TargetType="{x:Type ui:ResizeButton}">
         <Setter Property="Height" Value="8" />
         <Setter Property="Width" Value="8" />
+        <Setter Property="Background" Value="{DynamicResource Brush.DefaultState}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ui:ResizeButton}">
                     <Grid>
-                        <ContentPresenter />
-                        <Ellipse
-                            Width="{TemplateBinding Width}"
-                            Height="{TemplateBinding Height}"
-                            Fill="Red" />
+                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{DynamicResource CornerRadius.RoundCorners}">
+                            <ContentPresenter />
+                        </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <!--#region Cursor-->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True" />
@@ -66,6 +70,20 @@
                             </MultiTrigger.Conditions>
                             <Setter Property="Cursor" Value="SizeNWSE" />
                         </MultiTrigger>
+                        <!--#endregion-->
+
+                        <!--#region Button States-->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource Brush.Hover}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource Brush.Pressed}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Disabled}" />
+                        </Trigger>
+                        <!--#endregion-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
