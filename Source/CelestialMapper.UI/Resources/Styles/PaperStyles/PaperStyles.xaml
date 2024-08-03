@@ -91,7 +91,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="Style.DragContainer" TargetType="{x:Type ui:DragContainer}">
+    <Style x:Key="Private.Style.PaperItem.DragContainer" TargetType="{x:Type ui:DragContainer}">
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="MinWidth" Value="24" />
 
@@ -161,6 +161,18 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+
+        <Setter Property="ContextMenu">
+            <Setter.Value>
+                <ContextMenu>
+                    <MenuItem CommandParameter="{x:Static ui:ZIndexAction.BringToFront}" Header="Bring to Front" />
+                    <MenuItem CommandParameter="{x:Static ui:ZIndexAction.SendToBack}" Header="Send to Back" />
+                    <MenuItem CommandParameter="{x:Static ui:ZIndexAction.BringForward}" Header="Bring Forward" />
+                    <MenuItem CommandParameter="{x:Static ui:ZIndexAction.SendBackward}" Header="Send Backward" />
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
+
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="BorderThickness" Value="1" />
@@ -192,6 +204,7 @@
                 <Style TargetType="ContentPresenter">
                     <Setter Property="Canvas.Left" Value="{Binding X, Mode=TwoWay}" />
                     <Setter Property="Canvas.Top" Value="{Binding Y, Mode=TwoWay}" />
+                    <Setter Property="Panel.ZIndex" Value="{Binding ZIndex, Mode=TwoWay}" />
                 </Style>
             </Setter.Value>
         </Setter>
@@ -204,7 +217,7 @@
                         Height="{Binding Height, Mode=TwoWay}"
                         IsSelected="{Binding IsSelected, Mode=TwoWay}"
                         RelativeParent="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ui:Paper}}}"
-                        Style="{StaticResource Style.DragContainer}"
+                        Style="{StaticResource Private.Style.PaperItem.DragContainer}"
                         XPos="{Binding X, Mode=TwoWay}"
                         YPos="{Binding Y, Mode=TwoWay}">
                         <ui:PaperItemControl

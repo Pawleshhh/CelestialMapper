@@ -54,6 +54,8 @@ public class PaperEditor : IPaperEditor
         var item = this.paperItemFactory.Create(itemType);
         PaperItems.Add(new(item.Id, item));
 
+        item.ZIndex = PaperItems.Count - 1;
+
         OnPaperItemAdded(item);
     }
 
@@ -61,6 +63,8 @@ public class PaperEditor : IPaperEditor
     {
         var item = this.paperItemFactory.Create(itemType, value);
         PaperItems.Add(new(item.Id, item));
+
+        item.ZIndex = PaperItems.Count - 1;
 
         OnPaperItemAdded(item);
     }

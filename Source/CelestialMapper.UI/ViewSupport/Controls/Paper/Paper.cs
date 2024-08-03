@@ -1,10 +1,11 @@
 ﻿namespace CelestialMapper.UI;
 
+using CelestialMapper.ViewModel;
 using System;
 using System.Collections.Specialized;
 using static CelestialMapper.UI.DependencyPropertyHelper;
 
-public class Paper : PlatformItemsControl
+public class Paper : PlatformItemsControl, IZIndexAware
 {
 
     public static readonly string PaperDefaultStyleKey = "Style.Paper";
@@ -18,24 +19,6 @@ public class Paper : PlatformItemsControl
     {
         Style = TryFindResource(PaperDefaultStyleKey) as Style;
     }
-
-    #region PaperContent property
-
-    //public IList PaperContent
-    //{
-    //    get { return (IList)GetValue(PaperContentProperty); }
-    //    set { SetValue(PaperContentProperty, value); }
-    //}
-
-    //public static readonly DependencyProperty PaperContentProperty =
-    //    Register(nameof(PaperContent), new PlatformPropertyMetadata<Paper, IList>(Enumerable.Empty<object>().ToList(), OnPaperContentChanged));
-
-    //private static void OnPaperContentChanged(Paper d, DependencyPropertyChangedEventArgs<IList> e)
-    //{
-
-    //}
-
-    #endregion
 
     #region PaperSize property
 
@@ -52,6 +35,19 @@ public class Paper : PlatformItemsControl
     {
         d.ApplyPaperSize(e.NewValue);
     }
+
+    #endregion
+
+    #region ZIndexAware
+
+    public RelayCommand<ZIndexAction> ZIndexCommand
+    {
+        get => this.GetValue<RelayCommand<ZIndexAction>>(ZIndexCommandProperty);
+        set => SetValue(ZIndexCommandProperty, value);
+    }
+
+    public static readonly DependencyProperty ZIndexCommandProperty =
+        Register(nameof(ZIndexCommand), new PlatformPropertyMetadata<Paper, RelayCommand<ZIndexAction>>());
 
     #endregion
 

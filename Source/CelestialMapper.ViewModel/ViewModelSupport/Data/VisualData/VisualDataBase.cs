@@ -48,4 +48,9 @@ public abstract class VisualDataBase : NotifyPropertyChangedBase, IVisualData
         get => GetPropertyValue<bool>();
         set => SetPropertyValue(value);
     }
+    public int ZIndex
+    {
+        get => GetPropertyValue<int>();
+        set => SetPropertyValue(value);
+    }
 }
