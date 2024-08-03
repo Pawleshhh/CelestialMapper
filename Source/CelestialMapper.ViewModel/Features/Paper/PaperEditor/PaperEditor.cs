@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using CelestialMapper.Common;
 
 namespace CelestialMapper.ViewModel;
 
@@ -86,6 +87,9 @@ public class PaperEditor : IPaperEditor
 
         if (item.IsSelected)
         {
+            PaperItems
+                .Where(x => x.Key != item.Id && x.Value.IsSelected)
+                .ForEach(x => x.Value.IsSelected = false);
             OnPaperItemSelected(item);
         }
     }

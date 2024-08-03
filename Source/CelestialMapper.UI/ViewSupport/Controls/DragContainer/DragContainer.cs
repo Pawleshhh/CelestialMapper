@@ -82,7 +82,7 @@ public class DragContainer : PlatformUserControl
         set => SetValue(RelativeParentProperty, value);
     }
 
-    public static DependencyProperty RelativeParentProperty =
+    public static readonly DependencyProperty RelativeParentProperty =
         Register(nameof(RelativeParent), new PlatformPropertyMetadata<DragContainer, UIElement>((UIElement?)null));
 
     public double XPos
@@ -91,7 +91,7 @@ public class DragContainer : PlatformUserControl
         set => this.SetValue(XPosProperty, value);
     }
 
-    public static DependencyProperty XPosProperty =
+    public static readonly DependencyProperty XPosProperty =
         Register(nameof(XPos), new PlatformPropertyMetadata<DragContainer, double>(0));
 
     public double YPos
@@ -100,7 +100,7 @@ public class DragContainer : PlatformUserControl
         set => this.SetValue(YPosProperty, value);
     }
 
-    public static DependencyProperty YPosProperty =
+    public static readonly DependencyProperty YPosProperty =
         Register(nameof(YPos), new PlatformPropertyMetadata<DragContainer, double>(0));
 
     public bool IsDragging
@@ -109,7 +109,7 @@ public class DragContainer : PlatformUserControl
         set => this.SetValue(IsDraggingProperty, value);
     }
 
-    public static DependencyProperty IsDraggingProperty =
+    public static readonly DependencyProperty IsDraggingProperty =
         Register(nameof(IsDragging), new PlatformPropertyMetadata<DragContainer, bool>(false));
 
     public bool IsResizing
@@ -118,7 +118,7 @@ public class DragContainer : PlatformUserControl
         set => this.SetValue(IsResizingProperty, value);
     }
 
-    public static DependencyProperty IsResizingProperty =
+    public static readonly DependencyProperty IsResizingProperty =
         Register(nameof(IsResizing), new PlatformPropertyMetadata<DragContainer, bool>(false));
 
     public bool IsSelected
@@ -127,7 +127,7 @@ public class DragContainer : PlatformUserControl
         set => this.SetValue(IsSelectedProperty, value);
     }
 
-    public static DependencyProperty IsSelectedProperty =
+    public static readonly DependencyProperty IsSelectedProperty =
         Register(nameof(IsSelected), new PlatformPropertyMetadata<DragContainer, bool>(false));
 
     #region Drag, Resize & Select

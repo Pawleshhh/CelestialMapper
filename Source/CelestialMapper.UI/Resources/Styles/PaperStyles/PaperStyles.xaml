@@ -16,6 +16,7 @@
         <TextBlock
             Style="{DynamicResource Style.TextBlock.Regular}"
             Text="{Binding Text}"
+            TextTrimming="CharacterEllipsis"
             TextWrapping="Wrap" />
     </DataTemplate>
 
