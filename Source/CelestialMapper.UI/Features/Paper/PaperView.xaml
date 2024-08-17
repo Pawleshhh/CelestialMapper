@@ -19,7 +19,10 @@
                 <RowDefinition Height="{DynamicResource GridLength.Twos.Huge}" />
             </Grid.RowDefinitions>
 
-            <local:Paper Grid.Row="1" ItemsSource="{Binding PaperItems}" />
+            <local:Paper
+                Grid.Row="1"
+                ItemsSource="{Binding PaperItems}"
+                ZIndexActionCommand="{Binding ZIndexActionCommand}" />
         </Grid>
     </ScrollViewer>
 </local:FeatureViewBase>

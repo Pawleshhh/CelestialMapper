@@ -18,6 +18,8 @@ public class PaperEditor : IPaperEditor
         PaperItemSelected += (s, e) => { };
     }
 
+    public IZIndexProcessor ZIndexProcessor { get; } = new ZIndexProcessor();
+
     public IDictionary<Guid, IPaperItem> PaperItems { get; } = new Dictionary<Guid, IPaperItem>();
 
     public event PlatformEventHandler<IPaperEditor, PlatformEventArgs<IPaperItem>> PaperItemAdded;

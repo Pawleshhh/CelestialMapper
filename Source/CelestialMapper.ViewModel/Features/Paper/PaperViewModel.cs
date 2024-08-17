@@ -1,7 +1,6 @@
 ﻿namespace CelestialMapper.ViewModel;
 
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 [Export(typeof(PaperViewModel), IsSingleton = false, Key = nameof(PaperViewModel))]
 public class PaperViewModel : ViewModelBase
@@ -31,6 +30,16 @@ public class PaperViewModel : ViewModelBase
         PaperItems = new();
         this.paperEditor.AddPaperItem(PaperItemType.Map);
         this.paperEditor.AddPaperItem(PaperItemType.Text, "Hello World");
+
+        ZIndexActionCommand = new(x =>
+        {
+            if (x?.Sender is not IPaperItem paperItem)
+            {
+                return;
+            }
+
+            this.paperEditor.ZIndexProcessor.Process(paperItem, x.ZIndexAction);
+        });
     }
 
     public override Dictionary<FeatureName, IViewModelConfigurator> InitializeConfigurators()
@@ -57,6 +66,12 @@ public class PaperViewModel : ViewModelBase
         this.paperEditor.PaperItemAdded -= PaperEditor_PaperItemAdded;
         this.paperEditor.PaperItemRemoved -= PaperEditor_PaperItemRemoved;
     }
+
+    #endregion
+
+    #region Commands
+
+    public RelayCommand<ICommandZIndexParameters>? ZIndexActionCommand { get; set; }
 
     #endregion
 

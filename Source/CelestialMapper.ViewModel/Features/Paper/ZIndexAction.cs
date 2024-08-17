@@ -1,4 +1,4 @@
-﻿namespace CelestialMapper.UI;
+﻿namespace CelestialMapper.ViewModel;
 
 public enum ZIndexAction
 {

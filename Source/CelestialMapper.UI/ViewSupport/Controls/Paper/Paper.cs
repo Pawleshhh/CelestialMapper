@@ -5,7 +5,7 @@ using System;
 using System.Collections.Specialized;
 using static CelestialMapper.UI.DependencyPropertyHelper;
 
-public class Paper : PlatformItemsControl, IZIndexAware
+public class Paper : PlatformItemsControl
 {
 
     public static readonly string PaperDefaultStyleKey = "Style.Paper";
@@ -38,16 +38,16 @@ public class Paper : PlatformItemsControl, IZIndexAware
 
     #endregion
 
-    #region ZIndexAware
+    #region ZIndexCommand
 
-    public RelayCommand<ZIndexAction> ZIndexCommand
+    public RelayCommand<ZIndexAction> ZIndexActionCommand
     {
-        get => this.GetValue<RelayCommand<ZIndexAction>>(ZIndexCommandProperty);
-        set => SetValue(ZIndexCommandProperty, value);
+        get => this.GetValue<RelayCommand<ZIndexAction>>(ZIndexActionCommandProperty);
+        set => SetValue(ZIndexActionCommandProperty, value);
     }
 
-    public static readonly DependencyProperty ZIndexCommandProperty =
-        Register(nameof(ZIndexCommand), new PlatformPropertyMetadata<Paper, RelayCommand<ZIndexAction>>());
+    public static readonly DependencyProperty ZIndexActionCommandProperty =
+        Register(nameof(ZIndexActionCommand), new PlatformPropertyMetadata<Paper, RelayCommand<ZIndexAction>>());
 
     #endregion
 
