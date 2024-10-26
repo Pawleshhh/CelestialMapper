@@ -130,24 +130,6 @@ public class DragContainer : PlatformUserControl
     public static readonly DependencyProperty IsSelectedProperty =
         Register(nameof(IsSelected), new PlatformPropertyMetadata<DragContainer, bool>(false));
 
-    public ICommand ZIndexActionCommand
-    {
-        get => this.GetValue<ICommand>(ZIndexActionCommandProperty);
-        set { SetValue(ZIndexActionCommandProperty, value); }
-    }
-
-    public static readonly DependencyProperty ZIndexActionCommandProperty =
-        Register(nameof(ZIndexActionCommand), new PlatformPropertyMetadata<DragContainer, ICommand>());
-
-    public ZIndexAction ZIndexActionCommandParameter
-    {
-        get { return this.GetValue<ZIndexAction>(CommandParameterProperty); }
-        set { SetValue(CommandParameterProperty, value); }
-    }
-
-    public static readonly DependencyProperty CommandParameterProperty =
-        Register(nameof(ZIndexActionCommandParameter), new PlatformPropertyMetadata<DragContainer, ZIndexAction>(ZIndexAction.BringToFront));
-
     #region Drag, Resize & Select
 
     private void DragContainer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

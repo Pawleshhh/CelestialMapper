@@ -6,13 +6,16 @@ public class PaperItemFactory : IPaperItemFactory
 
     private const string ValuePrefix = "String.PaperItem.DefaultValue";
 
+    private readonly IPaperItemContextMenuFactory contextMenuFactory;
     private readonly IResourceResolver resourceResolver;
     private readonly IIoCManager ioCManager;
 
     public PaperItemFactory(
+        IPaperItemContextMenuFactory contextMenuFactory,
         IResourceResolver resourceResolver,
         IIoCManager ioCManager)
     {
+        this.contextMenuFactory = contextMenuFactory;
         this.resourceResolver = resourceResolver;
         this.ioCManager = ioCManager;
     }
@@ -29,7 +32,7 @@ public class PaperItemFactory : IPaperItemFactory
 
     public IPaperItem Create(PaperItemType type, object value)
     {
-        return type switch
+        var item = type switch
         {
             PaperItemType.Map => this.ioCManager.ServiceProvider.ResolveViewModel<MapViewModel>(FeatureNames.Map),
             PaperItemType.Text => new TextItem 
@@ -39,6 +42,9 @@ public class PaperItemFactory : IPaperItemFactory
                                 },
             _ => ThrowWhenTypeNotHandled(type)
         };
+
+        item.Commands = new(this.contextMenuFactory.CreateCommands(item));
+        return item;
     }
 
     private IPaperItem ThrowWhenTypeNotHandled(PaperItemType type)

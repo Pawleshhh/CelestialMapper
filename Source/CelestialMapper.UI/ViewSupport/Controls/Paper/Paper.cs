@@ -38,19 +38,6 @@ public class Paper : PlatformItemsControl
 
     #endregion
 
-    #region ZIndexCommand
-
-    public RelayCommand<ZIndexAction> ZIndexActionCommand
-    {
-        get => this.GetValue<RelayCommand<ZIndexAction>>(ZIndexActionCommandProperty);
-        set => SetValue(ZIndexActionCommandProperty, value);
-    }
-
-    public static readonly DependencyProperty ZIndexActionCommandProperty =
-        Register(nameof(ZIndexActionCommand), new PlatformPropertyMetadata<Paper, RelayCommand<ZIndexAction>>());
-
-    #endregion
-
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();

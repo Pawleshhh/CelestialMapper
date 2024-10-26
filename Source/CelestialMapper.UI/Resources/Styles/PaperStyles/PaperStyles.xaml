@@ -162,45 +162,6 @@
             </Setter.Value>
         </Setter>
 
-        <Setter Property="ContextMenu">
-            <Setter.Value>
-                <ContextMenu>
-                    <MenuItem
-                        x:Name="BringToFrontMenuItem"
-                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ui:DragContainer}}, Path=ZIndexActionCommand}"
-                        Header="Bring to Front">
-                        <MenuItem.CommandParameter>
-                            <ui:CommandZIndexParameters Sender="{Binding .}" ZIndexAction="BringToFront" />
-                        </MenuItem.CommandParameter>
-                    </MenuItem>
-                    <MenuItem
-                        x:Name="SendToBackMenuItem"
-                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ui:DragContainer}}, Path=ZIndexActionCommand}"
-                        Header="Send to Back">
-                        <MenuItem.CommandParameter>
-                            <ui:CommandZIndexParameters Sender="{Binding .}" ZIndexAction="SendToBack" />
-                        </MenuItem.CommandParameter>
-                    </MenuItem>
-                    <MenuItem
-                        x:Name="BringForwardItem"
-                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ui:DragContainer}}, Path=ZIndexActionCommand}"
-                        Header="Bring Forward">
-                        <MenuItem.CommandParameter>
-                            <ui:CommandZIndexParameters Sender="{Binding .}" ZIndexAction="BringForward" />
-                        </MenuItem.CommandParameter>
-                    </MenuItem>
-                    <MenuItem
-                        x:Name="SendBackwardItem"
-                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ui:DragContainer}}, Path=ZIndexActionCommand}"
-                        Header="Send Backward">
-                        <MenuItem.CommandParameter>
-                            <ui:CommandZIndexParameters Sender="{Binding .}" ZIndexAction="SendBackward" />
-                        </MenuItem.CommandParameter>
-                    </MenuItem>
-                </ContextMenu>
-            </Setter.Value>
-        </Setter>
-
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="BorderThickness" Value="1" />
@@ -247,12 +208,21 @@
                         RelativeParent="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ui:Paper}}}"
                         Style="{StaticResource Private.Style.PaperItem.DragContainer}"
                         XPos="{Binding X, Mode=TwoWay}"
-                        YPos="{Binding Y, Mode=TwoWay}"
-                        ZIndexActionCommand="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ui:Paper}}, Path=ZIndexCommand}">
+                        YPos="{Binding Y, Mode=TwoWay}">
                         <ui:PaperItemControl
                             x:Name="PaperItemControl"
                             Content="{Binding .}"
                             Style="{StaticResource Private.Style.PaperItemControl}" />
+
+                        <ui:DragContainer.ContextMenu>
+                            <ContextMenu ItemsSource="{Binding Commands}">
+                                <ContextMenu.ItemTemplate>
+                                    <DataTemplate DataType="vm:UICommand">
+                                        <TextBlock Text="{Binding Label}" />
+                                    </DataTemplate>
+                                </ContextMenu.ItemTemplate>
+                            </ContextMenu>
+                        </ui:DragContainer.ContextMenu>
                     </ui:DragContainer>
                 </DataTemplate>
             </Setter.Value>

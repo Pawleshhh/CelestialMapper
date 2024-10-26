@@ -1,4 +1,7 @@
-﻿namespace CelestialMapper.ViewModel;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
+
+namespace CelestialMapper.ViewModel;
 
 public interface IPaperItem : IVisualData
 {
@@ -7,6 +10,8 @@ public interface IPaperItem : IVisualData
     public PaperItemType ItemType { get; }
 
     public bool IsSelected { get; set; }
+
+    public ObservableCollection<UICommand<IPaperItem>> Commands { get; set; }
 
 }
 
@@ -30,9 +35,9 @@ public abstract class PaperItemBase : VisualDataBase, IPaperItem
         set => SetPropertyValue(value);
     }
 
-    public int ZIndex
+    public ObservableCollection<UICommand<IPaperItem>> Commands
     {
-        get => GetPropertyValue<int>();
+        get => GetPropertyValue<ObservableCollection<UICommand<IPaperItem>>>() ?? new();
         set => SetPropertyValue(value);
     }
 }
@@ -58,9 +63,9 @@ public abstract class PaperItemBaseViewModel : VisualDataViewModelBase, IPaperIt
         set => SetPropertyValue(value);
     }
 
-    public int ZIndex
+    public ObservableCollection<UICommand<IPaperItem>> Commands
     {
-        get => GetPropertyValue<int>();
+        get => GetPropertyValue<ObservableCollection<UICommand<IPaperItem>>>() ?? new();
         set => SetPropertyValue(value);
     }
 }

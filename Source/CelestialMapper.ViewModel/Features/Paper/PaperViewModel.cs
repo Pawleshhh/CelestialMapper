@@ -30,16 +30,6 @@ public class PaperViewModel : ViewModelBase
         PaperItems = new();
         this.paperEditor.AddPaperItem(PaperItemType.Map);
         this.paperEditor.AddPaperItem(PaperItemType.Text, "Hello World");
-
-        ZIndexActionCommand = new(x =>
-        {
-            if (x?.Sender is not IPaperItem paperItem)
-            {
-                return;
-            }
-
-            this.paperEditor.ZIndexProcessor.Process(paperItem, x.ZIndexAction);
-        });
     }
 
     public override Dictionary<FeatureName, IViewModelConfigurator> InitializeConfigurators()
@@ -70,8 +60,6 @@ public class PaperViewModel : ViewModelBase
     #endregion
 
     #region Commands
-
-    public RelayCommand<ICommandZIndexParameters>? ZIndexActionCommand { get; set; }
 
     #endregion
 

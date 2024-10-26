@@ -3,8 +3,6 @@
 public interface IPaperEditor
 {
 
-    public IZIndexProcessor ZIndexProcessor { get; }
-
     public IDictionary<Guid, IPaperItem> PaperItems { get; }
 
     public event PlatformEventHandler<IPaperEditor, PlatformEventArgs<IPaperItem>> PaperItemAdded;

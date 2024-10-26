@@ -8,17 +8,18 @@ public class PaperEditor : IPaperEditor
 {
 
     private readonly IPaperItemFactory paperItemFactory;
+    private readonly IZIndexProcessor zIndexProcessor;
 
-    public PaperEditor(IPaperItemFactory paperItemFactory)
+    public PaperEditor(IPaperItemFactory paperItemFactory,
+        IZIndexProcessor zIndexProcessor)
     {
         this.paperItemFactory = paperItemFactory;
+        this.zIndexProcessor = zIndexProcessor;
 
         PaperItemAdded += (s, e) => { };
         PaperItemRemoved += (s, e) => { };
         PaperItemSelected += (s, e) => { };
     }
-
-    public IZIndexProcessor ZIndexProcessor { get; } = new ZIndexProcessor();
 
     public IDictionary<Guid, IPaperItem> PaperItems { get; } = new Dictionary<Guid, IPaperItem>();
 
