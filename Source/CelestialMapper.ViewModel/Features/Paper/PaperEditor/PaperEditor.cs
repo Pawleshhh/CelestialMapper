@@ -7,12 +7,16 @@ namespace CelestialMapper.ViewModel;
 public class PaperEditor : IPaperEditor
 {
 
+    private readonly IPaperStorage paperStorage;
     private readonly IPaperItemFactory paperItemFactory;
     private readonly IZIndexProcessor zIndexProcessor;
 
-    public PaperEditor(IPaperItemFactory paperItemFactory,
+    public PaperEditor(
+        IPaperStorage paperStorage,
+        IPaperItemFactory paperItemFactory,
         IZIndexProcessor zIndexProcessor)
     {
+        this.paperStorage = paperStorage;
         this.paperItemFactory = paperItemFactory;
         this.zIndexProcessor = zIndexProcessor;
 
@@ -20,8 +24,6 @@ public class PaperEditor : IPaperEditor
         PaperItemRemoved += (s, e) => { };
         PaperItemSelected += (s, e) => { };
     }
-
-    public IDictionary<Guid, IPaperItem> PaperItems { get; } = new Dictionary<Guid, IPaperItem>();
 
     public event PlatformEventHandler<IPaperEditor, PlatformEventArgs<IPaperItem>> PaperItemAdded;
     public event PlatformEventHandler<IPaperEditor, PlatformEventArgs<IPaperItem>> PaperItemRemoved;
@@ -55,9 +57,9 @@ public class PaperEditor : IPaperEditor
     public void AddPaperItem(PaperItemType itemType)
     {
         var item = this.paperItemFactory.Create(itemType);
-        PaperItems.Add(new(item.Id, item));
+        this.paperStorage.PaperItems.Add(new(item.Id, item));
 
-        item.ZIndex = PaperItems.Count - 1;
+        this.zIndexProcessor.ProcessNewItem(this.paperStorage.PaperItems.Values, item);
 
         OnPaperItemAdded(item);
     }
@@ -65,16 +67,16 @@ public class PaperEditor : IPaperEditor
     public void AddPaperItem(PaperItemType itemType, object value)
     {
         var item = this.paperItemFactory.Create(itemType, value);
-        PaperItems.Add(new(item.Id, item));
+        this.paperStorage.PaperItems.Add(new(item.Id, item));
 
-        item.ZIndex = PaperItems.Count - 1;
+        this.zIndexProcessor.ProcessNewItem(this.paperStorage.PaperItems.Values, item);
 
         OnPaperItemAdded(item);
     }
 
     public void RemovePaperItem(Guid guid)
     {
-        PaperItems.TryGetValue(guid, out var item);
+        this.paperStorage.PaperItems.TryGetValue(guid, out var item);
         if (item is not null)
         {
             OnPaperItemRemoved(item);
@@ -94,7 +96,7 @@ public class PaperEditor : IPaperEditor
 
         if (item.IsSelected)
         {
-            PaperItems
+            this.paperStorage.PaperItems
                 .Where(x => x.Key != item.Id && x.Value.IsSelected)
                 .ForEach(x => x.Value.IsSelected = false);
             OnPaperItemSelected(item);

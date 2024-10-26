@@ -4,10 +4,14 @@
 public class PaperItemContextMenuFactory : IPaperItemContextMenuFactory
 {
 
+    private readonly IPaperStorage paperStorage;
     private readonly IZIndexProcessor zIndexProcess;
 
-    public PaperItemContextMenuFactory(IZIndexProcessor zIndexProcessor)
+    public PaperItemContextMenuFactory(
+        IPaperStorage paperStorage,
+        IZIndexProcessor zIndexProcessor)
     {
+        this.paperStorage = paperStorage;
         this.zIndexProcess = zIndexProcessor;
     }
 
@@ -48,21 +52,41 @@ public class PaperItemContextMenuFactory : IPaperItemContextMenuFactory
 
     private void BringToFront(IPaperItem? item)
     {
-        ;
+        if (item is null)
+        {
+            return;
+        }
+
+        this.zIndexProcess.Process(this.paperStorage.PaperItems.Values, item, ZIndexAction.BringToFront);
     }
 
     private void SendToBack(IPaperItem? item)
     {
-        ;
+        if (item is null)
+        {
+            return;
+        }
+
+        this.zIndexProcess.Process(this.paperStorage.PaperItems.Values, item, ZIndexAction.SendToBack);
     }
 
     private void BringForward(IPaperItem? item)
     {
-        ;
+        if (item is null)
+        {
+            return;
+        }
+
+        this.zIndexProcess.Process(this.paperStorage.PaperItems.Values, item, ZIndexAction.BringForward);
     }
 
     private void SendBackward(IPaperItem? item)
     {
-        ;
+        if (item is null)
+        {
+            return;
+        }
+
+        this.zIndexProcess.Process(this.paperStorage.PaperItems.Values, item, ZIndexAction.SendBackward);
     }
 }
