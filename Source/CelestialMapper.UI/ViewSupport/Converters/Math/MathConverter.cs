@@ -10,11 +10,11 @@ public class MathConverter<T> : ValueConverterBase<T, T, T>
 
     public T? Parameter { get; set; }
 
-    protected virtual Func<T, T, T> ConvertValue { get; } = (v, p) => v;
+    protected virtual Func<T?, T?, T?> ConvertValue { get; } = (v, p) => v;
 
-    protected virtual Func<T, T, T> ConvertValueBack { get; } = (v, p) => v;
+    protected virtual Func<T?, T?, T?> ConvertValueBack { get; } = (v, p) => v;
 
-    public override T Convert(T value, Type targetType, T parameter, CultureInfo culture)
+    public override T? Convert(T? value, Type targetType, T? parameter, CultureInfo culture)
     {
         if (Parameter is not null)
         {
@@ -24,7 +24,7 @@ public class MathConverter<T> : ValueConverterBase<T, T, T>
         return ConvertValue(value, parameter);
     }
 
-    public override T ConvertBack(T value, Type targetType, T parameter, CultureInfo culture)
+    public override T? ConvertBack(T? value, Type targetType, T? parameter, CultureInfo culture)
     {
         if (Parameter is not null)
         {

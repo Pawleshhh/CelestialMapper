@@ -12,9 +12,11 @@ public static class ServiceProviderExtensions
 
         ThrowWhenServiceIsNull(viewModel, typeof(T));
 
-        viewModel!.Initialize(viewModel.GetViewModelConfigurator(featureName));
-
-        postConfigure?.Invoke(viewModel);
+        if (!viewModel.IsInitialized)
+        {
+            viewModel.Initialize(viewModel.GetViewModelConfigurator(featureName));
+            postConfigure?.Invoke(viewModel);
+        }
 
         return viewModel;
     }
@@ -25,9 +27,11 @@ public static class ServiceProviderExtensions
 
         ThrowWhenServiceIsNull(viewModel, vmType);
 
-        viewModel!.Initialize(viewModel.GetViewModelConfigurator(featureName));
-
-        postConfigure?.Invoke(viewModel);
+        if (!viewModel!.IsInitialized)
+        {
+            viewModel!.Initialize(viewModel.GetViewModelConfigurator(featureName));
+            postConfigure?.Invoke(viewModel);
+        }
 
         return viewModel;
     }

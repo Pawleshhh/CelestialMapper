@@ -32,6 +32,8 @@ public abstract class ViewModelBase : NotifyPropertyChangedBase, IViewModel
         private set => SetPropertyValue(value);
     }
 
+    public bool IsInitialized { get; private set; }
+
     #endregion
 
     #region Methods
@@ -42,6 +44,8 @@ public abstract class ViewModelBase : NotifyPropertyChangedBase, IViewModel
         Name = GetName();
 
         SubscribeToEvents();
+
+        IsInitialized = true;
     }
 
     public virtual void Unitilialize()

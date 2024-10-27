@@ -9,15 +9,10 @@
         <Expander Content="{Binding Content}" Header="{Binding HeaderContent}" />
     </DataTemplate>
 
-    <DataTemplate x:Key="Private.DataTemplate.Acordeon.Expander.ContentTemplate" DataType="{x:Type vm:IViewModel}">
-        <ui:FactoryView FeatureName="{Binding FeatureName}" />
-    </DataTemplate>
-
     <DataTemplate x:Key="Private.DataTemplate.Acordeon.ViewModel" DataType="{x:Type vm:IViewModel}">
-        <Expander
-            Content="{Binding .}"
-            ContentTemplate="{StaticResource Private.DataTemplate.Acordeon.Expander.ContentTemplate}"
-            Header="{Binding Name}" />
+        <Expander Header="{Binding Name}">
+            <ui:FactoryView Margin="{StaticResource Margin.Fives.Large.Horizontal}" FeatureName="{Binding FeatureName}" />
+        </Expander>
     </DataTemplate>
 
     <ui:DataTypeTemplateSelector x:Key="Private.TemplateSelector.Acordeon">

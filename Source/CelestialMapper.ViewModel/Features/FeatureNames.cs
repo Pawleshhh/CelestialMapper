@@ -17,6 +17,11 @@ public record FeatureName
         ViewName = name + "View";
     }
 
+    public override string ToString()
+    {
+        return Name;
+    }
+
     public override int GetHashCode()
     {
         return HashCode.Combine(Name.GetHashCode());

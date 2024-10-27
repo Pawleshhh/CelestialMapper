@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Menu\SubMenus\" />
     <Folder Include="ViewSupport\Extensions\Commands\" />
   </ItemGroup>
 

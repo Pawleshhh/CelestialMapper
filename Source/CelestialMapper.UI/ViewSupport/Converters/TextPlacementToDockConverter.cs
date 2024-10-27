@@ -14,12 +14,12 @@ public class TextPlacementToDockConverter : ValueConverterBase<TextPlacement, Do
 
     public override Dock DefaultToValue => Dock.Left;
 
-    public override Dock Convert(TextPlacement value, Type targetType, object parameter, CultureInfo culture)
+    public override Dock Convert(TextPlacement value, Type targetType, object? parameter, CultureInfo culture)
     {
         return TextPlacementToDock(value);
     }
 
-    public override TextPlacement ConvertBack(Dock value, Type targetType, object parameter, CultureInfo culture)
+    public override TextPlacement ConvertBack(Dock value, Type targetType, object? parameter, CultureInfo culture)
     {
         return DockToTextPlacement(value);
     }

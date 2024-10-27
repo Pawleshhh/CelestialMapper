@@ -5,6 +5,8 @@ namespace CelestialMapper.ViewModel;
 public interface IViewModel : INotifyPropertyChanged
 {
 
+    public bool IsInitialized { get; }
+
     public FeatureName FeatureName { get; }
     public string Name { get; }
 

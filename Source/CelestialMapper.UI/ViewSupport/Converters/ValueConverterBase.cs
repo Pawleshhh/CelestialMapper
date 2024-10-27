@@ -4,8 +4,6 @@ using System.Windows.Data;
 namespace CelestialMapper.UI;
 
 public abstract class ValueConverterBase<TFrom, TTo, TParameter> : IValueConverter
-    where TFrom : notnull
-    where TTo : notnull
 {
 
     public virtual OnWrongType OnWrongType { get; } = OnWrongType.DoNothing;
@@ -18,7 +16,7 @@ public abstract class ValueConverterBase<TFrom, TTo, TParameter> : IValueConvert
 
     object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is not TFrom from)
+        if (value is not null && value is not TFrom)
         {
             return HandleWrongFromType(value)!;
         }
@@ -27,14 +25,16 @@ public abstract class ValueConverterBase<TFrom, TTo, TParameter> : IValueConvert
             return HandleWrongParameterType(parameter);
         }
 
+        var from = (TFrom?)value;
+
         if (parameter is null)
         {
-            return Convert(from, targetType, default!, culture);
+            return Convert(from, targetType, default!, culture)!;
         }
 
         var param = (TParameter)parameter;
 
-        return Convert(from, targetType, param, culture);
+        return Convert(from, targetType, param, culture)!;
     }
 
     object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -50,17 +50,17 @@ public abstract class ValueConverterBase<TFrom, TTo, TParameter> : IValueConvert
 
         if (parameter is null)
         {
-            return ConvertBack(to, targetType, default!, culture);
+            return ConvertBack(to, targetType, default!, culture)!;
         }
 
         var param = (TParameter)parameter;
 
-        return ConvertBack(to, targetType, param, culture);
+        return ConvertBack(to, targetType, param, culture)!;
     }
 
-    public abstract TTo Convert(TFrom value, Type targetType, TParameter parameter, CultureInfo culture);
+    public abstract TTo? Convert(TFrom? value, Type targetType, TParameter? parameter, CultureInfo culture);
 
-    public abstract TFrom ConvertBack(TTo value, Type targetType, TParameter parameter, CultureInfo culture);
+    public abstract TFrom? ConvertBack(TTo? value, Type targetType, TParameter? parameter, CultureInfo culture);
 
     private object? HandleWrongFromType(object obj)
     {

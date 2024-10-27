@@ -25,7 +25,7 @@ public class DataTypeTemplateSelector : PlatformDataTemplateSelector<PlatformDat
             return relatedByInheritanceTemplate.DataTemplate;
         }
 
-        return GetDefault();
+        return GetDefault()!;
     }
 
 }
