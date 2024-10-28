@@ -28,8 +28,8 @@ public class PaperViewModel : ViewModelBase
         base.Initialize(configurator);
 
         PaperItems = new();
-        this.paperEditor.AddPaperItem(PaperItemType.Map);
-        this.paperEditor.AddPaperItem(PaperItemType.Text, "Hello World");
+        //this.paperEditor.AddPaperItem(PaperItemType.Map);
+        //this.paperEditor.AddPaperItem(PaperItemType.Text, "Hello World");
     }
 
     public override Dictionary<FeatureName, IViewModelConfigurator> InitializeConfigurators()

@@ -1,9 +1,16 @@
-﻿namespace CelestialMapper.ViewModel.Test;
+﻿using Moq;
+
+namespace CelestialMapper.ViewModel.Test;
 
 [TestFixture]
 public class PaperViewModelTest : ViewModelTest<PaperViewModel>
 {
-    public override Func<PaperViewModel> CreateSUT => () => new PaperViewModel(ViewModelSupport.Object);
+
+    public Mock<IPaperEditor> PaperEditor { get; } = new(MockBehavior.Strict);
+
+    public override Func<PaperViewModel> CreateSUT => () => new PaperViewModel(
+        PaperEditor.Object,
+        ViewModelSupport.Object);
 
     public override FeatureName DefaultFeatureName => new("Paper");
 

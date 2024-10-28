@@ -1,11 +1,10 @@
 ﻿using System.Globalization;
 using System.Numerics;
-using System.Windows.Data;
 
 namespace CelestialMapper.UI;
 
-public class MathConverter<T> : ValueConverterBase<T, T, T>
-    where T : INumber<T>
+public class MathConverter<T> : ValueConverterBase<T?, T?, T?>
+    where T : struct, INumber<T>
 {
 
     public T? Parameter { get; set; }

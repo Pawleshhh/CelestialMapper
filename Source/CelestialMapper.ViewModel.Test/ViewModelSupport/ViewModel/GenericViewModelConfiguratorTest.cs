@@ -72,6 +72,8 @@ public class GenericViewModelConfiguratorTest
         public FeatureName FeatureName { get; set; } = FeatureName.Unknown;
         public string Name { get; set; } = string.Empty;
 
+        public bool IsInitialized { get; set; }
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public void Initialize(IViewModelConfigurator configurator)
