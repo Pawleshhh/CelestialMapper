@@ -12,13 +12,27 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding SelectedPaperItem}" Value="{x:Null}">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="{StaticResource GridLength.Fives.Large}" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Visibility="{Binding SelectedPaperItem, Converter={x:Static local:Converters.NullMakesMeCollapsed}}">
+        <StackPanel Orientation="Vertical">
 
             <local:LabeledTextBox
                 Margin="{DynamicResource Margin.Twos.Small.Vertical}"
@@ -40,10 +54,7 @@
 
         </StackPanel>
 
-        <StackPanel
-            Grid.Column="2"
-            Orientation="Vertical"
-            Visibility="{Binding SelectedPaperItem, Converter={x:Static local:Converters.NullMakesMeCollapsed}}">
+        <StackPanel Grid.Column="2" Orientation="Vertical">
 
             <local:LabeledTextBox
                 Margin="{DynamicResource Margin.Twos.Small.Vertical}"
@@ -58,5 +69,13 @@
                 Text="{Binding SelectedPaperItem.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </StackPanel>
+
+        <ContentControl
+            Grid.Row="2"
+            Grid.ColumnSpan="3"
+            Content="{Binding SelectedPaperItem}"
+            Style="{StaticResource Style.ContentControl.PaperEditorMenu.SpecificSettings}"
+            Visibility="{Binding SelectedPaperItem, Converter={x:Static local:Converters.NullMakesMeCollapsed}}" />
+
     </Grid>
 </local:FeatureViewBase>

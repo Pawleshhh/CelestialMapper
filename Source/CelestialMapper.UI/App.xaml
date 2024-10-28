@@ -19,6 +19,7 @@
 
                 <ResourceDictionary Source="Resources/Styles/AcordeonStyles/AcordeonStyles.xaml" />
                 <ResourceDictionary Source="Resources/Styles/MenuStyles/MenuStyles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/PaperStyles/PaperEditorMenuStyles.xaml" />
                 <ResourceDictionary Source="Resources/Styles/PaperStyles/PaperStyles.xaml" />
                 <ResourceDictionary Source="Resources/Styles/WindowStyles.xaml" />
                 <ResourceDictionary Source="Resources/Styles/MapStyles/MapStyles.xaml" />

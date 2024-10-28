@@ -1,4 +1,19 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="clr-namespace:CelestialMapper.UI"
+    xmlns:vm="clr-namespace:CelestialMapper.ViewModel;assembly=CelestialMapper.ViewModel">
+
+    <DataTemplate x:Key="Private.DataTemplate.PaperEditorMenuStyles.TextItem.Settings" DataType="{x:Type vm:TextItem}">
+        <TextBlock Text="TextItem settings" />
+    </DataTemplate>
+
+    <ui:DataTypeTemplateSelector x:Key="Private.DataTemplateSelector.PaperEditorMenu.SpecificSettings">
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Private.DataTemplate.PaperEditorMenuStyles.TextItem.Settings}" />
+    </ui:DataTypeTemplateSelector>
+
+    <Style x:Key="Style.ContentControl.PaperEditorMenu.SpecificSettings" TargetType="{x:Type ContentControl}">
+        <Setter Property="ContentTemplateSelector" Value="{StaticResource Private.DataTemplateSelector.PaperEditorMenu.SpecificSettings}" />
+    </Style>
+
 </ResourceDictionary>
