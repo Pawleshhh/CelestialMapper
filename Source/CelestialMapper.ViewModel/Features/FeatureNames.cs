@@ -17,6 +17,11 @@ public record FeatureName
         ViewName = name + "View";
     }
 
+    public override string ToString()
+    {
+        return Name;
+    }
+
     public override int GetHashCode()
     {
         return HashCode.Combine(Name.GetHashCode());
@@ -38,6 +43,8 @@ public class FeatureNames
 
     public static FeatureName Paper { get; } = new(nameof(Paper));
     
+    public static FeatureName PaperEditorMenu { get; } = new(nameof(PaperEditorMenu));
+
     public static FeatureName TextItem { get; } = new(nameof(TextItem));
 
 }

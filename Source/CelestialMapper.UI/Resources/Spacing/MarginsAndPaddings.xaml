@@ -82,6 +82,8 @@
     <Thickness x:Key="Border.Small.Bottom">0, 0, 0, 2</Thickness>
     <Thickness x:Key="Border.Medium.Bottom">0, 0, 0, 3</Thickness>
 
+    <CornerRadius x:Key="CornerRadius.RoundCorners">1000</CornerRadius>
+
     <!--#endregion-->
 
 </ResourceDictionary>

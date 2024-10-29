@@ -13,13 +13,162 @@
     </DataTemplate>
 
     <DataTemplate x:Key="Private.DataTemplate.PaperItem.Text" DataType="{x:Type vm:TextItem}">
-        <TextBlock Style="{DynamicResource Style.TextBlock.Regular}" Text="{Binding Text}" />
+        <TextBlock
+            Foreground="Red"
+            Style="{DynamicResource Style.TextBlock.Regular}"
+            Text="{Binding Text}"
+            TextTrimming="CharacterEllipsis"
+            TextWrapping="Wrap" />
     </DataTemplate>
 
     <ui:DataTypeTemplateSelector x:Key="DataTemplateSelector.PaperItems">
         <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Private.DataTemplate.PaperItem.ViewModelBase}" IsDefault="True" />
         <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Private.DataTemplate.PaperItem.Text}" />
     </ui:DataTypeTemplateSelector>
+
+    <Style x:Key="Private.Style.Button.DragContainer.ResizeGrip" TargetType="{x:Type ui:ResizeButton}">
+        <Setter Property="Height" Value="8" />
+        <Setter Property="Width" Value="8" />
+        <Setter Property="Background" Value="{DynamicResource Brush.DefaultState}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ui:ResizeButton}">
+                    <Grid>
+                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{DynamicResource CornerRadius.RoundCorners}">
+                            <ContentPresenter />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!--#region Cursor-->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="ResizeDirection" Value="TopRight" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Cursor" Value="SizeNESW" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="ResizeDirection" Value="BottomRight" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Cursor" Value="SizeNWSE" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="ResizeDirection" Value="BottomLeft" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Cursor" Value="SizeNESW" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="ResizeDirection" Value="TopLeft" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Cursor" Value="SizeNWSE" />
+                        </MultiTrigger>
+                        <!--#endregion-->
+
+                        <!--#region Button States-->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource Brush.Hover}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource Brush.Pressed}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Disabled}" />
+                        </Trigger>
+                        <!--#endregion-->
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Private.Style.PaperItem.DragContainer" TargetType="{x:Type ui:DragContainer}">
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="MinWidth" Value="24" />
+
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ui:DragContainer}">
+                    <Grid>
+                        <Border
+                            x:Name="DragContainerBorder"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter Content="{TemplateBinding Content}" />
+                        </Border>
+
+                        <ui:ResizeButton
+                            x:Name="PART_TopLeftResize"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            ResizeDirection="TopLeft"
+                            Style="{StaticResource Private.Style.Button.DragContainer.ResizeGrip}">
+                            <ui:ResizeButton.RenderTransform>
+                                <TranslateTransform X="{Binding ElementName=PART_TopLeftResize, Path=Width, Converter={x:Static ui:Converters.NegateHalfValue}}" Y="{Binding ElementName=PART_TopLeftResize, Path=Height, Converter={x:Static ui:Converters.NegateHalfValue}}" />
+                            </ui:ResizeButton.RenderTransform>
+                        </ui:ResizeButton>
+                        <ui:ResizeButton
+                            x:Name="PART_TopRightResize"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            ResizeDirection="TopRight"
+                            Style="{StaticResource Private.Style.Button.DragContainer.ResizeGrip}">
+                            <ui:ResizeButton.RenderTransform>
+                                <TranslateTransform X="{Binding ElementName=PART_TopRightResize, Path=Width, Converter={x:Static ui:Converters.HalfValue}}" Y="{Binding ElementName=PART_TopRightResize, Path=Height, Converter={x:Static ui:Converters.NegateHalfValue}}" />
+                            </ui:ResizeButton.RenderTransform>
+                        </ui:ResizeButton>
+                        <ui:ResizeButton
+                            x:Name="PART_BottomRightResize"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            ResizeDirection="BottomRight"
+                            Style="{StaticResource Private.Style.Button.DragContainer.ResizeGrip}">
+                            <ui:ResizeButton.RenderTransform>
+                                <TranslateTransform X="{Binding ElementName=PART_BottomRightResize, Path=Width, Converter={x:Static ui:Converters.HalfValue}}" Y="{Binding ElementName=PART_TopLeftResize, Path=Height, Converter={x:Static ui:Converters.HalfValue}}" />
+                            </ui:ResizeButton.RenderTransform>
+                        </ui:ResizeButton>
+                        <ui:ResizeButton
+                            x:Name="PART_BottomLeftResize"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            ResizeDirection="BottomLeft"
+                            Style="{StaticResource Private.Style.Button.DragContainer.ResizeGrip}">
+                            <ui:ResizeButton.RenderTransform>
+                                <TranslateTransform X="{Binding ElementName=PART_BottomLeftResize, Path=Width, Converter={x:Static ui:Converters.NegateHalfValue}}" Y="{Binding ElementName=PART_BottomLeftResize, Path=Height, Converter={x:Static ui:Converters.HalfValue}}" />
+                            </ui:ResizeButton.RenderTransform>
+                        </ui:ResizeButton>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter TargetName="PART_TopLeftResize" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_TopRightResize" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_BottomRightResize" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_BottomLeftResize" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="BorderThickness" Value="1" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
     <Style x:Key="Private.Style.PaperItemControl" TargetType="{x:Type ui:PaperItemControl}">
         <Setter Property="ContentTemplateSelector" Value="{StaticResource DataTemplateSelector.PaperItems}" />
@@ -42,16 +191,40 @@
         </Setter>
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
-                <Style>
-                    <Setter Property="Canvas.Left" Value="{Binding X}" />
-                    <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding X, Mode=TwoWay}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Y, Mode=TwoWay}" />
+                    <Setter Property="Panel.ZIndex" Value="{Binding ZIndex, Mode=TwoWay}" />
                 </Style>
             </Setter.Value>
         </Setter>
         <Setter Property="ItemTemplate">
             <Setter.Value>
-                <DataTemplate>
-                    <ui:PaperItemControl Content="{Binding .}" Style="{StaticResource Private.Style.PaperItemControl}" />
+                <DataTemplate DataType="{x:Type vm:IPaperItem}">
+                    <ui:DragContainer
+                        x:Name="PaperItemDragContainer"
+                        Width="{Binding Width, Mode=TwoWay}"
+                        Height="{Binding Height, Mode=TwoWay}"
+                        IsSelected="{Binding IsSelected, Mode=TwoWay}"
+                        RelativeParent="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ui:Paper}}}"
+                        Style="{StaticResource Private.Style.PaperItem.DragContainer}"
+                        XPos="{Binding X, Mode=TwoWay}"
+                        YPos="{Binding Y, Mode=TwoWay}">
+                        <ui:PaperItemControl
+                            x:Name="PaperItemControl"
+                            Content="{Binding .}"
+                            Style="{StaticResource Private.Style.PaperItemControl}" />
+
+                        <ui:DragContainer.ContextMenu>
+                            <ContextMenu ItemsSource="{Binding Commands}">
+                                <ContextMenu.ItemTemplate>
+                                    <DataTemplate DataType="vm:UICommand">
+                                        <TextBlock Text="{Binding Label}" />
+                                    </DataTemplate>
+                                </ContextMenu.ItemTemplate>
+                            </ContextMenu>
+                        </ui:DragContainer.ContextMenu>
+                    </ui:DragContainer>
                 </DataTemplate>
             </Setter.Value>
         </Setter>

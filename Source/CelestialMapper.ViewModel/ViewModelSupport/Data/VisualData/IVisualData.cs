@@ -41,4 +41,9 @@ public interface IVisualData
     /// Gets or sets the visibility of the visual data.
     /// </summary>
     public bool IsVisible { get; set; }
+
+    /// <summary>
+    /// ZIndex of the visual data.
+    /// </summary>
+    public int ZIndex { get; set; }
 }

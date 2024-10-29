@@ -206,8 +206,8 @@ public class ValueConverterBaseMock<TFrom, TTo, TParameter> : ValueConverterBase
 
     public override TTo? DefaultToValue { get; }
 
-    public Func<TFrom, TParameter, TTo?> ConvertFunc { get; set; } 
-    public Func<TTo, TParameter, TFrom?> ConvertBackFunc { get; set; }
+    public Func<TFrom?, TParameter?, TTo?> ConvertFunc { get; set; } 
+    public Func<TTo?, TParameter?, TFrom?> ConvertBackFunc { get; set; }
 
     public ValueConverterBaseMock(
         OnWrongType onWrongType = OnWrongType.DoNothing,
@@ -224,12 +224,12 @@ public class ValueConverterBaseMock<TFrom, TTo, TParameter> : ValueConverterBase
         ConvertBackFunc = (t, p) => DefaultFromValue;
     }
 
-    public override TTo Convert(TFrom value, Type targetType, TParameter parameter, CultureInfo culture)
+    public override TTo? Convert(TFrom? value, Type targetType, TParameter? parameter, CultureInfo culture)
     {
         return ConvertFunc(value, parameter)!;
     }
 
-    public override TFrom ConvertBack(TTo value, Type targetType, TParameter parameter, CultureInfo culture)
+    public override TFrom? ConvertBack(TTo? value, Type targetType, TParameter? parameter, CultureInfo culture)
     {
         return ConvertBackFunc(value, parameter)!;
     }

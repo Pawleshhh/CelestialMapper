@@ -21,4 +21,9 @@
     <ProjectReference Include="..\CelestialMapper.ViewModel\CelestialMapper.ViewModel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Menu\SubMenus\" />
+    <Folder Include="ViewSupport\Extensions\Commands\" />
+  </ItemGroup>
+
 </Project>

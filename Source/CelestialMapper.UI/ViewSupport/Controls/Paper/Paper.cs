@@ -1,5 +1,6 @@
 ﻿namespace CelestialMapper.UI;
 
+using CelestialMapper.ViewModel;
 using System;
 using System.Collections.Specialized;
 using static CelestialMapper.UI.DependencyPropertyHelper;
@@ -18,24 +19,6 @@ public class Paper : PlatformItemsControl
     {
         Style = TryFindResource(PaperDefaultStyleKey) as Style;
     }
-
-    #region PaperContent property
-
-    //public IList PaperContent
-    //{
-    //    get { return (IList)GetValue(PaperContentProperty); }
-    //    set { SetValue(PaperContentProperty, value); }
-    //}
-
-    //public static readonly DependencyProperty PaperContentProperty =
-    //    Register(nameof(PaperContent), new PlatformPropertyMetadata<Paper, IList>(Enumerable.Empty<object>().ToList(), OnPaperContentChanged));
-
-    //private static void OnPaperContentChanged(Paper d, DependencyPropertyChangedEventArgs<IList> e)
-    //{
-
-    //}
-
-    #endregion
 
     #region PaperSize property
 

@@ -3,20 +3,26 @@
     <!--  Light Gray Colors  -->
     <Color x:Key="Color.Foreground">#000000</Color>
     <Color x:Key="Color.Background">#D3D3D3</Color>
+    <Color x:Key="Color.Border">#242424</Color>
     <Color x:Key="Color.ToolBackground">#F0F0F0</Color>
     <Color x:Key="Color.Type1.Border">#A1A1A1</Color>
+    <Color x:Key="Color.DefaultState">#A1A1A1</Color>
     <Color x:Key="Color.Selected">#E6E6E6</Color>
     <Color x:Key="Color.Hover">#CCCCCC</Color>
     <Color x:Key="Color.Pressed">#666666</Color>
     <Color x:Key="Color.SelectionMark">#4d4d4d</Color>
+    <Color x:Key="Color.Disabled">#BBA1A1A1</Color>
 
     <SolidColorBrush x:Key="Brush.Foreground" Color="{StaticResource Color.Foreground}" />
     <SolidColorBrush x:Key="Brush.Background" Color="{StaticResource Color.Background}" />
+    <SolidColorBrush x:Key="Brush.Border" Color="{StaticResource Color.Border}" />
     <SolidColorBrush x:Key="Brush.ToolBackground" Color="{StaticResource Color.ToolBackground}" />
     <SolidColorBrush x:Key="Brush.Type1.Border" Color="{StaticResource Color.Type1.Border}" />
+    <SolidColorBrush x:Key="Brush.DefaultState" Color="{StaticResource Color.DefaultState}" />
     <SolidColorBrush x:Key="Brush.Selected" Color="{StaticResource Color.Selected}" />
     <SolidColorBrush x:Key="Brush.Hover" Color="{StaticResource Color.Hover}" />
     <SolidColorBrush x:Key="Brush.Pressed" Color="{StaticResource Color.Pressed}" />
     <SolidColorBrush x:Key="Brush.SelectionMark" Color="{StaticResource Color.SelectionMark}" />
+    <SolidColorBrush x:Key="Brush.Disabled" Color="{StaticResource Color.Disabled}" />
 
 </ResourceDictionary>
