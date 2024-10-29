@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using CelestialMapper.Common;
 
 namespace CelestialMapper.ViewModel;
 
@@ -79,6 +78,7 @@ public class PaperEditor : IPaperEditor
         this.paperStorage.PaperItems.TryGetValue(guid, out var item);
         if (item is not null)
         {
+            this.paperStorage.PaperItems.Remove(guid);
             OnPaperItemRemoved(item);
         }
     }

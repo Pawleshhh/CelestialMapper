@@ -12,13 +12,15 @@ public class ServiceProviderExtensionsTest
 
     #endregion
 
-    [Test]
-    public void ResolveViewModel_WithTypeAndFeatureName_ReturnsInitializedViewModel()
+    [TestCase(false)]
+    [TestCase(true)]
+    public void ResolveViewModel_WithTypeAndFeatureName_ReturnsInitializedViewModel(bool alreadyInitialized)
     {
         // Arrange
         var serviceProviderMock = new Mock<IServiceProvider>();
         var viewModelMock = new Mock<IViewModel>();
 
+        viewModelMock.SetupGet(x => x.IsInitialized).Returns(alreadyInitialized);
         viewModelMock
             .Setup(vm => vm.GetViewModelConfigurator(It.IsAny<FeatureName>()))
             .Returns(IViewModelConfigurator.Create(ViewModelName));
@@ -36,7 +38,7 @@ public class ServiceProviderExtensionsTest
             Assert.That(resolvedViewModel, Is.SameAs(viewModelMock.Object));
             viewModelMock.Verify(vm => vm.Initialize(
                                     It.Is<IViewModelConfigurator>(vmc => vmc.GetFeatureName() == ViewModelName)), 
-                                    Times.Once);
+                                    alreadyInitialized ? Times.Never() : Times.Once());
         });
     }
 
@@ -52,13 +54,15 @@ public class ServiceProviderExtensionsTest
             ServiceProviderExtensions.ResolveViewModel(serviceProviderMock.Object, typeof(IViewModel), ViewModelName));
     }
 
-    [Test]
-    public void ResolveViewModel_WithGenericAndFeatureName_ReturnsInitializedViewModel()
+    [TestCase(false)]
+    [TestCase(true)]
+    public void ResolveViewModel_WithGenericAndFeatureName_ReturnsInitializedViewModel(bool alreadyInitialized)
     {
         // Arrange
         var serviceProviderMock = new Mock<IServiceProvider>();
         var viewModelMock = new Mock<IViewModel>();
 
+        viewModelMock.SetupGet(x => x.IsInitialized).Returns(alreadyInitialized);
         viewModelMock
             .Setup(vm => vm.GetViewModelConfigurator(It.IsAny<FeatureName>()))
             .Returns(IViewModelConfigurator.Create(ViewModelName));
@@ -76,7 +80,7 @@ public class ServiceProviderExtensionsTest
             Assert.That(resolvedViewModel, Is.SameAs(viewModelMock.Object));
             viewModelMock.Verify(vm => vm.Initialize(
                                     It.Is<IViewModelConfigurator>(vmc => vmc.GetFeatureName() == ViewModelName)),
-                                    Times.Once);
+                                    alreadyInitialized ? Times.Never() : Times.Once());
         });
     }
 
@@ -92,13 +96,15 @@ public class ServiceProviderExtensionsTest
             ServiceProviderExtensions.ResolveViewModel<IViewModel>(serviceProviderMock.Object, ViewModelName));
     }
 
-    [Test]
-    public void ResolveViewModel_Type_And_WithPostConfigure_InvokesPostConfigure()
+    [TestCase(false)]
+    [TestCase(true)]
+    public void ResolveViewModel_Type_And_WithPostConfigure_InvokesPostConfigure(bool alreadyInitialized)
     {
         // Arrange
         var serviceProviderMock = new Mock<IServiceProvider>();
         var viewModelMock = new Mock<IViewModel>();
 
+        viewModelMock.SetupGet(x => x.IsInitialized).Returns(alreadyInitialized);
         viewModelMock
             .Setup(vm => vm.GetViewModelConfigurator(It.IsAny<FeatureName>()))
             .Returns(IViewModelConfigurator.Create(ViewModelName));
@@ -113,16 +119,18 @@ public class ServiceProviderExtensionsTest
             .ResolveViewModel(serviceProviderMock.Object, typeof(IViewModel), ViewModelName, postConfig);
 
         // Assert
-        Assert.That(postConfigVm, Is.Not.Null);
+        Assert.That(postConfigVm, alreadyInitialized ? Is.Null : Is.Not.Null);
     }
 
-    [Test]
-    public void ResolveViewModel_Generic_And_WithPostConfigure_InvokesPostConfigure()
+    [TestCase(false)]
+    [TestCase(true)]
+    public void ResolveViewModel_Generic_And_WithPostConfigure_InvokesPostConfigure(bool alreadyInitialized)
     {
         // Arrange
         var serviceProviderMock = new Mock<IServiceProvider>();
         var viewModelMock = new Mock<IViewModel>();
 
+        viewModelMock.SetupGet(x => x.IsInitialized).Returns(alreadyInitialized);
         viewModelMock
             .Setup(vm => vm.GetViewModelConfigurator(It.IsAny<FeatureName>()))
             .Returns(IViewModelConfigurator.Create(ViewModelName));
@@ -137,6 +145,6 @@ public class ServiceProviderExtensionsTest
             .ResolveViewModel(serviceProviderMock.Object, ViewModelName, postConfig);
 
         // Assert
-        Assert.That(postConfigVm, Is.Not.Null);
+        Assert.That(postConfigVm, alreadyInitialized ? Is.Null : Is.Not.Null);
     }
 }

@@ -67,7 +67,9 @@ public class ZIndexProcessor : IZIndexProcessor
         }
 
         var currentIndex = indexData.SourceIndex;
-        var minOneIndexUp = indexData.Items.Where(x => x.ZIndex > currentIndex).Min()?.ZIndex;
+        var minOneIndexUp = indexData.Items
+            .Where(x => x.ZIndex > currentIndex)
+            .MinBy(x => x.ZIndex)?.ZIndex;
         var itemsOneIndexUp = indexData.Items.Where(x => x.ZIndex == minOneIndexUp);
 
         itemsOneIndexUp.ForEach(x => x.ZIndex -= 1);
@@ -82,7 +84,9 @@ public class ZIndexProcessor : IZIndexProcessor
         }
 
         var currentIndex = indexData.SourceIndex;
-        var maxOneIndexDown = indexData.Items.Where(x => x.ZIndex < currentIndex).Max()?.ZIndex;
+        var maxOneIndexDown = indexData.Items
+            .Where(x => x.ZIndex < currentIndex)
+            .MaxBy(x => x.ZIndex)?.ZIndex;
         var itemsOneIndexDown = indexData.Items.Where(x => x.ZIndex == maxOneIndexDown);
 
         itemsOneIndexDown.ForEach(x => x.ZIndex += 1);
