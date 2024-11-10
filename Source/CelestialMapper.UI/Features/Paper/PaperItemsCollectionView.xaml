@@ -1,0 +1,25 @@
+﻿<local:FeatureViewBase
+    x:Class="CelestialMapper.UI.PaperItemsCollectionView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CelestialMapper.UI"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:CelestialMapper.ViewModel;assembly=CelestialMapper.ViewModel"
+    d:DataContext="{d:DesignInstance Type=vm:PaperItemsCollectionViewModel,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{DynamicResource GridLength.Twos.Huge}" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="{DynamicResource GridLength.Twos.Huge}" />
+            </Grid.RowDefinitions>
+
+            <local:Paper Grid.Row="1" ItemsSource="{Binding PaperItems}" />
+        </Grid>
+    </ScrollViewer>
+</local:FeatureViewBase>

@@ -37,7 +37,11 @@ public class FeatureNames
 
     public static FeatureName TimeMachine { get; } = new(nameof(TimeMachine));
 
-    public static FeatureName Menu { get; } = new(nameof(Menu));
+    public static FeatureName ToolboxMenu { get; } = new(nameof(ToolboxMenu));
+
+    public static FeatureName PaperItemsCollection { get; } = new(nameof(PaperItemsCollection));
+
+    public static FeatureName PropertiesMenu { get; } = new(nameof(PropertiesMenu));
 
     public static FeatureName ExportMenu { get; } = new(nameof(ExportMenu));
 

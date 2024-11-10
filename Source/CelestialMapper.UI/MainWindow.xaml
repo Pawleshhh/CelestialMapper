@@ -18,7 +18,15 @@
 
         <local:TimeMachineView DockPanel.Dock="Top" />
 
-        <local:MenuView Width="{DynamicResource Double.MainWindow.Menu.Width}" DockPanel.Dock="Right" />
+        <local:MenuView
+            Width="{DynamicResource Double.MainWindow.Menu.Width}"
+            DockPanel.Dock="Left"
+            FeatureName="{x:Static vm:FeatureNames.ToolboxMenu}" />
+
+        <local:MenuView
+            Width="{DynamicResource Double.MainWindow.Menu.Width}"
+            DockPanel.Dock="Right"
+            FeatureName="{x:Static vm:FeatureNames.PropertiesMenu}" />
 
         <local:PaperView />
 

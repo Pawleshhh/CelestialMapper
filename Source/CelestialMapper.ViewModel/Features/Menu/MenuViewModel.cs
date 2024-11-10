@@ -2,7 +2,7 @@
 
 namespace CelestialMapper.ViewModel;
 
-[Export(typeof(MenuViewModel), IsSingleton = true, Key = nameof(MenuViewModel))]
+[Export(typeof(MenuViewModel), IsSingleton = false, Key = nameof(MenuViewModel))]
 public class MenuViewModel : ViewModelBase
 {
 
@@ -16,7 +16,7 @@ public class MenuViewModel : ViewModelBase
 
     #region ViewModelBase
 
-    public override FeatureName DefaultFeatureName => FeatureNames.Menu;
+    public override FeatureName DefaultFeatureName => FeatureNames.PropertiesMenu;
 
     public override void Initialize(IViewModelConfigurator configurator)
     {
@@ -29,13 +29,19 @@ public class MenuViewModel : ViewModelBase
     {
         return new()
         {
-            [DefaultFeatureName] = IViewModelConfigurator.Create(DefaultFeatureName, GetSubMenuViewModels)
+            [DefaultFeatureName] = IViewModelConfigurator.Create(DefaultFeatureName, GetPropertiesSubMenuViewModels),
+            [FeatureNames.ToolboxMenu] = IViewModelConfigurator.Create(FeatureNames.ToolboxMenu, GetToolboxSubMenuViewModels)
         };
 
-        IEnumerable<IViewModel> GetSubMenuViewModels()
+        IEnumerable<IViewModel> GetPropertiesSubMenuViewModels()
         {
             yield return this.ioCManager.ServiceProvider.ResolveViewModel<PaperEditorMenuViewModel>(FeatureNames.PaperEditorMenu);
             yield return this.ioCManager.ServiceProvider.ResolveViewModel<ExportMenuViewModel>(FeatureNames.ExportMenu);
+        }
+
+        IEnumerable<IViewModel> GetToolboxSubMenuViewModels()
+        {
+            yield return this.ioCManager.ServiceProvider.ResolveViewModel<PaperItemsCollectionViewModel>(FeatureNames.PaperItemsCollection);
         }
     }
 
