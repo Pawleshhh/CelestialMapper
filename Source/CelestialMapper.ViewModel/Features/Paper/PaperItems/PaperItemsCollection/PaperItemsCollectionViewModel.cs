@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Reflection;
 
 namespace CelestialMapper.ViewModel;
 
@@ -8,12 +7,15 @@ public class PaperItemsCollectionViewModel : ViewModelBase
 {
 
     private readonly IPaperEditor paperEditor;
+    private readonly IAttributeRetrievalService attributeRetrievalService;
 
     public PaperItemsCollectionViewModel(
         IViewModelSupport viewModelSupport,
-        IPaperEditor paperEditor) : base(viewModelSupport)
+        IPaperEditor paperEditor,
+        IAttributeRetrievalService attributeRetrievalService) : base(viewModelSupport)
     {
         this.paperEditor = paperEditor;
+        this.attributeRetrievalService = attributeRetrievalService;
     }
 
     public override FeatureName DefaultFeatureName => FeatureNames.PaperItemsCollection;
@@ -29,9 +31,8 @@ public class PaperItemsCollectionViewModel : ViewModelBase
 
     private void InitializeItemAdders()
     {
-        var paperItemIdentifiers = GetType().Assembly
-            .GetTypes()
-            .SelectMany(type => type.GetCustomAttributes<PaperItemIdentifierAttribute>(false));
+        var paperItemIdentifiers = 
+            this.attributeRetrievalService.GetAttributes<PaperItemIdentifierAttribute>(GetType().Assembly);
 
         foreach (var itemIdentifier in paperItemIdentifiers)
         {
