@@ -8,7 +8,8 @@
     <sys:Double x:Key="Double.MainWindow.Height">650</sys:Double>
     <sys:Double x:Key="Double.MainWindow.Width">1000</sys:Double>
 
-    <sys:Double x:Key="Double.MainWindow.Menu.Width">200</sys:Double>
+    <GridLength x:Key="GridLength.MainWindow.LeftMenu.Width">150</GridLength>
+    <GridLength x:Key="GridLength.MainWindow.RightMenu.Width">250</GridLength>
 
     <Style x:Key="Style.MainWindow" TargetType="Window">
         <Setter Property="Height" Value="{DynamicResource Double.MainWindow.Height}" />

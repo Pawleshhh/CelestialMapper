@@ -14,21 +14,57 @@
     Style="{DynamicResource Style.MainWindow}"
     mc:Ignorable="d">
 
-    <DockPanel LastChildFill="True">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <local:TimeMachineView DockPanel.Dock="Top" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="ToolboxMenuColumn" Width="{DynamicResource GridLength.MainWindow.LeftMenu.Width}" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition x:Name="PropertiesMenuColumn" Width="{DynamicResource GridLength.MainWindow.RightMenu.Width}" />
+        </Grid.ColumnDefinitions>
 
+        <local:TimeMachineView Grid.Row="0" Grid.ColumnSpan="5" />
+
+        <!--  Toolbox Menu  -->
         <local:MenuView
-            Width="{DynamicResource Double.MainWindow.Menu.Width}"
-            DockPanel.Dock="Left"
+            x:Name="ToolboxMenu"
+            Grid.Row="1"
+            Grid.Column="0"
+            HorizontalAlignment="Stretch"
             FeatureName="{x:Static vm:FeatureNames.ToolboxMenu}" />
 
+        <!--  GridSplitter between ToolboxMenu and PaperView  -->
+        <GridSplitter
+            Grid.Row="1"
+            Grid.Column="1"
+            Width="5"
+            HorizontalAlignment="Stretch"
+            ResizeBehavior="PreviousAndNext"
+            ShowsPreview="True" />
+
+        <!--  Main Content (PaperView)  -->
+        <local:PaperView Grid.Row="1" Grid.Column="2" />
+
+        <!--  GridSplitter between PaperView and PropertiesMenu  -->
+        <GridSplitter
+            Grid.Row="1"
+            Grid.Column="3"
+            Width="5"
+            HorizontalAlignment="Stretch"
+            ResizeBehavior="PreviousAndNext"
+            ShowsPreview="True" />
+
+        <!--  Properties Menu  -->
         <local:MenuView
-            Width="{DynamicResource Double.MainWindow.Menu.Width}"
-            DockPanel.Dock="Right"
+            x:Name="PropertiesMenu"
+            Grid.Row="1"
+            Grid.Column="4"
+            HorizontalAlignment="Stretch"
             FeatureName="{x:Static vm:FeatureNames.PropertiesMenu}" />
-
-        <local:PaperView />
-
-    </DockPanel>
+    </Grid>
 </Window>
