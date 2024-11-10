@@ -18,7 +18,7 @@ public class MenuViewModelTest : ViewModelTest<MenuViewModel>
 
     public override Func<MenuViewModel> CreateSUT => () => new MenuViewModel(IocManager.Object, ViewModelSupport.Object);
 
-    public override FeatureName DefaultFeatureName => new("Menu");
+    public override FeatureName DefaultFeatureName => new("PropertiesMenu");
 
     [SetUp]
     public void SetUp()

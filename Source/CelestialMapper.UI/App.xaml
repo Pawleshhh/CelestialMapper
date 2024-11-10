@@ -12,6 +12,7 @@
 
                 <ResourceDictionary Source="Resources/Strings/ExportMenuStrings.xaml" />
                 <ResourceDictionary Source="Resources/Strings/PaperEditorMenuStrings.xaml" />
+                <ResourceDictionary Source="Resources/Strings/PaperItemsCollectionStrings.xaml" />
                 <ResourceDictionary Source="Resources/Strings/TimeMachineStrings.xaml" />
                 <ResourceDictionary Source="Resources/Strings/WindowStrings.xaml" />
 

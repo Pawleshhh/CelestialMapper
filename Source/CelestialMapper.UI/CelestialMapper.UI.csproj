@@ -8,9 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Menu\SubMenus\**" />
     <Compile Remove="Resources\Fonts\**" />
+    <EmbeddedResource Remove="Features\Menu\SubMenus\**" />
     <EmbeddedResource Remove="Resources\Fonts\**" />
+    <None Remove="Features\Menu\SubMenus\**" />
     <None Remove="Resources\Fonts\**" />
+    <Page Remove="Features\Menu\SubMenus\**" />
     <Page Remove="Resources\Fonts\**" />
   </ItemGroup>
 
@@ -22,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Menu\SubMenus\" />
     <Folder Include="ViewSupport\Extensions\Commands\" />
   </ItemGroup>
 
