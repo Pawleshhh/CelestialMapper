@@ -5,4 +5,7 @@
 
     <sys:String x:Key="String.FeatureName.PaperItemsCollection">Paper Items</sys:String>
 
+    <sys:String x:Key="String.PaperItem.DefaultMap">Default Map</sys:String>
+    <sys:String x:Key="String.PaperItem.TextItem">Text</sys:String>
+
 </ResourceDictionary>

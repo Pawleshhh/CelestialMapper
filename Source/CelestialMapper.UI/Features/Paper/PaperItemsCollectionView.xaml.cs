@@ -3,6 +3,7 @@
 /// <summary>
 /// Interaction logic for PaperItemsCollectionView.xaml
 /// </summary>
+[Export(typeof(FeatureViewBase), typeof(PaperItemsCollectionView), IsSingleton = false, Key = nameof(PaperItemsCollectionView), IsKeyed = true)]
 public partial class PaperItemsCollectionView : FeatureViewBase
 {
 

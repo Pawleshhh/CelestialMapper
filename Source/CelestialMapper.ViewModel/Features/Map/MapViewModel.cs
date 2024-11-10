@@ -5,7 +5,8 @@ using System.Windows.Input;
 
 namespace CelestialMapper.ViewModel;
 
-[Export(typeof(MapViewModel), IsSingleton = true, Key = nameof(MapViewModel))]
+[Export(typeof(MapViewModel), IsSingleton = false, Key = nameof(MapViewModel))]
+[PaperItemIdentifier(Category = PaperItemCatergory.Map, ItemType = PaperItemType.Map, NameKey = "DefaultMap")]
 public class MapViewModel : PaperItemBaseViewModel
 {
 

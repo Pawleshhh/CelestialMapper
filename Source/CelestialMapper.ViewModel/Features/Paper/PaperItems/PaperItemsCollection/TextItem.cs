@@ -2,6 +2,7 @@
 namespace CelestialMapper.ViewModel;
 
 [Export(typeof(TextItem), IsSingleton = false, Key = nameof(TextItem))]
+[PaperItemIdentifier(Category = PaperItemCatergory.Text, ItemType = PaperItemType.Text, NameKey = nameof(TextItem))]
 public class TextItem : PaperItemBase
 {
 
