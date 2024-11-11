@@ -3,7 +3,7 @@
 namespace CelestialMapper.ViewModel;
 
 [Export(typeof(PaperItemsCollectionViewModel), IsSingleton = false, Key = nameof(PaperItemsCollectionViewModel))]
-public class PaperItemsCollectionViewModel : ViewModelBase
+public class PaperItemsCollectionViewModel : ViewModelBase, IMenuItemViewModel
 {
 
     private readonly IPaperEditor paperEditor;
@@ -21,10 +21,16 @@ public class PaperItemsCollectionViewModel : ViewModelBase
     public override FeatureName DefaultFeatureName => FeatureNames.PaperItemsCollection;
 
     public ObservableCollection<PaperItemCategoryAdder> ItemAdders { get; } = new();
+    public bool IsAvailable
+    {
+        get => GetPropertyValue<bool>();
+        set => SetPropertyValue(value);
+    }
 
     public override void Initialize(IViewModelConfigurator configurator)
     {
         base.Initialize(configurator);
+        IsAvailable = true;
 
         InitializeItemAdders();
     }

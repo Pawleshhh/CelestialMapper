@@ -1,7 +1,7 @@
 ﻿namespace CelestialMapper.ViewModel;
 
 [Export(typeof(PaperEditorMenuViewModel), IsSingleton = true, Key = nameof(PaperEditorMenuViewModel))]
-public class PaperEditorMenuViewModel : ViewModelBase
+public class PaperEditorMenuViewModel : ViewModelBase, IMenuItemViewModel
 {
 
     private readonly IPaperEditor paperEditor;
@@ -21,9 +21,16 @@ public class PaperEditorMenuViewModel : ViewModelBase
         set => SetPropertyValue(value);
     }
 
+    public bool IsAvailable
+    {
+        get => GetPropertyValue<bool>();
+        set => SetPropertyValue(value);
+    }
+
     public override void Initialize(IViewModelConfigurator configurator)
     {
         base.Initialize(configurator);
+        IsAvailable = true;
 
         SelectedPaperItem = null;
     }

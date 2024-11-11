@@ -12,6 +12,12 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid Background="{DynamicResource Brush.ToolBackground}">
-        <local:Acordeon ItemsSource="{Binding SubMenus}" />
+        <local:Acordeon ItemsSource="{Binding SubMenus}">
+            <local:Acordeon.ItemContainerStyle>
+                <Style TargetType="{x:Type ContentPresenter}">
+                    <Setter Property="Visibility" Value="{Binding IsAvailable, Converter={x:Static local:Converters.FalseMakesMeCollapsed}}" />
+                </Style>
+            </local:Acordeon.ItemContainerStyle>
+        </local:Acordeon>
     </Grid>
 </local:FeatureViewBase>
