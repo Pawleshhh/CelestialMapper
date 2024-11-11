@@ -22,7 +22,11 @@
 
     <ControlTemplate x:Key="Private.ControlTemplate.Acordeon" TargetType="ui:Acordeon">
         <Grid>
-            <ItemsControl ItemTemplateSelector="{StaticResource Private.TemplateSelector.Acordeon}" ItemsSource="{TemplateBinding ItemsSource}">
+            <ItemsControl
+                ItemContainerStyle="{TemplateBinding ItemContainerStyle}"
+                ItemTemplate="{TemplateBinding ContentTemplate}"
+                ItemTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                ItemsSource="{TemplateBinding ItemsSource}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel Orientation="Vertical" />
@@ -34,6 +38,7 @@
 
     <Style x:Key="Style.Acordeon" TargetType="ui:Acordeon">
         <Setter Property="Template" Value="{StaticResource Private.ControlTemplate.Acordeon}" />
+        <Setter Property="ContentTemplateSelector" Value="{StaticResource Private.TemplateSelector.Acordeon}" />
     </Style>
 
 </ResourceDictionary>

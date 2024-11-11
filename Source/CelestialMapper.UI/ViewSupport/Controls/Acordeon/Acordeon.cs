@@ -32,6 +32,15 @@ public class Acordeon : PlatformUserControl
     public static readonly DependencyProperty ItemsSourceProperty =
         Register(nameof(ItemsSource) , new PlatformPropertyMetadata<Acordeon, IList>(Array.Empty<object>()));
 
+    public Style ItemContainerStyle
+    {
+        get => this.GetValue<Style>(ItemContainerStyleProperty);
+        set => SetValue(ItemContainerStyleProperty, value);
+    }
+
+    public static readonly DependencyProperty ItemContainerStyleProperty =
+        Register(nameof(ItemContainerStyle), new PlatformPropertyMetadata<Acordeon, Style>());
+
     #endregion
 
 }

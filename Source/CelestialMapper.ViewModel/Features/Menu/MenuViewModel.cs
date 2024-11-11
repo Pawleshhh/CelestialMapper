@@ -22,7 +22,7 @@ public class MenuViewModel : ViewModelBase
     {
         base.Initialize(configurator);
 
-        SubMenus.AddRange(configurator.GetSubViewModels());
+        SubMenus.AddRange(configurator.GetSubViewModels().Cast<IMenuItemViewModel>());
     }
 
     public override Dictionary<FeatureName, IViewModelConfigurator> InitializeConfigurators()
@@ -49,7 +49,7 @@ public class MenuViewModel : ViewModelBase
 
     #region Properties
 
-    public ObservableCollection<IViewModel> SubMenus { get; } = new();
+    public ObservableCollection<IMenuItemViewModel> SubMenus { get; } = new();
 
     #endregion
 
