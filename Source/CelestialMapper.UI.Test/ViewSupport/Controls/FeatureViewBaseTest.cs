@@ -14,6 +14,9 @@ class MockFeatureViewBase : FeatureViewBase
     protected override Type ViewModelType => typeof(IViewModel);
     public override FeatureName DefaultFeatureName => new("DefaultFeature");
 
+    public override void InitializeView()
+    {
+    }
 }
 
 [TestFixture]

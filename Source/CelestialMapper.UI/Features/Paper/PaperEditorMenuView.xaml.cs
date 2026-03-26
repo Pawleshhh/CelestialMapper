@@ -11,7 +11,7 @@ public partial class PaperEditorMenuView : FeatureViewBase
 
     public PaperEditorMenuView()
     {
-        InitializeComponent();
+        InitializeView();
     }
 
     public PaperEditorMenuView(IServiceProvider serviceProvider, bool allowInitializeComponent = true)
@@ -22,11 +22,15 @@ public partial class PaperEditorMenuView : FeatureViewBase
             return;
         }
 
-        InitializeComponent();
+        InitializeView();
     }
 
     public override FeatureName DefaultFeatureName => FeatureNames.PaperEditorMenu;
 
     protected override Type ViewModelType => typeof(PaperEditorMenuViewModel);
 
+    public override void InitializeView()
+    {
+        InitializeComponent();
+    }
 }

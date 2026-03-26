@@ -9,7 +9,7 @@ public partial class MapView : FeatureViewBase
 
     public MapView()
     {
-        InitializeComponent();
+        InitializeView();
     }
 
     public MapView(IServiceProvider serviceProvider, bool allowInitializeComponent = true)
@@ -20,11 +20,15 @@ public partial class MapView : FeatureViewBase
             return;
         }
 
-        InitializeComponent();
+        InitializeView();
     }
 
     public override FeatureName DefaultFeatureName => FeatureNames.Map;
 
     protected override Type ViewModelType => typeof(MapViewModel);
 
+    public override void InitializeView()
+    {
+        InitializeComponent();
+    }
 }
