@@ -8,7 +8,7 @@ public partial class MenuView : FeatureViewBase
 
     public MenuView()
     {
-        InitializeComponent();
+        InitializeView();
     }
 
     public MenuView(IServiceProvider serviceProvider, bool allowInitializeComponent = true)
@@ -19,11 +19,15 @@ public partial class MenuView : FeatureViewBase
             return;
         }
 
-        InitializeComponent();
+        InitializeView();
     }
 
     public override FeatureName DefaultFeatureName => FeatureNames.PropertiesMenu;
 
     protected override Type ViewModelType => typeof(MenuViewModel);
 
+    public override void InitializeView()
+    {
+        InitializeComponent();
+    }
 }

@@ -11,7 +11,7 @@ public partial class ExportMenuView : FeatureViewBase
 
     public ExportMenuView()
     {
-        InitializeComponent();
+        InitializeView();
     }
 
     public ExportMenuView(IServiceProvider serviceProvider, bool allowInitializeComponent = true)
@@ -22,11 +22,15 @@ public partial class ExportMenuView : FeatureViewBase
             return;
         }
 
-        InitializeComponent();
+        InitializeView();
     }
 
     public override FeatureName DefaultFeatureName => FeatureNames.ExportMenu;
 
     protected override Type ViewModelType => typeof(ExportMenuViewModel);
 
+    public override void InitializeView()
+    {
+        InitializeComponent();
+    }
 }

@@ -12,14 +12,14 @@ public abstract class FeatureViewBase : PlatformUserControl
         Unloaded += FeatureViewBase_Unloaded;
     }
 
-    public FeatureViewBase(IServiceProvider serviceProvider, bool allowInitializeComponent = true)
+    public FeatureViewBase(IServiceProvider serviceProvider, bool allowInitializeComponent = false)
         : base(serviceProvider)
     {
         Loaded += FeatureViewBase_Loaded;
         Unloaded += FeatureViewBase_Unloaded;
         AllowInitializeComponent = allowInitializeComponent;
     }
-
+    
     internal bool AllowInitializeComponent { get; }
 
     protected abstract Type ViewModelType { get; }
@@ -53,6 +53,8 @@ public abstract class FeatureViewBase : PlatformUserControl
     }
 
     protected virtual void OnUnloaded() { }
+
+    public abstract void InitializeView();
 
     public virtual void InitializeViewModel()
     {

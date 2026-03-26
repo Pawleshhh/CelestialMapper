@@ -9,7 +9,7 @@ public partial class PaperItemsCollectionView : FeatureViewBase
 
     public PaperItemsCollectionView()
     {
-        InitializeComponent();
+        InitializeView();
     }
 
     public PaperItemsCollectionView(IServiceProvider serviceProvider, bool allowInitializeComponent = true)
@@ -20,11 +20,15 @@ public partial class PaperItemsCollectionView : FeatureViewBase
             return;
         }
 
-        InitializeComponent();
+        InitializeView();
     }
 
     public override FeatureName DefaultFeatureName => FeatureNames.PaperItemsCollection;
 
     protected override Type ViewModelType => typeof(PaperItemsCollectionViewModel);
 
+    public override void InitializeView()
+    {
+        InitializeComponent();
+    }
 }

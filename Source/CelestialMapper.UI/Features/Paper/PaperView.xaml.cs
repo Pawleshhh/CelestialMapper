@@ -8,7 +8,7 @@ public partial class PaperView : FeatureViewBase
 
     public PaperView()
     {
-        InitializeComponent();
+        InitializeView();
     }
 
     public PaperView(IServiceProvider serviceProvider, bool allowInitializeComponent = true)
@@ -19,11 +19,15 @@ public partial class PaperView : FeatureViewBase
             return;
         }
 
-        InitializeComponent();
+        InitializeView();
     }
 
     public override FeatureName DefaultFeatureName => FeatureNames.Paper;
 
     protected override Type ViewModelType => typeof(PaperViewModel);
 
+    public override void InitializeView()
+    {
+        InitializeComponent();
+    }
 }

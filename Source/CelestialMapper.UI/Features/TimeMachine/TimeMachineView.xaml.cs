@@ -8,7 +8,7 @@ public partial class TimeMachineView : FeatureViewBase
 {
     public TimeMachineView()
     {
-        InitializeComponent();
+        InitializeView();
     }
 
     public TimeMachineView(IServiceProvider serviceProvider, bool allowInitializeComponent = true)
@@ -19,10 +19,15 @@ public partial class TimeMachineView : FeatureViewBase
             return;
         }
 
-        InitializeComponent();
+        InitializeView();
     }
 
     public override FeatureName DefaultFeatureName => FeatureNames.TimeMachine;
 
     protected override Type ViewModelType => typeof(TimeMachineViewModel);
+    
+    public override void InitializeView()
+    {
+        InitializeComponent();
+    }
 }
