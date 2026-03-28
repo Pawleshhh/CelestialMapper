@@ -9,7 +9,7 @@
     <DataTemplate x:Key="Private.DataTemplate.PaperItem.Base" DataType="{x:Type vm:IPaperItem}" />
 
     <DataTemplate x:Key="Private.DataTemplate.PaperItem.ViewModelBase" DataType="{x:Type vm:PaperItemBaseViewModel}">
-        <ui:FactoryView FeatureName="{Binding FeatureName}" />
+        <ui:FactoryView DoNotInitializeViewModel="True" FeatureName="{Binding FeatureName}" />
     </DataTemplate>
 
     <DataTemplate x:Key="Private.DataTemplate.PaperItem.Text" DataType="{x:Type vm:TextItem}">

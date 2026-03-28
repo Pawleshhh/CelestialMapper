@@ -1,6 +1,6 @@
 ﻿using CelestialMapper.Core.Astronomy;
 using CelestialMapper.Core.Infrastructure.Map;
-using PracticalAstronomy.CSharp;
+using System.Globalization;
 using System.Windows.Input;
 
 namespace CelestialMapper.ViewModel;
@@ -13,7 +13,7 @@ public class MapViewModel : PaperItemBaseViewModel
     #region Fields
 
     private readonly IMapManager mapManager;
-    private readonly ITimeMachineManager timeMachineManager;
+    private readonly TimeLocationHelper timeLocationHelper;
 
     private IMap map = default!;
 
@@ -23,11 +23,13 @@ public class MapViewModel : PaperItemBaseViewModel
 
     public MapViewModel(
         IMapManager mapManager,
-        ITimeMachineManager timeMachineManager,
-        IViewModelSupport viewModelSupport) : base(viewModelSupport)
+        IViewModelSupport viewModelSupport,
+        TimeLocationHelper timeLocationHelper) : base(viewModelSupport)
     {
         this.mapManager = mapManager;
-        this.timeMachineManager = timeMachineManager;
+        this.timeLocationHelper = timeLocationHelper;
+
+        Id = Guid.NewGuid();
     }
 
     #endregion
@@ -40,43 +42,19 @@ public class MapViewModel : PaperItemBaseViewModel
     {
         base.Initialize(configurator);
 
+        var now = this.timeLocationHelper.DateTime;
+        DateTime = now.Date;
+        Time = now.TimeOfDay;
+        var (lon, lat) = this.timeLocationHelper.Location;
+        LongitudeInput = lon.ToString(CultureInfo.InvariantCulture);
+        LatitudeInput = lat.ToString(CultureInfo.InvariantCulture);
+
+        ApplyCommand = new RelayCommand(o =>
+        {
+            GenerateMap(null);
+            RefreshInputs();
+        });
         GenerateMapCommand = new RelayCommand(o => GenerateMap(o));
-    }
-
-    protected override void SubscribeToEvents()
-    {
-        base.SubscribeToEvents();
-        this.timeMachineManager.LocationChanged += TimeMachineManager_LocationChanged;
-        this.timeMachineManager.DateTimeChanged += TimeMachineManager_DateTimeChanged;
-        this.timeMachineManager.TimeMachineUpdated += TimeMachineManager_TimeMachineUpdated;
-    }
-
-    protected override void UnsubscribeFromEvents()
-    {
-        base.UnsubscribeFromEvents();
-        this.timeMachineManager.LocationChanged -= TimeMachineManager_LocationChanged;
-        this.timeMachineManager.DateTimeChanged -= TimeMachineManager_DateTimeChanged;
-        this.timeMachineManager.TimeMachineUpdated -= TimeMachineManager_TimeMachineUpdated;
-    }
-
-
-    #endregion
-
-    #region Event handlers
-
-    private void TimeMachineManager_TimeMachineUpdated(ITimeMachineManager sender, PlatformEventArgs<(DateTime DateTime, Geographic Location)> e)
-    {
-        GenerateMapCommand?.Execute(null);
-    }
-
-    private void TimeMachineManager_DateTimeChanged(ITimeMachineManager sender, PlatformEventArgs<DateTime> e)
-    {
-        GenerateMapCommand?.Execute(null);
-    }
-
-    private void TimeMachineManager_LocationChanged(ITimeMachineManager sender, PlatformEventArgs<Geographic> e)
-    {
-        GenerateMapCommand?.Execute(null);
     }
 
     #endregion
@@ -95,35 +73,100 @@ public class MapViewModel : PaperItemBaseViewModel
 
     public override PaperItemType ItemType => PaperItemType.Map;
 
+    public ICommand? ApplyCommand { get; private set; }
+
+    public DateTime DateTime
+    {
+        get => GetPropertyValue<DateTime>();
+        set => SetPropertyValue(value);
+    }
+
+    public TimeSpan Time
+    {
+        get => GetPropertyValue<TimeSpan>();
+        set => SetPropertyValue(value);
+    }
+
+    public double Latitude
+    {
+        get => GetPropertyValue<double>();
+        set => SetPropertyValue(value);
+    }
+
+    public double Longitude
+    {
+        get => GetPropertyValue<double>();
+        set => SetPropertyValue(value);
+    }
+
+    public string LatitudeInput
+    {
+        get => GetPropertyValue<string>() ?? Latitude.ToString();
+        set
+        {
+            if (!SetPropertyValue(value))
+            {
+                return;
+            }
+
+            Latitude = ParseDouble(value);
+        }
+    }
+
+    public string LongitudeInput
+    {
+        get => GetPropertyValue<string>() ?? Longitude.ToString();
+        set
+        {
+            if (!SetPropertyValue(value))
+            {
+                return;
+            }
+
+            Longitude = ParseDouble(value);
+        }
+    }
     #endregion
 
     #region Methods
 
     private void GenerateMap(object? o)
     {
-        var dateTime = this.timeMachineManager.DateTime;
-        dateTime = dateTime.ToUniversalTime();
-
-        this.map = this.mapManager.Generate(
-                this.timeMachineManager.Location,
-                dateTime,
-                IGenerateMapSettings.Create(NumRange.Of(-1d, 5d))).Result;
+        var task = this.mapManager.Generate(
+                new(Latitude, Longitude),
+                DateTime.WithTimeOfDay(Time),
+                IGenerateMapSettings.Create(NumRange.Of(-1d, 5d)));
+        task.Wait();
+        this.map = task.Result;
 
         RisePropertyChanged(nameof(CelestialObjects), nameof(Constellations));
+    }
 
-        //while (true)
-        //{
-        //    this.map = this.mapManager.Generate(
-        //        new(53.482906986790525, 14.862220332070006),
-        //        dateTime,
-        //        IGenerateMapSettings.Create(NumRange.Of(-1d, 5d))).Result;
+    #endregion
 
-        //    RisePropertyChanged(nameof(CelestialObjects), nameof(Constellations));
+    #region Helpers
 
-        //    await Task.Delay(200);
+    private double ParseDouble(string value)
+    {
+        if (double.TryParse(value, CultureInfo.InvariantCulture, out double result))
+        {
+            return result;
+        }
 
-        //    dateTime = dateTime.AddHours(0.1);
-        //}
+        return 0;
+    }
+
+    private void RefreshInputs()
+    {
+        if (LatitudeInput.IsNullOrEmpty())
+        {
+            LatitudeInput = "0";
+        }
+
+        if (LongitudeInput.IsNullOrEmpty())
+        {
+            LongitudeInput = "0";
+        }
     }
 
     #endregion

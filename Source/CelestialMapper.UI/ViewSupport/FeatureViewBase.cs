@@ -35,6 +35,15 @@ public abstract class FeatureViewBase : PlatformUserControl
     public static readonly DependencyProperty FeatureNameProperty =
         Register(nameof(FeatureName), new PlatformPropertyMetadata<FeatureViewBase, FeatureName>(FeatureName.Unknown));
 
+    public bool DoNotInitializeViewModel
+    {
+        get { return (bool)GetValue(DoNotInitializeViewModelProperty); }
+        set { SetValue(DoNotInitializeViewModelProperty, value); }
+    }
+
+    public static readonly DependencyProperty DoNotInitializeViewModelProperty =
+        Register(nameof(DoNotInitializeViewModel), new PlatformPropertyMetadata<FeatureViewBase, bool>(false));
+
     private void FeatureViewBase_Loaded(object sender, RoutedEventArgs e)
     {
         OnLoaded();
@@ -58,6 +67,11 @@ public abstract class FeatureViewBase : PlatformUserControl
 
     public virtual void InitializeViewModel()
     {
+        if (DoNotInitializeViewModel)
+        {
+            return;
+        }
+
         DataContext = ServiceProvider.ResolveViewModel(
             ViewModelType,
             FeatureName.IsUnknown()

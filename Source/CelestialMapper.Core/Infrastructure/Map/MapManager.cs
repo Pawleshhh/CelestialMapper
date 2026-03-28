@@ -2,6 +2,7 @@
 using CelestialMapper.Core.Astronomy;
 using CelestialMapper.Core.Database;
 using PracticalAstronomy.CSharp;
+using System;
 using System.Collections.Immutable;
 
 namespace CelestialMapper.Core.Infrastructure.Map;
@@ -13,14 +14,16 @@ public class MapManager : IMapManager
     #region Fields
 
     private readonly ICelestialDatabase celestialDatabase;
+    private readonly TimeLocationHelper timeLocationHelper;
 
     #endregion
 
     #region Constructors
 
-    public MapManager(ICelestialDatabase celestialDatabase)
+    public MapManager(ICelestialDatabase celestialDatabase, TimeLocationHelper timeLocationHelper)
     {
         this.celestialDatabase = celestialDatabase;
+        this.timeLocationHelper = timeLocationHelper;
     }
 
     #endregion
@@ -38,6 +41,24 @@ public class MapManager : IMapManager
             var celestialObjects = this.celestialDatabase.GetCelestialObjects(
                 location, 
                 dateTime, 
+                generateMapSettings.MagnitudeRange);
+            var constellations = this.celestialDatabase.GetConstellations(
+                location,
+                dateTime);
+            return CreateMap(location, dateTime, generateMapSettings, celestialObjects, constellations);
+        });
+    }
+
+    public Task<IMap> Generate(IGenerateMapSettings generateMapSettings)
+    {
+        return Task.Run(() =>
+        {
+            var guid = Guid.NewGuid();
+            var (dateTime, location) = (this.timeLocationHelper.DateTime, this.timeLocationHelper.Location);
+
+            var celestialObjects = this.celestialDatabase.GetCelestialObjects(
+                location,
+                dateTime,
                 generateMapSettings.MagnitudeRange);
             var constellations = this.celestialDatabase.GetConstellations(
                 location,

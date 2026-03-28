@@ -6,6 +6,8 @@ namespace CelestialMapper.Core.Infrastructure.Map;
 public interface IMap
 {
 
+    public Guid Id { get; }
+
     public IGenerateMapSettings GenerateMapSettings { get; }
 
     public IReadOnlySet<CelestialObject> CelestialObjects { get; }

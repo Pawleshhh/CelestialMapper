@@ -12,17 +12,13 @@ public class TimeMachineViewModel : ViewModelBase
 
     private readonly Geographic defaultLocation = new(0, 0);
 
-    private readonly ITimeMachineManager timeMachineManager;
-
     #endregion
 
     #region Constructors
 
     public TimeMachineViewModel(
-        ITimeMachineManager timeMachineManager,
         IViewModelSupport viewModelSupport) : base(viewModelSupport)
     {
-        this.timeMachineManager = timeMachineManager;
     }
 
     #endregion
@@ -41,54 +37,8 @@ public class TimeMachineViewModel : ViewModelBase
 
         ApplyCommand = new RelayCommand(o =>
         {
-            this.timeMachineManager.Update(DateTime.WithTimeOfDay(Time), new(Latitude, Longitude));
-
             RefreshInputs();
         });
-    }
-
-    protected override void SubscribeToEvents()
-    {
-        base.SubscribeToEvents();
-        this.timeMachineManager.LocationChanged += TimeMachineManager_LocationChanged;
-        this.timeMachineManager.DateTimeChanged += TimeMachineManager_DateTimeChanged;
-        this.timeMachineManager.TimeMachineUpdated += TimeMachineManager_TimeMachineUpdated;
-    }
-
-    protected override void UnsubscribeFromEvents()
-    {
-        base.UnsubscribeFromEvents();
-        this.timeMachineManager.LocationChanged -= TimeMachineManager_LocationChanged;
-        this.timeMachineManager.DateTimeChanged -= TimeMachineManager_DateTimeChanged;
-        this.timeMachineManager.TimeMachineUpdated -= TimeMachineManager_TimeMachineUpdated;
-    }
-
-    #endregion
-
-    #region Event handlers
-
-    private void TimeMachineManager_TimeMachineUpdated(ITimeMachineManager sender, PlatformEventArgs<(DateTime DateTime, Geographic Location)> e)
-    {
-        DateTime = e.Data.DateTime;
-        Time = e.Data.DateTime.TimeOfDay;
-        Longitude = e.Data.Location.Longitude;
-        Latitude = e.Data.Location.Latitude;
-    }
-
-    private void TimeMachineManager_DateTimeChanged(ITimeMachineManager sender, PlatformEventArgs<DateTime> e)
-    {
-        DateTime = e.Data;
-        Time = e.Data.TimeOfDay;
-    }
-
-    private void TimeMachineManager_LocationChanged(ITimeMachineManager sender, PlatformEventArgs<Geographic> e)
-    {
-        if (e.Data is null)
-        {
-            (Latitude, Longitude) = this.defaultLocation;
-        }
-
-        (Latitude, Longitude) = e.Data!;
     }
 
     #endregion
