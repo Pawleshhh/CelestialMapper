@@ -13,7 +13,6 @@ public class MapViewModel : PaperItemBaseViewModel
     #region Fields
 
     private readonly IMapManager mapManager;
-    private readonly ITimeMachineManager timeMachineManager;
     private readonly TimeLocationHelper timeLocationHelper;
 
     private IMap map = default!;
@@ -24,13 +23,13 @@ public class MapViewModel : PaperItemBaseViewModel
 
     public MapViewModel(
         IMapManager mapManager,
-        ITimeMachineManager timeMachineManager,
         IViewModelSupport viewModelSupport,
         TimeLocationHelper timeLocationHelper) : base(viewModelSupport)
     {
         this.mapManager = mapManager;
-        this.timeMachineManager = timeMachineManager;
         this.timeLocationHelper = timeLocationHelper;
+
+        Id = Guid.NewGuid();
     }
 
     #endregion
@@ -56,28 +55,6 @@ public class MapViewModel : PaperItemBaseViewModel
             RefreshInputs();
         });
         GenerateMapCommand = new RelayCommand(o => GenerateMap(o));
-    }
-
-    protected override void SubscribeToEvents()
-    {
-        base.SubscribeToEvents();
-        this.timeMachineManager.TimeMachineUpdated += TimeMachineManager_TimeMachineUpdated;
-    }
-
-    protected override void UnsubscribeFromEvents()
-    {
-        base.UnsubscribeFromEvents();
-        this.timeMachineManager.TimeMachineUpdated -= TimeMachineManager_TimeMachineUpdated;
-    }
-
-
-    #endregion
-
-    #region Event handlers
-
-    private void TimeMachineManager_TimeMachineUpdated(ITimeMachineManager sender, PlatformEventArgs<TimeMachineData> e)
-    {
-        GenerateMapCommand?.Execute(null);
     }
 
     #endregion
@@ -163,20 +140,6 @@ public class MapViewModel : PaperItemBaseViewModel
         this.map = task.Result;
 
         RisePropertyChanged(nameof(CelestialObjects), nameof(Constellations));
-
-        //while (true)
-        //{
-        //    this.map = this.mapManager.Generate(
-        //        new(53.482906986790525, 14.862220332070006),
-        //        dateTime,
-        //        IGenerateMapSettings.Create(NumRange.Of(-1d, 5d))).Result;
-
-        //    RisePropertyChanged(nameof(CelestialObjects), nameof(Constellations));
-
-        //    await Task.Delay(200);
-
-        //    dateTime = dateTime.AddHours(0.1);
-        //}
     }
 
     #endregion

@@ -14,17 +14,15 @@ public class MapManager : IMapManager
     #region Fields
 
     private readonly ICelestialDatabase celestialDatabase;
-    private readonly ITimeMachineManager timeMachineManager;
     private readonly TimeLocationHelper timeLocationHelper;
 
     #endregion
 
     #region Constructors
 
-    public MapManager(ICelestialDatabase celestialDatabase, ITimeMachineManager timeMachineManager, TimeLocationHelper timeLocationHelper)
+    public MapManager(ICelestialDatabase celestialDatabase, TimeLocationHelper timeLocationHelper)
     {
         this.celestialDatabase = celestialDatabase;
-        this.timeMachineManager = timeMachineManager;
         this.timeLocationHelper = timeLocationHelper;
     }
 
@@ -57,7 +55,6 @@ public class MapManager : IMapManager
         {
             var guid = Guid.NewGuid();
             var (dateTime, location) = (this.timeLocationHelper.DateTime, this.timeLocationHelper.Location);
-            this.timeMachineManager.Update(guid, dateTime, location);
 
             var celestialObjects = this.celestialDatabase.GetCelestialObjects(
                 location,
@@ -78,22 +75,6 @@ public class MapManager : IMapManager
         IEnumerable<Constellation> constellations)
     {
         return new CelestialMap(celestialObjects)
-        {
-            Location = location,
-            DateTime = dateTime,
-            Constellations = constellations.ToImmutableHashSet()
-        };
-    }
-
-    protected virtual IMap CreateMap(
-        Guid guid,
-        Geographic location,
-        DateTime dateTime,
-        IGenerateMapSettings generateMapSettings,
-        IEnumerable<CelestialObject> celestialObjects,
-        IEnumerable<Constellation> constellations)
-    {
-        return new CelestialMap(guid, celestialObjects)
         {
             Location = location,
             DateTime = dateTime,
