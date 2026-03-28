@@ -7,6 +7,12 @@ namespace CelestialMapper.Core.Infrastructure.Map;
 public class CelestialMap : IMap
 {
 
+    public CelestialMap(Guid guid, IEnumerable<CelestialObject> celestialObjects)
+        : this(celestialObjects)
+    {
+        Id = guid;
+    }
+
     public CelestialMap(IEnumerable<CelestialObject> celestialObjects)
     {
         CelestialObjects = celestialObjects.ToImmutableHashSet();
@@ -19,7 +25,8 @@ public class CelestialMap : IMap
 
     public IReadOnlySet<Constellation> Constellations { get; init; } = new HashSet<Constellation>();
 
+    public Guid Id { get; } = Guid.NewGuid();
+
     public Geographic Location { get; init; } = MapConstants.DefaultLocation;
     public DateTime DateTime { get; init; } = DateTime.UtcNow;
-
 }

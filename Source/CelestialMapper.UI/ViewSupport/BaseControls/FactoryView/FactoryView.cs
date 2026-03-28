@@ -21,6 +21,15 @@ public class FactoryView : ContentControl
     public static readonly DependencyProperty FeatureNameProperty =
         Register(nameof(FeatureName), new PlatformPropertyMetadata<FactoryView, FeatureName>(FeatureName.Unknown));
 
+    public bool DoNotInitializeViewModel
+    {
+        get { return (bool)GetValue(DoNotInitializeViewModelProperty); }
+        set { SetValue(DoNotInitializeViewModelProperty, value); }
+    }
+
+    public static readonly DependencyProperty DoNotInitializeViewModelProperty =
+        Register(nameof(DoNotInitializeViewModel), new PlatformPropertyMetadata<FactoryView, bool>(false));
+
     protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
@@ -38,6 +47,8 @@ public class FactoryView : ContentControl
             // TODO: Create unknown view for such cases
             return;
         }
+
+        view.DoNotInitializeViewModel = DoNotInitializeViewModel;
 
         Content = view;
     }

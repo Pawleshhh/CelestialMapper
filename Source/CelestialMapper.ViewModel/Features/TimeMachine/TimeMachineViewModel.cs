@@ -41,7 +41,7 @@ public class TimeMachineViewModel : ViewModelBase
 
         ApplyCommand = new RelayCommand(o =>
         {
-            this.timeMachineManager.Update(DateTime.WithTimeOfDay(Time), new(Latitude, Longitude));
+            //this.timeMachineManager.Update(DateTime.WithTimeOfDay(Time), new(Latitude, Longitude));
 
             RefreshInputs();
         });
@@ -50,16 +50,12 @@ public class TimeMachineViewModel : ViewModelBase
     protected override void SubscribeToEvents()
     {
         base.SubscribeToEvents();
-        this.timeMachineManager.LocationChanged += TimeMachineManager_LocationChanged;
-        this.timeMachineManager.DateTimeChanged += TimeMachineManager_DateTimeChanged;
         this.timeMachineManager.TimeMachineUpdated += TimeMachineManager_TimeMachineUpdated;
     }
 
     protected override void UnsubscribeFromEvents()
     {
         base.UnsubscribeFromEvents();
-        this.timeMachineManager.LocationChanged -= TimeMachineManager_LocationChanged;
-        this.timeMachineManager.DateTimeChanged -= TimeMachineManager_DateTimeChanged;
         this.timeMachineManager.TimeMachineUpdated -= TimeMachineManager_TimeMachineUpdated;
     }
 
@@ -67,8 +63,13 @@ public class TimeMachineViewModel : ViewModelBase
 
     #region Event handlers
 
-    private void TimeMachineManager_TimeMachineUpdated(ITimeMachineManager sender, PlatformEventArgs<(DateTime DateTime, Geographic Location)> e)
+    private void TimeMachineManager_TimeMachineUpdated(ITimeMachineManager sender, PlatformEventArgs<TimeMachineData> e)
     {
+        if (e.Data is null)
+        {
+            return;
+        }
+
         DateTime = e.Data.DateTime;
         Time = e.Data.DateTime.TimeOfDay;
         Longitude = e.Data.Location.Longitude;

@@ -1,5 +1,4 @@
 ﻿using CelestialMapper.Common;
-using CelestialMapper.Core.Infrastructure.Map;
 using PracticalAstronomy.CSharp;
 
 namespace CelestialMapper.Core;
@@ -10,52 +9,52 @@ public class TimeMachineManager : ITimeMachineManager
 
     #region Fields
 
-    private DateTime dateTime;
-
-    private Geographic location = MapConstants.DefaultLocation;
+    private readonly IDictionary<Guid, TimeMachineData> timeMachineData = new Dictionary<Guid, TimeMachineData>();
 
     #endregion
 
-    public DateTime DateTime
-    {
-        get => this.dateTime;
-        set
-        {
-            if (this.dateTime == value)
-            {
-                return;
-            }
+    public event PlatformEventHandler<ITimeMachineManager, PlatformEventArgs<TimeMachineData>>? TimeMachineUpdated;
 
-            this.dateTime = value;
-            DateTimeChanged?.Invoke(this, new(this.dateTime));
+    public Geographic? GetLocation(Guid guid)
+    {
+        if (this.timeMachineData.TryGetValue(guid, out var data))
+        {
+            return data.Location;
         }
+
+        return default;
     }
 
-    public Geographic Location
+    public DateTime? GetTime(Guid guid)
     {
-        get => this.location;
-        set
+        if (this.timeMachineData.TryGetValue(guid, out var data))
         {
-            if (this.location == value)
-            {
-                return;
-            }
-
-            this.location = value;
-            LocationChanged?.Invoke(this, new(this.location));
+            return data.DateTime;
         }
+
+        return default;
     }
 
-    public event PlatformEventHandler<ITimeMachineManager, PlatformEventArgs<DateTime>>? DateTimeChanged;
-
-    public event PlatformEventHandler<ITimeMachineManager, PlatformEventArgs<Geographic>>? LocationChanged;
-
-    public event PlatformEventHandler<ITimeMachineManager, PlatformEventArgs<(DateTime DateTime, Geographic Location)>>? TimeMachineUpdated;
-
-    public void Update(DateTime dateTime, Geographic location)
+    public bool HasTimeMachine(Guid guid)
     {
-        this.dateTime = dateTime;
-        this.location = location;
-        TimeMachineUpdated?.Invoke(this, new((this.dateTime, this.location)));
+        return this.timeMachineData.ContainsKey(guid);
+    }
+
+    public void RemoveTimeMachine(Guid guid)
+    {
+        this.timeMachineData.Remove(guid);
+    }
+
+    public void Update(Guid guid, DateTime dateTime, Geographic location)
+    {
+        if (this.timeMachineData.TryGetValue(guid, out var data))
+        {
+            this.timeMachineData[guid] = data with { DateTime = dateTime, Location = location };
+            return;
+        }
+
+        var timeMachineData = new TimeMachineData(dateTime, location);
+        this.timeMachineData.Add(guid, timeMachineData);
+        TimeMachineUpdated?.Invoke(this, new(timeMachineData));
     }
 }

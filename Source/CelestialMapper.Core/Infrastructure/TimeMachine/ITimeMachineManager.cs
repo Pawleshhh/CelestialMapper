@@ -5,17 +5,13 @@ namespace CelestialMapper.Core;
 
 public interface ITimeMachineManager
 {
+    public event PlatformEventHandler<ITimeMachineManager, PlatformEventArgs<TimeMachineData>>? TimeMachineUpdated;
 
-    public event PlatformEventHandler<ITimeMachineManager, PlatformEventArgs<DateTime>>? DateTimeChanged;
+    public void Update(Guid guid, DateTime dateTime, Geographic location);
+    public void RemoveTimeMachine(Guid guid);
+    public bool HasTimeMachine(Guid guid);
 
-    public event PlatformEventHandler<ITimeMachineManager, PlatformEventArgs<Geographic>>? LocationChanged;
-
-    public event PlatformEventHandler<ITimeMachineManager, PlatformEventArgs<(DateTime DateTime, Geographic Location)>>? TimeMachineUpdated;
-
-    public DateTime DateTime { get; set; }
-
-    public Geographic Location { get; set; }
-
-    public void Update(DateTime dateTime, Geographic location);
+    public DateTime? GetTime(Guid guid);
+    public Geographic? GetLocation(Guid guid);
 
 }

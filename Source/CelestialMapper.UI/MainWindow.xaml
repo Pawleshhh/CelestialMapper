@@ -28,8 +28,6 @@
             <ColumnDefinition x:Name="PropertiesMenuColumn" Width="{DynamicResource GridLength.MainWindow.RightMenu.Width}" />
         </Grid.ColumnDefinitions>
 
-        <local:TimeMachineView Grid.Row="0" Grid.ColumnSpan="5" />
-
         <!--  Toolbox Menu  -->
         <local:MenuView
             x:Name="ToolboxMenu"
