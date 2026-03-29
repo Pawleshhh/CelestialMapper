@@ -6,7 +6,94 @@
     xmlns:vm="clr-namespace:CelestialMapper.ViewModel;assembly=CelestialMapper.ViewModel">
 
     <DataTemplate x:Key="Private.DataTemplate.PaperEditorMenuStyles.TextItem.Settings" DataType="{x:Type vm:TextItem}">
-        <TextBlock Text="TextItem settings" />
+        <StackPanel Background="{DynamicResource Brush.ToolBackground}" Orientation="Vertical">
+
+            <HeaderedContentControl Header="Content:" Style="{StaticResource Style.HeaderedContentControl}">
+                <TextBox
+                    Height="60"
+                    AcceptsReturn="True"
+                    Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto" />
+            </HeaderedContentControl>
+
+            <HeaderedContentControl Header="Font Family:" Style="{StaticResource Style.HeaderedContentControl}">
+                <ComboBox
+                    IsEditable="True"
+                    ItemsSource="{x:Static Fonts.SystemFontFamilies}"
+                    SelectedItem="{Binding FontFamily, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </HeaderedContentControl>
+
+            <local:LabeledTextBox Label="Font Size:">
+                <local:LabeledTextBox.Text>
+                    <Binding
+                        Mode="TwoWay"
+                        Path="FontSize"
+                        UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <local:DoubleInputValidation InvalidResultString="String.FontSize.Error" MinValue="1" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </local:LabeledTextBox.Text>
+            </local:LabeledTextBox>
+
+            <HeaderedContentControl Header="Font Style:" Style="{StaticResource Style.HeaderedContentControl}">
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Content="Bold" IsChecked="{Binding IsBold, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <CheckBox Content="Italic" IsChecked="{Binding IsItalic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <CheckBox Content="Underline" IsChecked="{Binding IsUnderline, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <CheckBox Content="Strikethrough" IsChecked="{Binding IsStrikethrough, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+            </HeaderedContentControl>
+
+            <HeaderedContentControl Header="Horizontal Alignment:" Style="{StaticResource Style.HeaderedContentControl}">
+                <ComboBox SelectedItem="{Binding HorizontalAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <vm:TextHorizontalAlignment>Left</vm:TextHorizontalAlignment>
+                    <vm:TextHorizontalAlignment>Center</vm:TextHorizontalAlignment>
+                    <vm:TextHorizontalAlignment>Right</vm:TextHorizontalAlignment>
+                    <vm:TextHorizontalAlignment>Justify</vm:TextHorizontalAlignment>
+                </ComboBox>
+            </HeaderedContentControl>
+
+            <HeaderedContentControl Header="Vertical Alignment:" Style="{StaticResource Style.HeaderedContentControl}">
+                <ComboBox SelectedItem="{Binding VerticalAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <vm:TextVerticalAlignment>Top</vm:TextVerticalAlignment>
+                    <vm:TextVerticalAlignment>Center</vm:TextVerticalAlignment>
+                    <vm:TextVerticalAlignment>Bottom</vm:TextVerticalAlignment>
+                </ComboBox>
+            </HeaderedContentControl>
+
+            <HeaderedContentControl Header="Layout:" Style="{StaticResource Style.HeaderedContentControl}">
+                <CheckBox Content="Text Wrap" IsChecked="{Binding IsTextWrapped, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </HeaderedContentControl>
+
+            <local:LabeledTextBox Label="Line Height:">
+                <local:LabeledTextBox.Text>
+                    <Binding
+                        Mode="TwoWay"
+                        Path="LineHeight"
+                        UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <local:DoubleInputValidation InvalidResultString="String.LineHeight.Error" MinValue="0" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </local:LabeledTextBox.Text>
+            </local:LabeledTextBox>
+
+            <local:LabeledTextBox Label="Letter Spacing:">
+                <local:LabeledTextBox.Text>
+                    <Binding
+                        Mode="TwoWay"
+                        Path="LetterSpacing"
+                        UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <local:DoubleInputValidation InvalidResultString="String.LetterSpacing.Error" MinValue="0" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </local:LabeledTextBox.Text>
+            </local:LabeledTextBox>
+
+        </StackPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="Private.DataTemplate.PaperEditorMenuStyles.Map.Settings" DataType="{x:Type vm:MapViewModel}">
