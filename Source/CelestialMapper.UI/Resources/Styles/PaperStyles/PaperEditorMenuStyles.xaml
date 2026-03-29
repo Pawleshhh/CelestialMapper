@@ -12,7 +12,7 @@
                 <TextBox
                     Height="60"
                     AcceptsReturn="True"
-                    Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto" />
             </HeaderedContentControl>
@@ -21,14 +21,14 @@
                 <ComboBox
                     IsEditable="True"
                     ItemsSource="{x:Static Fonts.SystemFontFamilies}"
-                    SelectedItem="{Binding FontFamily, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    SelectedItem="{Binding FontFamily.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </HeaderedContentControl>
 
             <local:LabeledTextBox Label="Font Size:">
                 <local:LabeledTextBox.Text>
                     <Binding
                         Mode="TwoWay"
-                        Path="FontSize"
+                        Path="FontSize.Value"
                         UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
                             <local:DoubleInputValidation InvalidResultString="String.FontSize.Error" MinValue="1" />
@@ -39,15 +39,15 @@
 
             <HeaderedContentControl Header="Font Style:" Style="{StaticResource Style.HeaderedContentControl}">
                 <StackPanel Orientation="Horizontal">
-                    <CheckBox Content="Bold" IsChecked="{Binding IsBold, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <CheckBox Content="Italic" IsChecked="{Binding IsItalic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <CheckBox Content="Underline" IsChecked="{Binding IsUnderline, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <CheckBox Content="Strikethrough" IsChecked="{Binding IsStrikethrough, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <CheckBox Content="Bold" IsChecked="{Binding IsBold.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <CheckBox Content="Italic" IsChecked="{Binding IsItalic.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <CheckBox Content="Underline" IsChecked="{Binding IsUnderline.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <CheckBox Content="Strikethrough" IsChecked="{Binding IsStrikethrough.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
             </HeaderedContentControl>
 
             <HeaderedContentControl Header="Horizontal Alignment:" Style="{StaticResource Style.HeaderedContentControl}">
-                <ComboBox SelectedItem="{Binding HorizontalAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox SelectedItem="{Binding HorizontalAlignment.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <vm:TextHorizontalAlignment>Left</vm:TextHorizontalAlignment>
                     <vm:TextHorizontalAlignment>Center</vm:TextHorizontalAlignment>
                     <vm:TextHorizontalAlignment>Right</vm:TextHorizontalAlignment>
@@ -56,7 +56,7 @@
             </HeaderedContentControl>
 
             <HeaderedContentControl Header="Vertical Alignment:" Style="{StaticResource Style.HeaderedContentControl}">
-                <ComboBox SelectedItem="{Binding VerticalAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox SelectedItem="{Binding VerticalAlignment.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <vm:TextVerticalAlignment>Top</vm:TextVerticalAlignment>
                     <vm:TextVerticalAlignment>Center</vm:TextVerticalAlignment>
                     <vm:TextVerticalAlignment>Bottom</vm:TextVerticalAlignment>
@@ -64,14 +64,14 @@
             </HeaderedContentControl>
 
             <HeaderedContentControl Header="Layout:" Style="{StaticResource Style.HeaderedContentControl}">
-                <CheckBox Content="Text Wrap" IsChecked="{Binding IsTextWrapped, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <CheckBox Content="Text Wrap" IsChecked="{Binding IsTextWrapped.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </HeaderedContentControl>
 
             <local:LabeledTextBox Label="Line Height:">
                 <local:LabeledTextBox.Text>
                     <Binding
                         Mode="TwoWay"
-                        Path="LineHeight"
+                        Path="LineHeight.Value"
                         UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
                             <local:DoubleInputValidation InvalidResultString="String.LineHeight.Error" MinValue="0" />
@@ -84,7 +84,7 @@
                 <local:LabeledTextBox.Text>
                     <Binding
                         Mode="TwoWay"
-                        Path="LetterSpacing"
+                        Path="LetterSpacing.Value"
                         UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
                             <local:DoubleInputValidation InvalidResultString="String.LetterSpacing.Error" MinValue="0" />
@@ -111,7 +111,7 @@
                 <local:LabeledTextBox.Text>
                     <Binding
                         Mode="TwoWay"
-                        Path="LatitudeInput"
+                        Path="Latitude.Value"
                         UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
                             <local:DoubleInputValidation
@@ -127,7 +127,7 @@
                 <local:LabeledTextBox.Text>
                     <Binding
                         Mode="TwoWay"
-                        Path="LongitudeInput"
+                        Path="Longitude.Value"
                         UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
                             <local:DoubleInputValidation
@@ -140,11 +140,11 @@
             </local:LabeledTextBox>
 
             <HeaderedContentControl Header="Date:" Style="{StaticResource Style.HeaderedContentControl}">
-                <DatePicker SelectedDate="{Binding DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <DatePicker SelectedDate="{Binding DateTime.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </HeaderedContentControl>
 
             <HeaderedContentControl Header="Time:" Style="{StaticResource Style.HeaderedContentControl}">
-                <local:TimePicker SelectedTime="{Binding Time, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <local:TimePicker SelectedTime="{Binding Time.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </HeaderedContentControl>
 
             <Button Command="{Binding ApplyCommand}" Content="Apply" />

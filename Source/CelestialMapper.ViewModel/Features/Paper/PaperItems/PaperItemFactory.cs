@@ -35,11 +35,7 @@ public class PaperItemFactory : IPaperItemFactory
         var item = type switch
         {
             PaperItemType.Map => this.ioCManager.ServiceProvider.ResolveViewModel<MapViewModel>(FeatureNames.Map),
-            PaperItemType.Text => new TextItem 
-                                {
-                                    Id = Guid.NewGuid(),
-                                    Text = (string)value,
-                                },
+            PaperItemType.Text => GetTextItem(value),
             _ => ThrowWhenTypeNotHandled(type)
         };
 
@@ -56,5 +52,15 @@ public class PaperItemFactory : IPaperItemFactory
     {
         this.resourceResolver.TryResolveString(key, out var value);
         return value;
+    }
+
+    private static TextItem GetTextItem(object value)
+    {
+        var textItem = new TextItem
+        {
+            Id = Guid.NewGuid()
+        };
+        textItem.Text.Value = value as string;
+        return textItem;
     }
 }

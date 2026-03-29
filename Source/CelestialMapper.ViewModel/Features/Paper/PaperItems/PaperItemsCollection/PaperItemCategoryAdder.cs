@@ -13,7 +13,7 @@ public class PaperItemCategoryAdder : NotifyPropertyChangedBase
         this.paperEditor = paperEditor;
     }
 
-    public PaperItemCatergory Category { get; set; }
+    public PaperItemCategory Category { get; set; }
 
     public ObservableCollection<PaperItemAdder> PaperItemAdders { get; } = new();
 

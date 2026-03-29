@@ -6,7 +6,7 @@ using System.Windows.Input;
 namespace CelestialMapper.ViewModel;
 
 [Export(typeof(MapViewModel), IsSingleton = false, Key = nameof(MapViewModel))]
-[PaperItemIdentifier(Category = PaperItemCatergory.Map, ItemType = PaperItemType.Map, NameKey = "DefaultMap")]
+[PaperItemIdentifier(Category = PaperItemCategory.Map, ItemType = PaperItemType.Map, NameKey = "DefaultMap")]
 public class MapViewModel : PaperItemBaseViewModel
 {
 
@@ -43,16 +43,13 @@ public class MapViewModel : PaperItemBaseViewModel
         base.Initialize(configurator);
 
         var now = this.timeLocationHelper.DateTime;
-        DateTime = now.Date;
-        Time = now.TimeOfDay;
+        DateTime.Value = now.Date;
+        Time.Value = now.TimeOfDay;
         var (lon, lat) = this.timeLocationHelper.Location;
-        LongitudeInput = lon.ToString(CultureInfo.InvariantCulture);
-        LatitudeInput = lat.ToString(CultureInfo.InvariantCulture);
 
         ApplyCommand = new RelayCommand(o =>
         {
             GenerateMap(null);
-            RefreshInputs();
         });
         GenerateMapCommand = new RelayCommand(o => GenerateMap(o));
     }
@@ -75,66 +72,29 @@ public class MapViewModel : PaperItemBaseViewModel
 
     public ICommand? ApplyCommand { get; private set; }
 
-    public DateTime DateTime
-    {
-        get => GetPropertyValue<DateTime>();
-        set => SetPropertyValue(value);
-    }
+    public PropertyWrapper<DateTime> DateTime { get; } = new(nameof(DateTime));
 
-    public TimeSpan Time
-    {
-        get => GetPropertyValue<TimeSpan>();
-        set => SetPropertyValue(value);
-    }
+    public PropertyWrapper<TimeSpan> Time { get; } = new(nameof(Time));
 
-    public double Latitude
-    {
-        get => GetPropertyValue<double>();
-        set => SetPropertyValue(value);
-    }
+    public PropertyWrapper<double> Latitude { get; } = new(nameof(Latitude));
 
-    public double Longitude
-    {
-        get => GetPropertyValue<double>();
-        set => SetPropertyValue(value);
-    }
+    public PropertyWrapper<double> Longitude { get; } = new(nameof(Longitude));
 
-    public string LatitudeInput
-    {
-        get => GetPropertyValue<string>() ?? Latitude.ToString();
-        set
-        {
-            if (!SetPropertyValue(value))
-            {
-                return;
-            }
-
-            Latitude = ParseDouble(value);
-        }
-    }
-
-    public string LongitudeInput
-    {
-        get => GetPropertyValue<string>() ?? Longitude.ToString();
-        set
-        {
-            if (!SetPropertyValue(value))
-            {
-                return;
-            }
-
-            Longitude = ParseDouble(value);
-        }
-    }
     #endregion
 
     #region Methods
 
+    protected override void InitializeProperties()
+    {
+        base.InitializeProperties();
+        this.Properties.AddRange(new IPropertyWrapper[] { DateTime, Time, Latitude, Longitude });
+    }
+
     private void GenerateMap(object? o)
     {
         var task = this.mapManager.Generate(
-                new(Latitude, Longitude),
-                DateTime.WithTimeOfDay(Time),
+                new(Latitude.Value, Longitude.Value),
+                DateTime.Value.WithTimeOfDay(Time.Value),
                 IGenerateMapSettings.Create(NumRange.Of(-1d, 5d)));
         task.Wait();
         this.map = task.Result;
@@ -154,19 +114,6 @@ public class MapViewModel : PaperItemBaseViewModel
         }
 
         return 0;
-    }
-
-    private void RefreshInputs()
-    {
-        if (LatitudeInput.IsNullOrEmpty())
-        {
-            LatitudeInput = "0";
-        }
-
-        if (LongitudeInput.IsNullOrEmpty())
-        {
-            LongitudeInput = "0";
-        }
     }
 
     #endregion

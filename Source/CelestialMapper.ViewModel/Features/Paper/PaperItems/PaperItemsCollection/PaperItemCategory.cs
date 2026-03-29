@@ -1,6 +1,6 @@
 ﻿namespace CelestialMapper.ViewModel;
 
-public enum PaperItemCatergory
+public enum PaperItemCategory
 {
     Map,
     Text

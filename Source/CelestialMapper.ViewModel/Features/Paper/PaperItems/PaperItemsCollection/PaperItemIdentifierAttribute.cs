@@ -4,7 +4,7 @@
 public class PaperItemIdentifierAttribute : Attribute
 {
 
-    public required PaperItemCatergory Category { get; init; }
+    public required PaperItemCategory Category { get; init; }
 
     public PaperItemType ItemType { get; init; } = PaperItemType.Unknown;
 
