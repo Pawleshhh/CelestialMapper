@@ -13,12 +13,34 @@
     </DataTemplate>
 
     <DataTemplate x:Key="Private.DataTemplate.PaperItem.Text" DataType="{x:Type vm:TextItem}">
-        <TextBlock
-            Foreground="Red"
-            Style="{DynamicResource Style.TextBlock.Regular}"
-            Text="{Binding Text}"
-            TextTrimming="CharacterEllipsis"
-            TextWrapping="Wrap" />
+        <Grid ui:TextItemEditBehavior.EditTextBox="{Binding ElementName=EditTextBox}" ui:TextItemEditBehavior.IsEditingEnabled="True">
+            <TextBlock
+                x:Name="DisplayTextBlock"
+                FontFamily="{Binding FontFamily}"
+                FontSize="{Binding FontSize}"
+                FontStyle="{Binding IsItalic, Converter={x:Static ui:Converters.BoolToFontStyle}}"
+                FontWeight="{Binding IsBold, Converter={x:Static ui:Converters.BoolToFontWeight}}"
+                Foreground="Red"
+                LineHeight="{Binding LineHeight}"
+                Style="{DynamicResource Style.TextBlock.Regular}"
+                Text="{Binding Text}"
+                TextAlignment="{Binding HorizontalAlignment, Converter={x:Static ui:Converters.TextHorizontalAlignment}}"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="Wrap"
+                Visibility="{Binding IsEditing, Converter={x:Static ui:Converters.InvertBoolToVisibility}}" />
+
+            <TextBox
+                x:Name="EditTextBox"
+                AcceptsReturn="True"
+                FontFamily="{Binding FontFamily}"
+                FontSize="{Binding FontSize}"
+                FontStyle="{Binding IsItalic, Converter={x:Static ui:Converters.BoolToFontStyle}}"
+                FontWeight="{Binding IsBold, Converter={x:Static ui:Converters.BoolToFontWeight}}"
+                Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                TextAlignment="{Binding HorizontalAlignment, Converter={x:Static ui:Converters.TextHorizontalAlignment}}"
+                TextWrapping="Wrap"
+                Visibility="{Binding IsEditing, Converter={x:Static ui:Converters.FalseMakesMeCollapsed}}" />
+        </Grid>
     </DataTemplate>
 
     <ui:DataTypeTemplateSelector x:Key="DataTemplateSelector.PaperItems">

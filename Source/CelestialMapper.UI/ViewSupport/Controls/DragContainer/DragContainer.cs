@@ -1,6 +1,7 @@
 ﻿namespace CelestialMapper.UI;
 
 using System;
+using System.Windows.Documents;
 using System.Windows.Input;
 using static CelestialMapper.UI.DependencyPropertyHelper;
 
@@ -134,6 +135,12 @@ public class DragContainer : PlatformUserControl
 
     private void DragContainer_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
+        // Don't capture mouse for double-clicks on TextBlock (for inline editing)
+        if (e.ClickCount == 2)
+        {
+            return;
+        }
+
         SetIsSelected(true);
 
         IsDragging = false;

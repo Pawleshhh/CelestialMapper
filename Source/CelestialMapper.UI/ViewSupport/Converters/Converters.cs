@@ -22,4 +22,18 @@ public class Converters
     public static ConverterGroup<double, double, double> NegateHalfValue { get; } = new(NegateMe, HalfValue);
 
     #endregion
+
+    #region Text
+
+    public static BoolToFontStyleConverter BoolToFontStyle { get; } = new();
+
+    public static BoolToFontWeightConverter BoolToFontWeight { get; } = new();
+
+    public static TextHorizontalAlignmentConverter TextHorizontalAlignment { get; } = new();
+
+    public static TextDecorationsConverter TextDecorations { get; } = new();
+
+    public static InvertBooleanToVisibilityConverter InvertBoolToVisibility { get; } = new();
+
+    #endregion
 }
