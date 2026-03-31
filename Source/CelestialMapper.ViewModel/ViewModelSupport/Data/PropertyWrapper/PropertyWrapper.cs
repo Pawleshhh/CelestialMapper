@@ -20,6 +20,12 @@ public class PropertyWrapper<T> : NotifyPropertyChangedBase, IPropertyWrapper
         Name = name;
     }
 
+    public PropertyWrapper(T value, string? name)
+        : this(name)
+    {
+        Value = value;
+    }
+
     public string? Name { get; }
 
     public T? Value

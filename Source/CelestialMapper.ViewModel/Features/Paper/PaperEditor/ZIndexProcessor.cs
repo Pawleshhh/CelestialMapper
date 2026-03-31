@@ -10,8 +10,8 @@ public class ZIndexProcessor : IZIndexProcessor
     {
         var paperItems = items.OrderBy(x => x.ZIndex);
         var indexData = new ZIndexData(
-            paperItems.MinBy(x => x.ZIndex)?.ZIndex ?? 0,
-            paperItems.MaxBy(x => x.ZIndex)?.ZIndex ?? 0,
+            paperItems.MinBy(x => x.ZIndex.Value)?.ZIndex.Value ?? 0,
+            paperItems.MaxBy(x => x.ZIndex.Value)?.ZIndex.Value ?? 0,
             paperItems,
             source);
 
@@ -36,7 +36,7 @@ public class ZIndexProcessor : IZIndexProcessor
 
     public void ProcessNewItem(IEnumerable<IPaperItem> paperItems, IPaperItem newItem)
     {
-        newItem.ZIndex = paperItems.MaxBy(x => x.ZIndex)?.ZIndex + 1 ?? 0;
+        newItem.ZIndex.Value = paperItems.MaxBy(x => x.ZIndex.Value)?.ZIndex.Value + 1 ?? 0;
     }
 
     private void BringToFront(ZIndexData indexData)
@@ -46,7 +46,7 @@ public class ZIndexProcessor : IZIndexProcessor
             return;
         }
 
-        indexData.Source.ZIndex = indexData.MaxIndex + 1;
+        indexData.Source.ZIndex.Value = indexData.MaxIndex + 1;
     }
 
     private void SendToBack(ZIndexData indexData)
@@ -56,7 +56,7 @@ public class ZIndexProcessor : IZIndexProcessor
             return;
         }
 
-        indexData.Source.ZIndex = indexData.MinIndex - 1;
+        indexData.Source.ZIndex.Value = indexData.MinIndex - 1;
     }
 
     private void BringForward(ZIndexData indexData)
@@ -68,12 +68,12 @@ public class ZIndexProcessor : IZIndexProcessor
 
         var currentIndex = indexData.SourceIndex;
         var minOneIndexUp = indexData.Items
-            .Where(x => x.ZIndex > currentIndex)
-            .MinBy(x => x.ZIndex)?.ZIndex;
-        var itemsOneIndexUp = indexData.Items.Where(x => x.ZIndex == minOneIndexUp);
+            .Where(x => x.ZIndex.Value > currentIndex)
+            .MinBy(x => x.ZIndex.Value)?.ZIndex.Value;
+        var itemsOneIndexUp = indexData.Items.Where(x => x.ZIndex.Value == minOneIndexUp);
 
-        itemsOneIndexUp.ForEach(x => x.ZIndex -= 1);
-        indexData.Source.ZIndex += 1;
+        itemsOneIndexUp.ForEach(x => x.ZIndex.Value -= 1);
+        indexData.Source.ZIndex.Value += 1;
     }
 
     private void SendBackward(ZIndexData indexData)
@@ -85,16 +85,16 @@ public class ZIndexProcessor : IZIndexProcessor
 
         var currentIndex = indexData.SourceIndex;
         var maxOneIndexDown = indexData.Items
-            .Where(x => x.ZIndex < currentIndex)
-            .MaxBy(x => x.ZIndex)?.ZIndex;
-        var itemsOneIndexDown = indexData.Items.Where(x => x.ZIndex == maxOneIndexDown);
+            .Where(x => x.ZIndex.Value < currentIndex)
+            .MaxBy(x => x.ZIndex.Value)?.ZIndex.Value;
+        var itemsOneIndexDown = indexData.Items.Where(x => x.ZIndex.Value == maxOneIndexDown);
 
-        itemsOneIndexDown.ForEach(x => x.ZIndex += 1);
-        indexData.Source.ZIndex -= 1;
+        itemsOneIndexDown.ForEach(x => x.ZIndex.Value += 1);
+        indexData.Source.ZIndex.Value -= 1;
     }
 
     private record ZIndexData(int MinIndex, int MaxIndex, IOrderedEnumerable<IPaperItem> Items, IPaperItem Source)
     {
-        public int SourceIndex => Source.ZIndex;
+        public int SourceIndex => Source.ZIndex.Value;
     }
 }

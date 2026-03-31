@@ -7,22 +7,16 @@ public class TextItem : PaperItemBase
 
     public override PaperItemType ItemType => PaperItemType.Text;
 
-    public PropertyWrapper<string> Text { get; } = new(nameof(Text));
+    public PropertyWrapper<string> Text { get; } = new("Text", nameof(Text));
 
     // Font Characteristics
-    public PropertyWrapper<double> FontSize { get; } = new(nameof(FontSize));
+    public PropertyWrapper<double> FontSize { get; } = new(16, nameof(FontSize));
 
-    public PropertyWrapper<string> FontFamily { get; } = new(nameof(FontFamily));
+    public PropertyWrapper<string> FontFamily { get; } = new("Arial", nameof(FontFamily));
 
     public PropertyWrapper<bool> IsBold { get; } = new(nameof(IsBold));
 
     public PropertyWrapper<bool> IsItalic { get; } = new(nameof(IsItalic));
-
-    public PropertyWrapper<bool> IsUnderline { get; } = new(nameof(IsUnderline));
-
-    public PropertyWrapper<bool> IsStrikethrough { get; } = new(nameof(IsStrikethrough));
-
-    public PropertyWrapper<int> FontWeight { get; } = new(nameof(FontWeight));
 
     // Text Alignment
     public PropertyWrapper<TextHorizontalAlignment> HorizontalAlignment { get; } = new(nameof(HorizontalAlignment));
@@ -31,10 +25,6 @@ public class TextItem : PaperItemBase
 
     // Text Layout
     public PropertyWrapper<bool> IsTextWrapped { get; } = new(nameof(IsTextWrapped));
-
-    public PropertyWrapper<double> LineHeight { get; } = new(nameof(LineHeight));
-
-    public PropertyWrapper<double> LetterSpacing { get; } = new(nameof(LetterSpacing));
 
     // Edit Mode
     public PropertyWrapper<bool> IsEditing { get; } = new(nameof(IsEditing));
@@ -49,15 +39,9 @@ public class TextItem : PaperItemBase
             FontFamily,
             IsBold,
             IsItalic,
-            IsUnderline,
-            IsStrikethrough,
-            FontWeight,
             HorizontalAlignment,
             VerticalAlignment,
-            IsTextWrapped,
-            LineHeight,
-            LetterSpacing,
-            IsEditing
+            IsTextWrapped
         });
     }
 }

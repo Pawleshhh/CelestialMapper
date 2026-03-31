@@ -16,19 +16,6 @@ public interface IPaperItem : IVisualData
 
 public abstract class PaperItemBase : VisualDataBase, IPaperItem
 {
-    private ObservableCollection<IPropertyWrapper>? properties;
-
-    public PaperItemBase()
-    {
-        InitializeProperties();
-    }
-
-    public ObservableCollection<IPropertyWrapper> Properties
-    {
-        get => this.properties ??= new();
-        set => this.properties = value;
-    }
-
     public required Guid Id
     {
         get => GetPropertyValue<Guid>();
@@ -48,27 +35,13 @@ public abstract class PaperItemBase : VisualDataBase, IPaperItem
         get => GetPropertyValue<ObservableCollection<UICommand<IPaperItem>>>() ?? new();
         set => SetPropertyValue(value);
     }
-
-    protected virtual void InitializeProperties()
-    {
-        this.Properties.Clear();
-    }
 }
 
 public abstract class PaperItemBaseViewModel : VisualDataViewModelBase, IPaperItem
 {
-    private ObservableCollection<IPropertyWrapper>? properties;
-
     public PaperItemBaseViewModel(IViewModelSupport viewModelSupport)
         : base(viewModelSupport)
     {
-        InitializeProperties();
-    }
-
-    public ObservableCollection<IPropertyWrapper> Properties
-    {
-        get => this.properties ??= new();
-        set => this.properties = value;
     }
 
     public Guid Id
@@ -89,10 +62,5 @@ public abstract class PaperItemBaseViewModel : VisualDataViewModelBase, IPaperIt
     {
         get => GetPropertyValue<ObservableCollection<UICommand<IPaperItem>>>() ?? new();
         set => SetPropertyValue(value);
-    }
-
-    protected virtual void InitializeProperties()
-    {
-        this.Properties.Clear();
     }
 }

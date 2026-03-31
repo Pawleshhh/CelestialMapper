@@ -16,30 +16,27 @@
         <Grid ui:TextItemEditBehavior.EditTextBox="{Binding ElementName=EditTextBox}" ui:TextItemEditBehavior.IsEditingEnabled="True">
             <TextBlock
                 x:Name="DisplayTextBlock"
-                FontFamily="{Binding FontFamily.Value}"
-                FontSize="{Binding FontSize.Value}"
-                FontStyle="{Binding IsItalic.Value, Converter={x:Static ui:Converters.BoolToFontStyle}}"
-                FontWeight="{Binding IsBold.Value, Converter={x:Static ui:Converters.BoolToFontWeight}}"
-                Foreground="Red"
-                LineHeight="{Binding LineHeight.Value}"
-                Style="{DynamicResource Style.TextBlock.Regular}"
-                Text="{Binding Text.Value}"
-                TextAlignment="{Binding HorizontalAlignment.Value, Converter={x:Static ui:Converters.TextHorizontalAlignment}}"
+                FontFamily="{Binding FontFamily.Value, Mode=TwoWay}"
+                FontSize="{Binding FontSize.Value, Mode=TwoWay}"
+                FontStyle="{Binding IsItalic.Value, Mode=TwoWay, Converter={x:Static ui:Converters.BoolToFontStyle}}"
+                FontWeight="{Binding IsBold.Value, Mode=TwoWay, Converter={x:Static ui:Converters.BoolToFontWeight}}"
+                Text="{Binding Text.Value, Mode=TwoWay}"
+                TextAlignment="{Binding HorizontalAlignment.Value, Mode=TwoWay, Converter={x:Static ui:Converters.TextHorizontalAlignment}}"
                 TextTrimming="CharacterEllipsis"
-                TextWrapping="Wrap"
-                Visibility="{Binding IsEditing.Value, Converter={x:Static ui:Converters.InvertBoolToVisibility}}" />
+                TextWrapping="{Binding IsTextWrapped.Value, Mode=TwoWay, Converter={x:Static ui:Converters.BoolToTextWrapping}}"
+                Visibility="{Binding IsEditing.Value, Mode=TwoWay, Converter={x:Static ui:Converters.InvertBoolToVisibility}}" />
 
             <TextBox
                 x:Name="EditTextBox"
                 AcceptsReturn="True"
-                FontFamily="{Binding FontFamily.Value}"
-                FontSize="{Binding FontSize.Value}"
-                FontStyle="{Binding IsItalic.Value, Converter={x:Static ui:Converters.BoolToFontStyle}}"
-                FontWeight="{Binding IsBold.Value, Converter={x:Static ui:Converters.BoolToFontWeight}}"
+                FontFamily="{Binding FontFamily.Value, Mode=TwoWay}"
+                FontSize="{Binding FontSize.Value, Mode=TwoWay}"
+                FontStyle="{Binding IsItalic.Value, Mode=TwoWay, Converter={x:Static ui:Converters.BoolToFontStyle}}"
+                FontWeight="{Binding IsBold.Value, Mode=TwoWay, Converter={x:Static ui:Converters.BoolToFontWeight}}"
                 Text="{Binding Text.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                TextAlignment="{Binding HorizontalAlignment.Value, Converter={x:Static ui:Converters.TextHorizontalAlignment}}"
-                TextWrapping="Wrap"
-                Visibility="{Binding IsEditing.Value, Converter={x:Static ui:Converters.FalseMakesMeCollapsed}}" />
+                TextAlignment="{Binding HorizontalAlignment.Value, Mode=TwoWay, Converter={x:Static ui:Converters.TextHorizontalAlignment}}"
+                TextWrapping="{Binding IsTextWrapped.Value, Mode=TwoWay, Converter={x:Static ui:Converters.BoolToTextWrapping}}"
+                Visibility="{Binding IsEditing.Value, Mode=TwoWay, Converter={x:Static ui:Converters.FalseMakesMeCollapsed}}" />
         </Grid>
     </DataTemplate>
 
@@ -194,12 +191,12 @@
 
     <Style x:Key="Private.Style.PaperItemControl" TargetType="{x:Type ui:PaperItemControl}">
         <Setter Property="ContentTemplateSelector" Value="{StaticResource DataTemplateSelector.PaperItems}" />
-        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.Width}" />
-        <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.Height}" />
-        <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.BackgroundColor}" />
-        <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.BorderColor}" />
-        <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.BorderThickness}" />
-        <Setter Property="Visibility" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.IsVisible, Converter={x:Static ui:Converters.FalseMakesMeCollapsed}}" />
+        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.Width.Value}" />
+        <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.Height.Value}" />
+        <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.BackgroundColor.Value}" />
+        <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.BorderColor.Value}" />
+        <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.BorderThickness.Value}" />
+        <Setter Property="Visibility" Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.IsVisible.Value, Converter={x:Static ui:Converters.FalseMakesMeCollapsed}}" />
     </Style>
 
     <Style x:Key="Style.Paper" TargetType="ui:Paper">
@@ -214,9 +211,9 @@
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding X, Mode=TwoWay}" />
-                    <Setter Property="Canvas.Top" Value="{Binding Y, Mode=TwoWay}" />
-                    <Setter Property="Panel.ZIndex" Value="{Binding ZIndex, Mode=TwoWay}" />
+                    <Setter Property="Canvas.Left" Value="{Binding X.Value, Mode=TwoWay}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Y.Value, Mode=TwoWay}" />
+                    <Setter Property="Panel.ZIndex" Value="{Binding ZIndex.Value, Mode=TwoWay}" />
                 </Style>
             </Setter.Value>
         </Setter>
@@ -225,13 +222,13 @@
                 <DataTemplate DataType="{x:Type vm:IPaperItem}">
                     <ui:DragContainer
                         x:Name="PaperItemDragContainer"
-                        Width="{Binding Width, Mode=TwoWay}"
-                        Height="{Binding Height, Mode=TwoWay}"
+                        Width="{Binding Width.Value, Mode=TwoWay}"
+                        Height="{Binding Height.Value, Mode=TwoWay}"
                         IsSelected="{Binding IsSelected, Mode=TwoWay}"
                         RelativeParent="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ui:Paper}}}"
                         Style="{StaticResource Private.Style.PaperItem.DragContainer}"
-                        XPos="{Binding X, Mode=TwoWay}"
-                        YPos="{Binding Y, Mode=TwoWay}">
+                        XPos="{Binding X.Value, Mode=TwoWay}"
+                        YPos="{Binding Y.Value, Mode=TwoWay}">
                         <ui:PaperItemControl
                             x:Name="PaperItemControl"
                             Content="{Binding .}"

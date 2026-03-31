@@ -1,49 +1,56 @@
-﻿namespace CelestialMapper.ViewModel;
+﻿using System.Collections.ObjectModel;
+
+namespace CelestialMapper.ViewModel;
 
 public interface IVisualData
 {
     /// <summary>
     /// Gets or sets the X coordinate of the visual data.
     /// </summary>
-    public double X { get; set; }
+    public PropertyWrapper<double> X { get; }
 
     /// <summary>
     /// Gets or sets the Y coordinate of the visual data.
     /// </summary>
-    public double Y { get; set; }
+    public PropertyWrapper<double> Y { get; }
 
     /// <summary>
     /// Gets or sets the width of the visual data.
     /// </summary>
-    public double Width { get; set; }
+    public PropertyWrapper<double> Width { get; }
 
     /// <summary>
     /// Gets or sets the height of the visual data.
     /// </summary>
-    public double Height { get; set; }
+    public PropertyWrapper<double> Height { get; }
 
     /// <summary>
     /// Gets or sets the background color of the visual data.
     /// </summary>
-    public string BackgroundColor { get; set; }
+    public PropertyWrapper<string> BackgroundColor { get; }
 
     /// <summary>
     /// Gets or sets the border color of the visual data.
     /// </summary>
-    public string BorderColor { get; set; }
+    public PropertyWrapper<string> BorderColor { get; }
 
     /// <summary>
     /// Gets or sets the border thickness of the visual data.
     /// </summary>
-    public double BorderThickness { get; set; }
+    public PropertyWrapper<double> BorderThickness { get; }
 
     /// <summary>
     /// Gets or sets the visibility of the visual data.
     /// </summary>
-    public bool IsVisible { get; set; }
+    public PropertyWrapper<bool> IsVisible { get; }
 
     /// <summary>
     /// ZIndex of the visual data.
     /// </summary>
-    public int ZIndex { get; set; }
+    public PropertyWrapper<int> ZIndex { get; }
+
+    /// <summary>
+    /// Properties listed.
+    /// </summary>
+    public ObservableCollection<IPropertyWrapper> Properties { get; }
 }

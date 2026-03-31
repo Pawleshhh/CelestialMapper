@@ -5,8 +5,13 @@
     xmlns:ui="clr-namespace:CelestialMapper.UI"
     xmlns:vm="clr-namespace:CelestialMapper.ViewModel;assembly=CelestialMapper.ViewModel">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Other/PropertyListStyles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <DataTemplate x:Key="Private.DataTemplate.PaperEditorMenuStyles.TextItem.Settings" DataType="{x:Type vm:TextItem}">
-        <StackPanel Background="{DynamicResource Brush.ToolBackground}" Orientation="Vertical">
+        
+        <!--<StackPanel Background="{DynamicResource Brush.ToolBackground}" Orientation="Vertical">
 
             <HeaderedContentControl Header="Content:" Style="{StaticResource Style.HeaderedContentControl}">
                 <TextBox
@@ -93,7 +98,7 @@
                 </local:LabeledTextBox.Text>
             </local:LabeledTextBox>
 
-        </StackPanel>
+        </StackPanel>-->
     </DataTemplate>
 
     <DataTemplate x:Key="Private.DataTemplate.PaperEditorMenuStyles.Map.Settings" DataType="{x:Type vm:MapViewModel}">
