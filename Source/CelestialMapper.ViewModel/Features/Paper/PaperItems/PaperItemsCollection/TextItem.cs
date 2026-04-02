@@ -5,6 +5,13 @@
 public class TextItem : PaperItemBase
 {
 
+    private readonly IFontService fontService;
+
+    public TextItem(IFontService fontService)
+    {
+        this.fontService = fontService;
+    }
+
     public override PaperItemType ItemType => PaperItemType.Text;
 
     public PropertyWrapper<string> Text { get; } = new("Text", nameof(Text));
@@ -12,16 +19,16 @@ public class TextItem : PaperItemBase
     // Font Characteristics
     public PropertyWrapper<double> FontSize { get; } = new(16, nameof(FontSize));
 
-    public PropertyWrapper<string> FontFamily { get; } = new("Arial", nameof(FontFamily));
+    public ChoicePropertyWrapper<string> FontFamily { get; private set; }
 
     public PropertyWrapper<bool> IsBold { get; } = new(nameof(IsBold));
 
     public PropertyWrapper<bool> IsItalic { get; } = new(nameof(IsItalic));
 
     // Text Alignment
-    public PropertyWrapper<TextHorizontalAlignment> HorizontalAlignment { get; } = new(nameof(HorizontalAlignment));
+    public ChoicePropertyWrapper<TextHorizontalAlignment> HorizontalAlignment { get; private set; }
 
-    public PropertyWrapper<TextVerticalAlignment> VerticalAlignment { get; } = new(nameof(VerticalAlignment));
+    public ChoicePropertyWrapper<TextVerticalAlignment> VerticalAlignment { get; private set; }
 
     // Text Layout
     public PropertyWrapper<bool> IsTextWrapped { get; } = new(nameof(IsTextWrapped));
@@ -29,9 +36,14 @@ public class TextItem : PaperItemBase
     // Edit Mode
     public PropertyWrapper<bool> IsEditing { get; } = new(nameof(IsEditing));
 
-    protected override void InitializeProperties()
+    public override void InitializeProperties()
     {
         base.InitializeProperties();
+
+        FontFamily = new(null!, nameof(FontFamily), this.fontService.GetFonts());
+        HorizontalAlignment = new(default, nameof(HorizontalAlignment), Enum.GetValues<TextHorizontalAlignment>());
+        VerticalAlignment = new(default, nameof(TextVerticalAlignment), Enum.GetValues<TextVerticalAlignment>());
+
         this.Properties.AddRange(new IPropertyWrapper[]
         {
             Text,

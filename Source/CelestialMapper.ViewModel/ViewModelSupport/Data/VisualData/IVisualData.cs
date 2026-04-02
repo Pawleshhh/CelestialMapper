@@ -53,4 +53,6 @@ public interface IVisualData
     /// Properties listed.
     /// </summary>
     public ObservableCollection<IPropertyWrapper> Properties { get; }
+
+    public void InitializeProperties();
 }

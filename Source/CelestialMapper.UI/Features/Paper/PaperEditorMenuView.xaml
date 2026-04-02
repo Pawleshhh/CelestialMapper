@@ -30,7 +30,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn CellTemplateSelector="{StaticResource Selector.PropertyValueEditor}" Header="Value" />
+                <DataGridTemplateColumn CellTemplateSelector="{StaticResource TemplateSelector.PropertyWrapper}" Header="Value" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

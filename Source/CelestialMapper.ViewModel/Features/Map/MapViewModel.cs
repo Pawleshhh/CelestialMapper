@@ -52,6 +52,8 @@ public class MapViewModel : PaperItemBaseViewModel
             GenerateMap(null);
         });
         GenerateMapCommand = new RelayCommand(o => GenerateMap(o));
+
+        InitializeProperties();
     }
 
     #endregion
@@ -84,7 +86,7 @@ public class MapViewModel : PaperItemBaseViewModel
 
     #region Methods
 
-    protected override void InitializeProperties()
+    public override void InitializeProperties()
     {
         base.InitializeProperties();
         this.Properties.AddRange(new IPropertyWrapper[] { DateTime, Time, Latitude, Longitude });

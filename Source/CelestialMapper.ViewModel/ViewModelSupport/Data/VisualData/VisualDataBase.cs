@@ -1,18 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CelestialMapper.ViewModel;
 
 public abstract class VisualDataBase : NotifyPropertyChangedBase, IVisualData
 {
     private ObservableCollection<IPropertyWrapper>? properties;
-
-    protected VisualDataBase()
-    {
-        IsVisible.Value = true;
-        InitializeProperties();
-    }
 
     public ObservableCollection<IPropertyWrapper> Properties
     {
@@ -38,7 +30,7 @@ public abstract class VisualDataBase : NotifyPropertyChangedBase, IVisualData
 
     public PropertyWrapper<int> ZIndex { get; } = new(nameof(ZIndex));
 
-    protected virtual void InitializeProperties()
+    public virtual void InitializeProperties()
     {
         this.Properties.Clear();
         this.Properties.AddRange(new IPropertyWrapper[]

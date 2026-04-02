@@ -37,7 +37,7 @@ public abstract class VisualDataViewModelBase : ViewModelBase, IVisualData
 
     public PropertyWrapper<int> ZIndex { get; } = new(nameof(ZIndex));
 
-    protected virtual void InitializeProperties()
+    public virtual void InitializeProperties()
     {
         this.Properties.Clear();
         this.Properties.AddRange(new IPropertyWrapper[]
