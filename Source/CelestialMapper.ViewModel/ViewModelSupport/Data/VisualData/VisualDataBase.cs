@@ -42,7 +42,6 @@ public abstract class VisualDataBase : NotifyPropertyChangedBase, IVisualData
             BackgroundColor,
             BorderColor,
             BorderThickness,
-            IsVisible,
             ZIndex,
         });
     }

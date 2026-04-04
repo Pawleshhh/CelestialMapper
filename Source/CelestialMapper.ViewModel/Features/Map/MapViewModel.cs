@@ -47,13 +47,11 @@ public class MapViewModel : PaperItemBaseViewModel
         Time.Value = now.TimeOfDay;
         var (lon, lat) = this.timeLocationHelper.Location;
 
-        ApplyCommand = new RelayCommand(o =>
+        ApplyCommand.Value = new RelayCommand(o =>
         {
             GenerateMap(null);
         });
         GenerateMapCommand = new RelayCommand(o => GenerateMap(o));
-
-        InitializeProperties();
     }
 
     #endregion
@@ -72,7 +70,7 @@ public class MapViewModel : PaperItemBaseViewModel
 
     public override PaperItemType ItemType => PaperItemType.Map;
 
-    public ICommand? ApplyCommand { get; private set; }
+    public PropertyWrapper<ICommand?> ApplyCommand { get; private set; } = new(nameof(ApplyCommand));
 
     public PropertyWrapper<DateTime> DateTime { get; } = new(nameof(DateTime));
 
@@ -89,7 +87,7 @@ public class MapViewModel : PaperItemBaseViewModel
     public override void InitializeProperties()
     {
         base.InitializeProperties();
-        this.Properties.AddRange(new IPropertyWrapper[] { DateTime, Time, Latitude, Longitude });
+        this.Properties.AddRange(new IPropertyWrapper[] { DateTime, Time, Latitude, Longitude, ApplyCommand });
     }
 
     private void GenerateMap(object? o)

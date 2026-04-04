@@ -19,16 +19,16 @@ public class TextItem : PaperItemBase
     // Font Characteristics
     public PropertyWrapper<double> FontSize { get; } = new(16, nameof(FontSize));
 
-    public ChoicePropertyWrapper<string> FontFamily { get; private set; }
+    public ChoicePropertyWrapper<string> FontFamily { get; private set; } = default!;
 
     public PropertyWrapper<bool> IsBold { get; } = new(nameof(IsBold));
 
     public PropertyWrapper<bool> IsItalic { get; } = new(nameof(IsItalic));
 
     // Text Alignment
-    public ChoicePropertyWrapper<TextHorizontalAlignment> HorizontalAlignment { get; private set; }
+    public ChoicePropertyWrapper<TextHorizontalAlignment> HorizontalAlignment { get; private set; } = default!;
 
-    public ChoicePropertyWrapper<TextVerticalAlignment> VerticalAlignment { get; private set; }
+    public ChoicePropertyWrapper<TextVerticalAlignment> VerticalAlignment { get; private set; } = default!;
 
     // Text Layout
     public PropertyWrapper<bool> IsTextWrapped { get; } = new(nameof(IsTextWrapped));

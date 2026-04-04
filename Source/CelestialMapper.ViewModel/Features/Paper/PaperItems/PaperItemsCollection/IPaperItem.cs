@@ -63,4 +63,10 @@ public abstract class PaperItemBaseViewModel : VisualDataViewModelBase, IPaperIt
         get => GetPropertyValue<ObservableCollection<UICommand<IPaperItem>>>() ?? new();
         set => SetPropertyValue(value);
     }
+
+    public override void Initialize(IViewModelConfigurator configurator)
+    {
+        base.Initialize(configurator);
+        InitializeProperties();
+    }
 }

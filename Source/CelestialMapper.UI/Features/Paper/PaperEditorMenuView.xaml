@@ -21,16 +21,25 @@
                 </Style.Triggers>
             </Style>
         </Grid.Style>
-        <DataGrid ItemsSource="{Binding SelectedPaperItem.Properties}" Style="{StaticResource Style.DataGrid.PropertyList}">
+        <DataGrid
+            ItemsSource="{Binding SelectedPaperItem.Properties}"
+            Style="{StaticResource Style.DataGrid.PropertyList}"
+            Visibility="{Binding SelectedPaperItem, Converter={x:Static local:Converters.NullMakesMeCollapsed}}">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Property">
+                <DataGridTemplateColumn Width="0.4*" Header="Property">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="{x:Type vm:IPropertyWrapper}">
-                            <TextBlock Style="{StaticResource Style.TextBlock.Small}" Text="{Binding Name}" />
+                            <TextBlock
+                                Style="{StaticResource Style.TextBlock.Small}"
+                                Text="{Binding Name}"
+                                TextTrimming="CharacterEllipsis" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn CellTemplateSelector="{StaticResource TemplateSelector.PropertyWrapper}" Header="Value" />
+                <DataGridTemplateColumn
+                    Width="0.6*"
+                    CellTemplateSelector="{StaticResource TemplateSelector.PropertyWrapper}"
+                    Header="Value" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

@@ -13,28 +13,54 @@ public class DataTypeTemplateSelector : PlatformDataTemplateSelector<PlatformDat
         }
 
         var itemType = item.GetType();
-        var exactTemplate = Templates.FirstOrDefault(template => (Type)template.DataTemplate.DataType == itemType);
 
-        if (exactTemplate is not null)
+        // Try exact type match
+        var template = Templates.FirstOrDefault(t => TemplateTypeMatches(itemType, t, exact: true));
+        if (template is not null)
         {
-            return exactTemplate.DataTemplate;
+            return template.DataTemplate;
         }
 
-        var genericTemplate = Templates.FirstOrDefault(template => MatchesGenericType(itemType, (Type)template.DataTemplate.DataType));
-
-        if (genericTemplate is not null)
+        // Try generic type match
+        template = Templates.FirstOrDefault(t => TemplateTypeMatches(itemType, t, exact: false));
+        if (template is not null)
         {
-            return genericTemplate.DataTemplate;
+            return template.DataTemplate;
         }
 
-        var relatedByInheritanceTemplate = Templates.SingleOrDefault(template => ((Type)template.DataTemplate.DataType).IsAssignableFrom(itemType));
-
-        if (relatedByInheritanceTemplate is not null)
+        // Try inheritance-based match (skip for generic types to avoid issues)
+        if (!itemType.IsGenericType)
         {
-            return relatedByInheritanceTemplate.DataTemplate;
+            template = Templates.SingleOrDefault(t => IsAssignableFromTemplate(itemType, t));
+            if (template is not null)
+            {
+                return template.DataTemplate;
+            }
         }
 
         return GetDefault()!;
+    }
+
+    private static Type? GetTemplateType(PlatformDataTemplateSelectorItem template)
+    {
+        return template.DataTemplate?.DataType as Type;
+    }
+
+    private static bool TemplateTypeMatches(Type itemType, PlatformDataTemplateSelectorItem template, bool exact)
+    {
+        var templateType = GetTemplateType(template);
+        if (templateType is null)
+        {
+            return false;
+        }
+
+        return exact ? templateType == itemType : MatchesGenericType(itemType, templateType);
+    }
+
+    private static bool IsAssignableFromTemplate(Type itemType, PlatformDataTemplateSelectorItem template)
+    {
+        var templateType = GetTemplateType(template);
+        return templateType is not null && templateType.IsAssignableFrom(itemType);
     }
 
     private static bool MatchesGenericType(Type itemType, Type templateType)
