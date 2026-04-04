@@ -4,5 +4,5 @@ public enum PaperItemType
 {
     Unknown,
     Map,
-    Text,
+    Text
 }

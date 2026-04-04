@@ -64,7 +64,7 @@ public class MapViewModel : PaperItemBaseViewModel
 
     #region Properties
 
-    public IReadOnlySet<CelestialObject> CelestialObjects => this.map?.CelestialObjects ?? new HashSet<CelestialObject>();
+    public IReadOnlySet<CelestialObjectVisualData> CelestialObjects => GetCelestialObjectVisualData();
 
     public IReadOnlySet<Constellation> Constellations => this.map?.Constellations ?? new HashSet<Constellation>();
 
@@ -80,6 +80,8 @@ public class MapViewModel : PaperItemBaseViewModel
 
     public PropertyWrapper<double> Longitude { get; } = new(nameof(Longitude));
 
+    public PropertyWrapper<double> Magnitude { get; } = new(6, nameof(Magnitude));
+
     #endregion
 
     #region Methods
@@ -87,7 +89,7 @@ public class MapViewModel : PaperItemBaseViewModel
     public override void InitializeProperties()
     {
         base.InitializeProperties();
-        this.Properties.AddRange(new IPropertyWrapper[] { DateTime, Time, Latitude, Longitude, ApplyCommand });
+        this.Properties.AddRange(new IPropertyWrapper[] { DateTime, Time, Latitude, Longitude, Magnitude, ApplyCommand });
     }
 
     private void GenerateMap(object? o)
@@ -95,7 +97,7 @@ public class MapViewModel : PaperItemBaseViewModel
         var task = this.mapManager.Generate(
                 new(Latitude.Value, Longitude.Value),
                 DateTime.Value.WithTimeOfDay(Time.Value),
-                IGenerateMapSettings.Create(NumRange.Of(-1d, 5d)));
+                IGenerateMapSettings.Create(NumRange.Of(-1d, Magnitude.Value)));
         task.Wait();
         this.map = task.Result;
 
@@ -105,6 +107,21 @@ public class MapViewModel : PaperItemBaseViewModel
     #endregion
 
     #region Helpers
+
+    private HashSet<CelestialObjectVisualData> GetCelestialObjectVisualData()
+    {
+        if (this.map is null)
+        {
+            return new HashSet<CelestialObjectVisualData>();
+        }
+
+        return this.map.CelestialObjects.Select(GetCelestialObjectVisualData).ToHashSet();
+    }
+
+    private CelestialObjectVisualData GetCelestialObjectVisualData(CelestialObject celestialObject)
+    {
+        return new VisualStarData(celestialObject);
+    }
 
     private double ParseDouble(string value)
     {

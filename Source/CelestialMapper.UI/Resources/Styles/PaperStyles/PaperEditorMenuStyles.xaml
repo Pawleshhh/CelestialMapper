@@ -10,7 +10,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <DataTemplate x:Key="Private.DataTemplate.PaperEditorMenuStyles.TextItem.Settings" DataType="{x:Type vm:TextItem}">
-        
+
         <!--<StackPanel Background="{DynamicResource Brush.ToolBackground}" Orientation="Vertical">
 
             <HeaderedContentControl Header="Content:" Style="{StaticResource Style.HeaderedContentControl}">

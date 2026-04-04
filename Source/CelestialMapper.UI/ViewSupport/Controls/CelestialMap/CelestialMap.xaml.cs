@@ -162,18 +162,18 @@ public partial class CelestialMap : PlatformUserControl
 
     #region CelestialObjects
 
-    public IReadOnlySet<CelestialObject> CelestialObjects
+    public IReadOnlySet<CelestialObjectVisualData> CelestialObjects
     {
-        get { return this.GetValue<IReadOnlySet<CelestialObject>>(CelestialObjectsProperty); }
+        get { return this.GetValue<IReadOnlySet<CelestialObjectVisualData>>(CelestialObjectsProperty); }
         set { SetValue(CelestialObjectsProperty, value); }
     }
 
     public static readonly DependencyProperty CelestialObjectsProperty =
         Register(
             nameof(CelestialObjects), 
-            new PlatformPropertyMetadata<CelestialMap, IReadOnlySet<CelestialObject>>(null, OnCelestialObjectsChanged));
+            new PlatformPropertyMetadata<CelestialMap, IReadOnlySet<CelestialObjectVisualData>>(null, OnCelestialObjectsChanged));
 
-    private static void OnCelestialObjectsChanged(CelestialMap celestialMap, DependencyPropertyChangedEventArgs<IReadOnlySet<CelestialObject>> e)
+    private static void OnCelestialObjectsChanged(CelestialMap celestialMap, DependencyPropertyChangedEventArgs<IReadOnlySet<CelestialObjectVisualData>> e)
     {
         celestialMap.UpdateCelestialObjects();
     }
@@ -185,8 +185,13 @@ public partial class CelestialMap : PlatformUserControl
         var mapDiameter = Diameter;
         var mapRadius = mapDiameter / 2d;
 
-        foreach (var celestialObject in CelestialObjects)
+        foreach (var celestialObjectVisualData in CelestialObjects)
         {
+            var celestialObject = celestialObjectVisualData.CelestialObject;
+            if (celestialObject is null)
+            {
+                continue;
+            }
             var (x, y) = AstronomyCoordsHelper.MapCartesianCoords(
                 celestialObject.HorizonCoordinates,
                 mapDiameter);

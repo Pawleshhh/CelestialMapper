@@ -9,6 +9,8 @@ public class CelestialObjectUIElement : UIElement
 
     public required double Size { get; init; }
 
+    public string Fill { get; init; }
+
     protected override void OnRender(DrawingContext drawingContext)
     {
         drawingContext.DrawEllipse(Brushes.Red, null, Position, Size / 2d, Size / 2d);

@@ -12,23 +12,23 @@ public abstract class VisualDataBase : NotifyPropertyChangedBase, IVisualData
         set => this.properties = value;
     }
 
-    public PropertyWrapper<double> X { get; } = new(nameof(X));
+    public PropertyWrapper<double> X { get; private set; } = new(nameof(X));
 
-    public PropertyWrapper<double> Y { get; } = new(nameof(Y));
+    public PropertyWrapper<double> Y { get; private set; } = new(nameof(Y));
 
-    public PropertyWrapper<double> Width { get; } = new(nameof(Width));
+    public PropertyWrapper<double> Width { get; private set; } = new(nameof(Width));
 
-    public PropertyWrapper<double> Height { get; } = new(nameof(Height));
+    public PropertyWrapper<double> Height { get; private set; } = new(nameof(Height));
 
-    public PropertyWrapper<string> BackgroundColor { get; } = new(nameof(BackgroundColor));
+    public PropertyWrapper<string> BackgroundColor { get; private set; } = new(nameof(BackgroundColor));
 
-    public PropertyWrapper<string> BorderColor { get; } = new(nameof(BorderColor));
+    public PropertyWrapper<string> BorderColor { get; private set; } = new(nameof(BorderColor));
 
-    public PropertyWrapper<double> BorderThickness { get; } = new(nameof(BorderThickness));
+    public PropertyWrapper<double> BorderThickness { get; private set; } = new(nameof(BorderThickness));
 
-    public PropertyWrapper<bool> IsVisible { get; } = new(nameof(IsVisible));
+    public PropertyWrapper<bool> IsVisible { get; private set; } = new(nameof(IsVisible));
 
-    public PropertyWrapper<int> ZIndex { get; } = new(nameof(ZIndex));
+    public PropertyWrapper<int> ZIndex { get; private set; } = new(nameof(ZIndex));
 
     public virtual void InitializeProperties()
     {
@@ -44,5 +44,18 @@ public abstract class VisualDataBase : NotifyPropertyChangedBase, IVisualData
             BorderThickness,
             ZIndex,
         });
+    }
+
+    protected void ReplaceProperty<T>(PropertyWrapper<T> oldProperty, PropertyWrapper<T> newProperty)
+    {
+        if (Properties.Contains(oldProperty))
+        {
+            int index = Properties.IndexOf(oldProperty);
+            Properties.Remove(oldProperty);
+            Properties.Insert(index, newProperty);
+            return;
+        }
+
+        Properties.Add(newProperty);
     }
 }
