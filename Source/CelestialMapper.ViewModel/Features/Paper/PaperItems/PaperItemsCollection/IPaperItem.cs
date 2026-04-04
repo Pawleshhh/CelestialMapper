@@ -16,10 +16,6 @@ public interface IPaperItem : IVisualData
 
 public abstract class PaperItemBase : VisualDataBase, IPaperItem
 {
-    public PaperItemBase()
-    {
-    }
-
     public required Guid Id
     {
         get => GetPropertyValue<Guid>();
@@ -66,5 +62,11 @@ public abstract class PaperItemBaseViewModel : VisualDataViewModelBase, IPaperIt
     {
         get => GetPropertyValue<ObservableCollection<UICommand<IPaperItem>>>() ?? new();
         set => SetPropertyValue(value);
+    }
+
+    public override void Initialize(IViewModelConfigurator configurator)
+    {
+        base.Initialize(configurator);
+        InitializeProperties();
     }
 }

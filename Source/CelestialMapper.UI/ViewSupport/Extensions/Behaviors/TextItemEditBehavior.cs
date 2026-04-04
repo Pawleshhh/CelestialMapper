@@ -60,7 +60,7 @@ public static class TextItemEditBehavior
             // Check if the double-click occurred on the TextBlock (not the TextBox)
             if (e.OriginalSource is TextBlock or Run)
             {
-                textItem.IsEditing = true;
+                textItem.IsEditing.Value = true;
 
                 var textBox = GetEditTextBox(grid);
                 textBox.Focus();
@@ -75,7 +75,7 @@ public static class TextItemEditBehavior
     {
         if (sender is TextBox textBox && textBox.DataContext is CelestialMapper.ViewModel.TextItem textItem)
         {
-            textItem.IsEditing = false;
+            textItem.IsEditing.Value = false;
         }
     }
 
@@ -84,7 +84,7 @@ public static class TextItemEditBehavior
         if (sender is TextBox textBox && textBox.DataContext is CelestialMapper.ViewModel.TextItem textItem)
         {
             // Exit edit mode on Escape
-            if (e.Key == Key.Escape && textItem.IsEditing)
+            if (e.Key == Key.Escape && textItem.IsEditing.Value)
             {
                 ExitEditMode(textBox, textItem);
                 e.Handled = true;
@@ -92,7 +92,7 @@ public static class TextItemEditBehavior
             }
 
             // Exit edit mode on Enter (without Shift)
-            if (e.Key == Key.Return && textItem.IsEditing)
+            if (e.Key == Key.Return && textItem.IsEditing.Value)
             {
                 bool isShiftPressed = (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
 
@@ -115,16 +115,16 @@ public static class TextItemEditBehavior
         }
 
         // Now set IsEditing to false to hide the TextBox
-        textItem.IsEditing = false;
+        textItem.IsEditing.Value = false;
     }
 
     private static void Grid_KeyDown(object sender, KeyEventArgs e)
     {
         if (sender is Grid grid && grid.DataContext is CelestialMapper.ViewModel.TextItem textItem)
         {
-            if (e.Key == Key.Escape && textItem.IsEditing)
+            if (e.Key == Key.Escape && textItem.IsEditing.Value)
             {
-                textItem.IsEditing = false;
+                textItem.IsEditing.Value = false;
                 e.Handled = true;
             }
         }

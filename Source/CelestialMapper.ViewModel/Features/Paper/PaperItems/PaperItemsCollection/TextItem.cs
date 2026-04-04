@@ -1,98 +1,60 @@
 ﻿namespace CelestialMapper.ViewModel;
 
 [Export(typeof(TextItem), IsSingleton = false, Key = nameof(TextItem))]
-[PaperItemIdentifier(Category = PaperItemCatergory.Text, ItemType = PaperItemType.Text, NameKey = nameof(TextItem))]
+[PaperItemIdentifier(Category = PaperItemCategory.Text, ItemType = PaperItemType.Text, NameKey = nameof(TextItem))]
 public class TextItem : PaperItemBase
 {
 
+    private readonly IFontService fontService;
+
+    public TextItem(IFontService fontService)
+    {
+        this.fontService = fontService;
+    }
+
     public override PaperItemType ItemType => PaperItemType.Text;
 
-    public string Text
-    {
-        get => GetPropertyValue<string>() ?? string.Empty;
-        set => SetPropertyValue(value);
-    }
+    public PropertyWrapper<string> Text { get; } = new("Text", nameof(Text));
 
     // Font Characteristics
-    public double FontSize
-    {
-        get => GetPropertyValue<double>();
-        set => SetPropertyValue(value);
-    }
+    public PropertyWrapper<double> FontSize { get; } = new(16, nameof(FontSize));
 
-    public string FontFamily
-    {
-        get => GetPropertyValue<string>() ?? "Arial";
-        set => SetPropertyValue(value);
-    }
+    public ChoicePropertyWrapper<string> FontFamily { get; private set; } = default!;
 
-    public bool IsBold
-    {
-        get => GetPropertyValue<bool>();
-        set => SetPropertyValue(value);
-    }
+    public PropertyWrapper<bool> IsBold { get; } = new(nameof(IsBold));
 
-    public bool IsItalic
-    {
-        get => GetPropertyValue<bool>();
-        set => SetPropertyValue(value);
-    }
-
-    public bool IsUnderline
-    {
-        get => GetPropertyValue<bool>();
-        set => SetPropertyValue(value);
-    }
-
-    public bool IsStrikethrough
-    {
-        get => GetPropertyValue<bool>();
-        set => SetPropertyValue(value);
-    }
-
-    public int FontWeight
-    {
-        get => GetPropertyValue<int>();
-        set => SetPropertyValue(value);
-    }
+    public PropertyWrapper<bool> IsItalic { get; } = new(nameof(IsItalic));
 
     // Text Alignment
-    public TextHorizontalAlignment HorizontalAlignment
-    {
-        get => GetPropertyValue<TextHorizontalAlignment>();
-        set => SetPropertyValue(value);
-    }
+    public ChoicePropertyWrapper<TextHorizontalAlignment> HorizontalAlignment { get; private set; } = default!;
 
-    public TextVerticalAlignment VerticalAlignment
-    {
-        get => GetPropertyValue<TextVerticalAlignment>();
-        set => SetPropertyValue(value);
-    }
+    public ChoicePropertyWrapper<TextVerticalAlignment> VerticalAlignment { get; private set; } = default!;
 
     // Text Layout
-    public bool IsTextWrapped
-    {
-        get => GetPropertyValue<bool>();
-        set => SetPropertyValue(value);
-    }
-
-    public double LineHeight
-    {
-        get => GetPropertyValue<double>();
-        set => SetPropertyValue(value);
-    }
-
-    public double LetterSpacing
-    {
-        get => GetPropertyValue<double>();
-        set => SetPropertyValue(value);
-    }
+    public PropertyWrapper<bool> IsTextWrapped { get; } = new(nameof(IsTextWrapped));
 
     // Edit Mode
-    public bool IsEditing
+    public PropertyWrapper<bool> IsEditing { get; } = new(nameof(IsEditing));
+
+    public override void InitializeProperties()
     {
-        get => GetPropertyValue<bool>();
-        set => SetPropertyValue(value);
+        base.InitializeProperties();
+
+        FontFamily = new(null!, nameof(FontFamily), this.fontService.GetFonts());
+        HorizontalAlignment = new(default, nameof(HorizontalAlignment), Enum.GetValues<TextHorizontalAlignment>());
+        VerticalAlignment = new(default, nameof(TextVerticalAlignment), Enum.GetValues<TextVerticalAlignment>());
+
+        this.Properties.AddRange(new IPropertyWrapper[]
+        {
+            Text,
+            FontSize,
+            FontFamily,
+            IsBold,
+            IsItalic,
+            HorizontalAlignment,
+            VerticalAlignment,
+            IsTextWrapped
+        });
     }
 }
 

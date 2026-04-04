@@ -29,11 +29,19 @@ public class Converters
 
     public static BoolToFontWeightConverter BoolToFontWeight { get; } = new();
 
+    public static BoolToTextWrapping BoolToTextWrapping { get; } = new();
+
     public static TextHorizontalAlignmentConverter TextHorizontalAlignment { get; } = new();
 
     public static TextDecorationsConverter TextDecorations { get; } = new();
 
     public static InvertBooleanToVisibilityConverter InvertBoolToVisibility { get; } = new();
+
+    #endregion
+
+    #region Property Editing
+
+    public static EnumValuesConverter EnumValues { get; } = new();
 
     #endregion
 }

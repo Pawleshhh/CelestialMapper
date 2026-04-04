@@ -40,9 +40,9 @@ public class VisualDataControl : PlatformUserControl
     {
         if (content is IVisualData visualData)
         {
-            visualData.IsVisible = Visibility == Visibility.Visible;
-            visualData.Width = width;
-            visualData.Height = height;
+            visualData.IsVisible.Value = Visibility == Visibility.Visible;
+            visualData.Width.Value = width;
+            visualData.Height.Value = height;
         }
     }
 
@@ -66,11 +66,11 @@ public class VisualDataControl : PlatformUserControl
     {
         if (propertyName == nameof(IVisualData.Height))
         {
-            Height = visualData.Height;
+            Height = visualData.Height.Value;
         }
         else if (propertyName == nameof(IVisualData.Width))
         {
-            Width = visualData.Width;
+            Width = visualData.Width.Value;
         }
     }
 }

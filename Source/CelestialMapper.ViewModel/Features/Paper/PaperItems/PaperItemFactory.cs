@@ -9,15 +9,18 @@ public class PaperItemFactory : IPaperItemFactory
     private readonly IPaperItemContextMenuFactory contextMenuFactory;
     private readonly IResourceResolver resourceResolver;
     private readonly IIoCManager ioCManager;
+    private readonly IFontService fontService;
 
     public PaperItemFactory(
         IPaperItemContextMenuFactory contextMenuFactory,
         IResourceResolver resourceResolver,
-        IIoCManager ioCManager)
+        IIoCManager ioCManager,
+        IFontService fontService)
     {
         this.contextMenuFactory = contextMenuFactory;
         this.resourceResolver = resourceResolver;
         this.ioCManager = ioCManager;
+        this.fontService = fontService;
     }
 
     public IPaperItem Create(PaperItemType type)
@@ -35,11 +38,7 @@ public class PaperItemFactory : IPaperItemFactory
         var item = type switch
         {
             PaperItemType.Map => this.ioCManager.ServiceProvider.ResolveViewModel<MapViewModel>(FeatureNames.Map),
-            PaperItemType.Text => new TextItem 
-                                {
-                                    Id = Guid.NewGuid(),
-                                    Text = (string)value,
-                                },
+            PaperItemType.Text => GetTextItem(value),
             _ => ThrowWhenTypeNotHandled(type)
         };
 
@@ -56,5 +55,16 @@ public class PaperItemFactory : IPaperItemFactory
     {
         this.resourceResolver.TryResolveString(key, out var value);
         return value;
+    }
+
+    private TextItem GetTextItem(object value)
+    {
+        var textItem = new TextItem(this.fontService)
+        {
+            Id = Guid.NewGuid()
+        };
+        textItem.InitializeProperties();
+        textItem.Text.Value = value as string;
+        return textItem;
     }
 }

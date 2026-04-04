@@ -1,0 +1,161 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:input="clr-namespace:System.Windows.Input;assembly=netstandard"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:ui="clr-namespace:CelestialMapper.UI"
+    xmlns:vm="clr-namespace:CelestialMapper.ViewModel;assembly=CelestialMapper.ViewModel">
+
+    <!--  String Editor Template  -->
+    <DataTemplate x:Key="Template.PropertyEditor.String" DataType="{x:Type sys:String}">
+        <TextBox
+            VerticalAlignment="Center"
+            BorderBrush="#CCCCCC"
+            BorderThickness="1"
+            Text="{Binding Path=DataContext.Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    </DataTemplate>
+
+    <!--  Double Editor Template  -->
+    <DataTemplate x:Key="Template.PropertyEditor.Double" DataType="{x:Type sys:Double}">
+        <TextBox
+            VerticalAlignment="Center"
+            BorderBrush="#CCCCCC"
+            BorderThickness="1"
+            Text="{Binding Path=DataContext.Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=G}" />
+    </DataTemplate>
+
+    <!--  Int Editor Template  -->
+    <DataTemplate x:Key="Template.PropertyEditor.Int" DataType="{x:Type sys:Int32}">
+        <TextBox
+            VerticalAlignment="Center"
+            BorderBrush="#CCCCCC"
+            BorderThickness="1"
+            Text="{Binding Path=DataContext.Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    </DataTemplate>
+
+    <!--  Bool Editor Template  -->
+    <DataTemplate x:Key="Template.PropertyEditor.Bool" DataType="{x:Type sys:Boolean}">
+        <CheckBox
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            IsChecked="{Binding Path=DataContext.Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    </DataTemplate>
+
+    <!--  DateTime Editor Template  -->
+    <DataTemplate x:Key="Template.PropertyEditor.DateTime" DataType="{x:Type sys:DateTime}">
+        <DatePicker
+            VerticalAlignment="Center"
+            BorderBrush="#CCCCCC"
+            BorderThickness="1"
+            SelectedDate="{Binding Path=DataContext.Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    </DataTemplate>
+
+    <!--  TimeSpan Editor Template  -->
+    <DataTemplate x:Key="Template.PropertyEditor.TimeSpan" DataType="{x:Type sys:TimeSpan}">
+        <ui:TimePicker
+            VerticalAlignment="Center"
+            BorderBrush="#CCCCCC"
+            BorderThickness="1"
+            SelectedTime="{Binding Path=DataContext.Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    </DataTemplate>
+
+    <!--  String Editor Template  -->
+    <DataTemplate x:Key="Template.PropertyEditor.Command" DataType="{x:Type input:ICommand}">
+        <Button
+            Command="{Binding Value}"
+            Content="{Binding Name}"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentControl}}" />
+    </DataTemplate>
+
+    <!--  Default Read-Only Template  -->
+    <DataTemplate x:Key="Template.PropertyEditor.ReadOnly">
+        <TextBlock
+            VerticalAlignment="Center"
+            Foreground="Gray"
+            Text="{Binding Path=DataContext.Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentControl}, Mode=OneWay}" />
+    </DataTemplate>
+
+    <ui:DataTypeTemplateSelector x:Key="Private.TemplateSelector.PropertyWrapper.Value">
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Template.PropertyEditor.String}" />
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Template.PropertyEditor.Double}" />
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Template.PropertyEditor.Int}" />
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Template.PropertyEditor.Bool}" />
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Template.PropertyEditor.DateTime}" />
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Template.PropertyEditor.TimeSpan}" />
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Template.PropertyEditor.Command}" />
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Template.PropertyEditor.ReadOnly}" IsDefault="True" />
+    </ui:DataTypeTemplateSelector>
+
+    <DataTemplate x:Key="Template.PropertyWrapper" DataType="{x:Type vm:PropertyWrapper`1}">
+        <ContentControl Content="{Binding Value}" ContentTemplateSelector="{StaticResource Private.TemplateSelector.PropertyWrapper.Value}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="Template.ChoicePropertyWrapper" DataType="{x:Type vm:ChoicePropertyWrapper`1}">
+        <ComboBox ItemsSource="{Binding Choices}" SelectedItem="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    </DataTemplate>
+
+    <ui:DataTypeTemplateSelector x:Key="TemplateSelector.PropertyWrapper">
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Template.ChoicePropertyWrapper}" />
+        <ui:PlatformDataTemplateSelectorItem DataTemplate="{StaticResource Template.PropertyWrapper}" IsDefault="True" />
+    </ui:DataTypeTemplateSelector>
+
+    <!--  Alternating Row Style  -->
+    <Style x:Key="Style.DataGridRow.PropertyList" TargetType="{x:Type DataGridRow}">
+        <Style.Triggers>
+            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                <Setter Property="Background" Value="White" />
+            </Trigger>
+            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                <Setter Property="Background" Value="#F5F5F5" />
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="#E3F2FD" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True" />
+                    <Condition Property="IsMouseOver" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="#BBDEFB" />
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--  Column Header Style  -->
+    <Style x:Key="Style.DataGridColumnHeader.PropertyList" TargetType="{x:Type DataGridColumnHeader}">
+        <Setter Property="Background" Value="#E0E0E0" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="BorderBrush" Value="#CCCCCC" />
+    </Style>
+
+    <!--  Cell Style  -->
+    <Style x:Key="Style.DataGridCell.PropertyList" TargetType="{x:Type DataGridCell}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="2,4" />
+    </Style>
+
+    <!--  Main DataGrid Style  -->
+    <Style x:Key="Style.DataGrid.PropertyList" TargetType="{x:Type DataGrid}">
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="CanUserReorderColumns" Value="False" />
+        <Setter Property="CanUserResizeRows" Value="False" />
+        <Setter Property="CanUserResizeColumns" Value="True" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="GridLinesVisibility" Value="None" />
+        <Setter Property="RowHeaderWidth" Value="0" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="AlternationCount" Value="2" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Type1.Border}" />
+        <Setter Property="RowStyle" Value="{StaticResource Style.DataGridRow.PropertyList}" />
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource Style.DataGridColumnHeader.PropertyList}" />
+        <Setter Property="CellStyle" Value="{StaticResource Style.DataGridCell.PropertyList}" />
+    </Style>
+
+</ResourceDictionary>

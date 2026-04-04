@@ -21,61 +21,26 @@
                 </Style.Triggers>
             </Style>
         </Grid.Style>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="{StaticResource GridLength.Fives.Large}" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <StackPanel Orientation="Vertical">
-
-            <local:LabeledTextBox
-                Margin="{DynamicResource Margin.Twos.Small.Vertical}"
-                Label="X:"
-                LabelPlacement="Left"
-                Text="{Binding SelectedPaperItem.X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-            <local:LabeledTextBox
-                Margin="{DynamicResource Margin.Twos.Small.Vertical}"
-                Label="Y:"
-                LabelPlacement="Left"
-                Text="{Binding SelectedPaperItem.Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-            <local:LabeledTextBox
-                Margin="{DynamicResource Margin.Twos.Small.Vertical}"
-                Label="Z:"
-                LabelPlacement="Left"
-                Text="{Binding SelectedPaperItem.ZIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-        </StackPanel>
-
-        <StackPanel Grid.Column="2" Orientation="Vertical">
-
-            <local:LabeledTextBox
-                Margin="{DynamicResource Margin.Twos.Small.Vertical}"
-                Label="Width:"
-                LabelPlacement="Left"
-                Text="{Binding SelectedPaperItem.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-            <local:LabeledTextBox
-                Margin="{DynamicResource Margin.Twos.Small.Vertical}"
-                Label="Height:"
-                LabelPlacement="Left"
-                Text="{Binding SelectedPaperItem.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-        </StackPanel>
-
-        <ContentControl
-            Grid.Row="2"
-            Grid.ColumnSpan="3"
-            Content="{Binding SelectedPaperItem}"
-            Style="{StaticResource Style.ContentControl.PaperEditorMenu.SpecificSettings}"
-            Visibility="{Binding SelectedPaperItem, Converter={x:Static local:Converters.NullMakesMeCollapsed}}" />
-
+        <DataGrid
+            ItemsSource="{Binding SelectedPaperItem.Properties}"
+            Style="{StaticResource Style.DataGrid.PropertyList}"
+            Visibility="{Binding SelectedPaperItem, Converter={x:Static local:Converters.NullMakesMeCollapsed}}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="0.4*" Header="Property">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="{x:Type vm:IPropertyWrapper}">
+                            <TextBlock
+                                Style="{StaticResource Style.TextBlock.Small}"
+                                Text="{Binding Name}"
+                                TextTrimming="CharacterEllipsis" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn
+                    Width="0.6*"
+                    CellTemplateSelector="{StaticResource TemplateSelector.PropertyWrapper}"
+                    Header="Value" />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </local:FeatureViewBase>

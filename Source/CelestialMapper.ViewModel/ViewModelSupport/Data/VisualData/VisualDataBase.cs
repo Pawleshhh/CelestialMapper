@@ -1,56 +1,48 @@
-﻿namespace CelestialMapper.ViewModel;
+﻿using System.Collections.ObjectModel;
+
+namespace CelestialMapper.ViewModel;
 
 public abstract class VisualDataBase : NotifyPropertyChangedBase, IVisualData
 {
-    protected VisualDataBase()
+    private ObservableCollection<IPropertyWrapper>? properties;
+
+    public ObservableCollection<IPropertyWrapper> Properties
     {
-        IsVisible = true;
+        get => this.properties ??= new();
+        set => this.properties = value;
     }
 
-    public double X
-    {
-        get => GetPropertyValue<double>();
-        set => SetPropertyValue(value);
-    }
+    public PropertyWrapper<double> X { get; } = new(nameof(X));
 
-    public double Y
+    public PropertyWrapper<double> Y { get; } = new(nameof(Y));
+
+    public PropertyWrapper<double> Width { get; } = new(nameof(Width));
+
+    public PropertyWrapper<double> Height { get; } = new(nameof(Height));
+
+    public PropertyWrapper<string> BackgroundColor { get; } = new(nameof(BackgroundColor));
+
+    public PropertyWrapper<string> BorderColor { get; } = new(nameof(BorderColor));
+
+    public PropertyWrapper<double> BorderThickness { get; } = new(nameof(BorderThickness));
+
+    public PropertyWrapper<bool> IsVisible { get; } = new(nameof(IsVisible));
+
+    public PropertyWrapper<int> ZIndex { get; } = new(nameof(ZIndex));
+
+    public virtual void InitializeProperties()
     {
-        get => GetPropertyValue<double>();
-        set => SetPropertyValue(value);
-    }
-    public double Width
-    {
-        get => GetPropertyValue<double>();
-        set => SetPropertyValue(value);
-    }
-    public double Height
-    {
-        get => GetPropertyValue<double>();
-        set => SetPropertyValue(value);
-    }
-    public string BackgroundColor
-    {
-        get => GetPropertyValue<string>() ?? string.Empty;
-        set => SetPropertyValue(value);
-    }
-    public string BorderColor
-    {
-        get => GetPropertyValue<string>() ?? string.Empty;
-        set => SetPropertyValue(value);
-    }
-    public double BorderThickness
-    {
-        get => GetPropertyValue<double>();
-        set => SetPropertyValue(value);
-    }
-    public bool IsVisible
-    {
-        get => GetPropertyValue<bool>();
-        set => SetPropertyValue(value);
-    }
-    public int ZIndex
-    {
-        get => GetPropertyValue<int>();
-        set => SetPropertyValue(value);
+        this.Properties.Clear();
+        this.Properties.AddRange(new IPropertyWrapper[]
+        {
+            X,
+            Y,
+            Width,
+            Height,
+            BackgroundColor,
+            BorderColor,
+            BorderThickness,
+            ZIndex,
+        });
     }
 }
