@@ -187,7 +187,7 @@ public partial class CelestialMap : PlatformUserControl
 
         foreach (var celestialObjectVisualData in CelestialObjects)
         {
-            var celestialObject = celestialObjectVisualData.CelestialObject;
+            var celestialObject = (CelestialObject)celestialObjectVisualData.Data;
             if (celestialObject is null)
             {
                 continue;
@@ -197,12 +197,9 @@ public partial class CelestialMap : PlatformUserControl
                 mapDiameter);
             var position = new Point(x + mapRadius, y + mapRadius);
 
-            var size = CelestialObjectHelper.GetSizeBasedOnMagnitude(celestialObject.Magnitude);
-
-            var celestialObjectUI = new CelestialObjectUIElement
+            var celestialObjectUI = new StarUIObject(celestialObjectVisualData as VisualStarData)
             {
-                Position = position,
-                Size = size
+                Position = position
             };
 
             this.celestialObjectCanvas.Children.Add(celestialObjectUI);
@@ -213,18 +210,18 @@ public partial class CelestialMap : PlatformUserControl
 
     #region CelestialObjects
 
-    public IReadOnlySet<Constellation> Constellations
+    public IReadOnlySet<VisualConstellationData> Constellations
     {
-        get { return this.GetValue<IReadOnlySet<Constellation>>(ConstellationsProperty); }
+        get { return this.GetValue<IReadOnlySet<VisualConstellationData>>(ConstellationsProperty); }
         set { SetValue(ConstellationsProperty, value); }
     }
 
     public static readonly DependencyProperty ConstellationsProperty =
         Register(
             nameof(Constellations),
-            new PlatformPropertyMetadata<CelestialMap, IReadOnlySet<Constellation>>(null, OnConstellationsChanged));
+            new PlatformPropertyMetadata<CelestialMap, IReadOnlySet<VisualConstellationData>>(null, OnConstellationsChanged));
 
-    private static void OnConstellationsChanged(CelestialMap celestialMap, DependencyPropertyChangedEventArgs<IReadOnlySet<Constellation>> e)
+    private static void OnConstellationsChanged(CelestialMap celestialMap, DependencyPropertyChangedEventArgs<IReadOnlySet<VisualConstellationData>> e)
     {
         celestialMap.UpdateConstellations();
     }
@@ -237,9 +234,8 @@ public partial class CelestialMap : PlatformUserControl
 
         foreach (var constellation in Constellations)
         {
-            var constellationUIElement = new ConstellationUIElement
+            var constellationUIElement = new ConstellationUIObject(constellation)
             {
-                Constellation = constellation,
                 MapDiameter = mapDiameter
             };
 

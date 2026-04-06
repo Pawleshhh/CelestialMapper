@@ -66,7 +66,7 @@ public class MapViewModel : PaperItemBaseViewModel
 
     public IReadOnlySet<CelestialObjectVisualData> CelestialObjects => GetCelestialObjectVisualData();
 
-    public IReadOnlySet<Constellation> Constellations => this.map?.Constellations ?? new HashSet<Constellation>();
+    public IReadOnlySet<VisualConstellationData> Constellations => GetVisualConstellationData();
 
     public override PaperItemType ItemType => PaperItemType.Map;
 
@@ -118,9 +118,20 @@ public class MapViewModel : PaperItemBaseViewModel
         return this.map.CelestialObjects.Select(GetCelestialObjectVisualData).ToHashSet();
     }
 
+    private HashSet<VisualConstellationData> GetVisualConstellationData()
+    {
+        if (this.map is null)
+        {
+            return new HashSet<VisualConstellationData>();
+        }
+
+        return this.map.Constellations
+            .Select(c => CelestialObjectHelper.CreateCelestialObject(() => new VisualConstellationData(c))).ToHashSet();
+    }
+
     private CelestialObjectVisualData GetCelestialObjectVisualData(CelestialObject celestialObject)
     {
-        return new VisualStarData(celestialObject);
+        return CelestialObjectHelper.CreateCelestialObject(() => new VisualStarData(celestialObject));
     }
 
     private double ParseDouble(string value)

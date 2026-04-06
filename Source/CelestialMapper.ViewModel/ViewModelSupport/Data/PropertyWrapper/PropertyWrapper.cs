@@ -8,6 +8,8 @@ public interface IPropertyWrapper : INotifyPropertyChanged
     public object? Value { get; set; }
 
     public bool IsReadOnly { get; set; }
+    
+    public bool IsSubscribed { get; set; }
 }
 
 public class PropertyWrapper<T> : NotifyPropertyChangedBase, IPropertyWrapper
@@ -39,6 +41,8 @@ public class PropertyWrapper<T> : NotifyPropertyChangedBase, IPropertyWrapper
         get => GetPropertyValue<bool>();
         set => SetPropertyValue(value);
     }
+
+    public bool IsSubscribed { get; set; }
 
     public T? Value
     {

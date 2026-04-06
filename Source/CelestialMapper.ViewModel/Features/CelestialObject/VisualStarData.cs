@@ -12,24 +12,26 @@ public class VisualStarData : CelestialObjectVisualData
 
     public PropertyWrapper<double> Magnitude { get; } = new(nameof(Magnitude));
 
-    public PropertyWrapper<string> FillColor { get; } = new("Red", nameof(FillColor));
-
     public override void InitializeProperties()
     {
         base.InitializeProperties();
 
         Magnitude.SetupDelegates(
             onBeforeSetValue: null,
-            onAfterSetValue: v =>
+            onAfterSetValue: val =>
             {
-                var size = CelestialObjectHelper.GetSizeBasedOnMagnitude(v);
+                var size = CelestialObjectHelper.GetSizeBasedOnMagnitude(val);
                 Width.Value = size;
                 Height.Value = size;
             });
         
         Properties.AddRange(new IPropertyWrapper[] {
-            Magnitude,
-            FillColor
+            Magnitude
         });
+
+        Magnitude.Value = ((CelestialObject)Data).Magnitude;
+        BackgroundColor.Value = "Orange";
+
+        SubscribeToProperties();
     }
 }

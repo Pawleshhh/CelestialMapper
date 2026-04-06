@@ -2,13 +2,13 @@
 
 namespace CelestialMapper.ViewModel;
 
-public class CelestialObjectVisualData : VisualDataBase
+public abstract class CelestialObjectVisualData : VisualDataBase
 {
-    public CelestialObject CelestialObject { get; }
+    public object Data { get; }
 
-    public CelestialObjectVisualData(CelestialObject celestialObject)
+    public CelestialObjectVisualData(object data)
     {
-        CelestialObject = celestialObject;
+        Data = data;
     }
 
     public override void InitializeProperties()
@@ -18,7 +18,8 @@ public class CelestialObjectVisualData : VisualDataBase
         Y.IsReadOnly = true;
         Width.IsReadOnly = true;
         Height.IsReadOnly = true;
-    }
 
+        SubscribeToProperties();
+    }
 
 }

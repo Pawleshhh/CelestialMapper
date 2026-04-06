@@ -44,6 +44,31 @@ public abstract class VisualDataBase : NotifyPropertyChangedBase, IVisualData
             BorderThickness,
             ZIndex,
         });
+
+        SubscribeToProperties();
+    }
+
+    protected void SubscribeToProperties()
+    {
+        Properties.ForEach(p =>
+        {
+            if (p.IsSubscribed)
+            {
+                return;
+            }
+            p.PropertyChanged += PropertyWrapper_PropertyChanged;
+            p.IsSubscribed = true;
+        });
+    }
+
+    private void PropertyWrapper_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (sender is not IPropertyWrapper propertyWrapper || propertyWrapper.Name is null)
+        {
+            return;
+        }
+
+        OnPropertyChanged(propertyWrapper.Name);
     }
 
     protected void ReplaceProperty<T>(PropertyWrapper<T> oldProperty, PropertyWrapper<T> newProperty)
@@ -57,5 +82,10 @@ public abstract class VisualDataBase : NotifyPropertyChangedBase, IVisualData
         }
 
         Properties.Add(newProperty);
+    }
+
+    protected bool RemoveProperty(IPropertyWrapper property)
+    {
+        return Properties.Remove(property);
     }
 }

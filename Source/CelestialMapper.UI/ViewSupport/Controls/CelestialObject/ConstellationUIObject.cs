@@ -1,13 +1,17 @@
 ﻿using CelestialMapper.Core.Astronomy;
 using PracticalAstronomy.CSharp;
-using System.Windows;
 using System.Windows.Media;
 
 namespace CelestialMapper.UI;
 
-public class ConstellationUIElement : UIElement
+public class ConstellationUIObject : CelestialUIObject<VisualConstellationData>
 {
-    public required Constellation Constellation { get; init; }
+    public ConstellationUIObject(VisualConstellationData visualData) : base(visualData)
+    {
+    }
+
+    public Constellation Constellation => (Constellation)VisualData.Data;
+
     public required double MapDiameter { get; init; }
 
     private double Radius => MapDiameter / 2d;

@@ -55,6 +55,8 @@ public class TextItem : PaperItemBase
             VerticalAlignment,
             IsTextWrapped
         });
+
+        SubscribeToProperties();
     }
 }
 

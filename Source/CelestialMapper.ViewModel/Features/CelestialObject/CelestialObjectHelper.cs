@@ -6,9 +6,9 @@ public static class CelestialObjectHelper
     #region Size
 
     private static readonly NumRange<double> bigObject = NumRange.Of(double.MinValue, -1d);
-    private static readonly NumRange<double> mediumObject = NumRange.Of(-1d, 1d);
-    private static readonly NumRange<double> smallObject = NumRange.Of(1d, 4d);
-    private static readonly NumRange<double> verySmallObject = NumRange.Of(4, double.MaxValue);
+    private static readonly NumRange<double> mediumObject = NumRange.Of(-1d, 3d);
+    private static readonly NumRange<double> smallObject = NumRange.Of(3d, 5d);
+    private static readonly NumRange<double> verySmallObject = NumRange.Of(5, double.MaxValue);
 
     private const double verySmallSize = 0.25;
     private const double smallSize = 0.5;
@@ -24,7 +24,7 @@ public static class CelestialObjectHelper
             var m when mediumObject.InRange(m, NumRangeKind.Exclusive, NumRangeKind.Inclusive) => mediumSize,
             var m when bigObject.InRange(m, NumRangeKind.Exclusive, NumRangeKind.Inclusive) => bigSize,
             _ => throw null!
-        } * 6;
+        } * 4;
 
         return objectDiameter;
     }
@@ -44,5 +44,13 @@ public static class CelestialObjectHelper
     }
 
     #endregion
+
+    public static T CreateCelestialObject<T>(Func<T> create)
+        where T : CelestialObjectVisualData
+    {
+        var visualData = create();
+        visualData.InitializeProperties();
+        return visualData;
+    }
 
 }
