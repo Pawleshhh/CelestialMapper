@@ -35,6 +35,8 @@ public class FeatureNames
 
     public static FeatureName Map { get; } = new(nameof(Map));
 
+    public static FeatureName MapEditor { get; } = new(nameof(MapEditor));
+
     public static FeatureName TimeMachine { get; } = new(nameof(TimeMachine));
 
     public static FeatureName ToolboxMenu { get; } = new(nameof(ToolboxMenu));

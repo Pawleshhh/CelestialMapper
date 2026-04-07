@@ -19,7 +19,12 @@ public class FactoryView : ContentControl
     }
 
     public static readonly DependencyProperty FeatureNameProperty =
-        Register(nameof(FeatureName), new PlatformPropertyMetadata<FactoryView, FeatureName>(FeatureName.Unknown));
+        Register(nameof(FeatureName), new PlatformPropertyMetadata<FactoryView, FeatureName>(FeatureName.Unknown, OnFeatureNameChanged));
+
+    private static void OnFeatureNameChanged(FactoryView d, DependencyPropertyChangedEventArgs<FeatureName> e)
+    {
+        Initialize(d);
+    }
 
     public bool DoNotInitializeViewModel
     {
@@ -34,13 +39,23 @@ public class FactoryView : ContentControl
     {
         base.OnInitialized(e);
 
-        if (FeatureName.IsUnknown())
+        Initialize(this);
+    }
+
+    private static void Initialize(FactoryView factoryView)
+    {
+        if (factoryView?.FeatureName is null)
+        {
+            return;
+        }
+
+        if (factoryView.FeatureName.IsUnknown())
         {
             // TODO: Create unknow view for such cases
             return;
         }
 
-        var view = App.ServiceProvider.GetKeyedService<FeatureViewBase>(FeatureName.ViewName);
+        var view = App.ServiceProvider.GetKeyedService<FeatureViewBase>(factoryView.FeatureName.ViewName);
 
         if (view is null)
         {
@@ -48,9 +63,9 @@ public class FactoryView : ContentControl
             return;
         }
 
-        view.DoNotInitializeViewModel = DoNotInitializeViewModel;
+        view.DoNotInitializeViewModel = factoryView.DoNotInitializeViewModel;
 
-        Content = view;
+        factoryView.Content = view;
     }
 
 }

@@ -14,6 +14,7 @@ public class MapViewModel : PaperItemBaseViewModel
 
     private readonly IMapManager mapManager;
     private readonly TimeLocationHelper timeLocationHelper;
+    private readonly OverlayToolHelper overlayToolHelper;
 
     private IMap map = default!;
 
@@ -24,10 +25,12 @@ public class MapViewModel : PaperItemBaseViewModel
     public MapViewModel(
         IMapManager mapManager,
         IViewModelSupport viewModelSupport,
-        TimeLocationHelper timeLocationHelper) : base(viewModelSupport)
+        TimeLocationHelper timeLocationHelper,
+        OverlayToolHelper overlayToolHelper) : base(viewModelSupport)
     {
         this.mapManager = mapManager;
         this.timeLocationHelper = timeLocationHelper;
+        this.overlayToolHelper = overlayToolHelper;
 
         Id = Guid.NewGuid();
     }
@@ -51,6 +54,10 @@ public class MapViewModel : PaperItemBaseViewModel
         {
             GenerateMap(null);
         });
+        EditMapCommand.Value = new RelayCommand(o =>
+        {
+            this.overlayToolHelper.SetActiveOverlayTool(FeatureNames.MapEditor);
+        });
         GenerateMapCommand = new RelayCommand(o => GenerateMap(o));
     }
 
@@ -72,6 +79,8 @@ public class MapViewModel : PaperItemBaseViewModel
 
     public PropertyWrapper<ICommand?> ApplyCommand { get; private set; } = new(nameof(ApplyCommand));
 
+    public PropertyWrapper<ICommand?> EditMapCommand { get; private set; } = new(nameof(EditMapCommand));
+
     public PropertyWrapper<DateTime> DateTime { get; } = new(nameof(DateTime));
 
     public PropertyWrapper<TimeSpan> Time { get; } = new(nameof(Time));
@@ -89,7 +98,7 @@ public class MapViewModel : PaperItemBaseViewModel
     public override void InitializeProperties()
     {
         base.InitializeProperties();
-        this.Properties.AddRange(new IPropertyWrapper[] { DateTime, Time, Latitude, Longitude, Magnitude, ApplyCommand });
+        this.Properties.AddRange(new IPropertyWrapper[] { DateTime, Time, Latitude, Longitude, Magnitude, ApplyCommand, EditMapCommand });
     }
 
     private void GenerateMap(object? o)

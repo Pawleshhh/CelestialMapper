@@ -1,14 +1,41 @@
-﻿namespace CelestialMapper.ViewModel;
+﻿using System.Windows.Input;
+
+namespace CelestialMapper.ViewModel;
 
 [Export(typeof(ShellViewModel), IsSingleton = true, Key = nameof(ShellViewModel))]
 public class ShellViewModel : ViewModelBase
 {
 
+    #region Fields
+
+    private readonly OverlayToolHelper overlayToolHelper;
+
+    #endregion
+
     #region Constructors
 
-    public ShellViewModel(IViewModelSupport viewModelSupport) : base(viewModelSupport)
+    public ShellViewModel(
+        OverlayToolHelper overlayToolHelper,
+        IViewModelSupport viewModelSupport) : base(viewModelSupport)
     {
+        this.overlayToolHelper = overlayToolHelper;
     }
+
+    #endregion
+
+    #region OverlayTool
+
+    public FeatureName? OverlayTool
+    {
+        get => GetPropertyValue<FeatureName>();
+        set => SetPropertyValue(value);
+    }
+
+    private ICommand exitOverlayCommand;
+    public ICommand ExitOverlayCommand => this.exitOverlayCommand ?? new RelayCommand(o =>
+    {
+        OverlayTool = null;
+    });
 
     #endregion
 
@@ -19,6 +46,8 @@ public class ShellViewModel : ViewModelBase
     public override void Initialize(IViewModelConfigurator configurator)
     {
         base.Initialize(configurator);
+
+        this.overlayToolHelper.Setup(f => OverlayTool = f);
     }
 
     #endregion

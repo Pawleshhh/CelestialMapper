@@ -15,54 +15,7 @@
     mc:Ignorable="d">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="ToolboxMenuColumn" Width="{DynamicResource GridLength.MainWindow.LeftMenu.Width}" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition x:Name="PropertiesMenuColumn" Width="{DynamicResource GridLength.MainWindow.RightMenu.Width}" />
-        </Grid.ColumnDefinitions>
-
-        <!--  Toolbox Menu  -->
-        <local:MenuView
-            x:Name="ToolboxMenu"
-            Grid.Row="1"
-            Grid.Column="0"
-            HorizontalAlignment="Stretch"
-            FeatureName="{x:Static vm:FeatureNames.ToolboxMenu}" />
-
-        <!--  GridSplitter between ToolboxMenu and PaperView  -->
-        <GridSplitter
-            Grid.Row="1"
-            Grid.Column="1"
-            Width="5"
-            HorizontalAlignment="Stretch"
-            ResizeBehavior="PreviousAndNext"
-            ShowsPreview="True" />
-
-        <!--  Main Content (PaperView)  -->
-        <local:PaperView Grid.Row="1" Grid.Column="2" />
-
-        <!--  GridSplitter between PaperView and PropertiesMenu  -->
-        <GridSplitter
-            Grid.Row="1"
-            Grid.Column="3"
-            Width="5"
-            HorizontalAlignment="Stretch"
-            ResizeBehavior="PreviousAndNext"
-            ShowsPreview="True" />
-
-        <!--  Properties Menu  -->
-        <local:MenuView
-            x:Name="PropertiesMenu"
-            Grid.Row="1"
-            Grid.Column="4"
-            HorizontalAlignment="Stretch"
-            FeatureName="{x:Static vm:FeatureNames.PropertiesMenu}" />
+        <local:OverlayToolLayout DataContext="{Binding .}" Visibility="{Binding OverlayTool, Converter={x:Static local:Converters.NullMakesMeCollapsed}}" />
+        <local:MainLayout DataContext="{Binding .}" Visibility="{Binding OverlayTool, Converter={x:Static local:Converters.NullMakesMeVisible}}" />
     </Grid>
 </Window>

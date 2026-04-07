@@ -9,6 +9,12 @@ public class Converters
 
     public static NullToVisibilityConverter NullMakesMeCollapsed { get; } = new();
 
+    public static NullToVisibilityConverter NullMakesMeVisible { get; } = new()
+    {
+        WhenNull = Visibility.Visible,
+        WhenNotNull = Visibility.Collapsed,
+    };
+
     #endregion
 
     #region Math
