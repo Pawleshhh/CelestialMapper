@@ -5,7 +5,7 @@ namespace CelestialMapper.ViewModel;
 public static class ServiceProviderExtensions
 {
 
-    public static T ResolveViewModel<T>(this IServiceProvider serviceProvider, FeatureName featureName, Action<T>? postConfigure = null)
+    public static T ResolveViewModel<T>(this IServiceProvider serviceProvider, FeatureName featureName, Action<T>? postConfigure = null, object? data = null)
         where T : IViewModel
     {
         var viewModel = serviceProvider.GetRequiredService<T>();
@@ -14,14 +14,14 @@ public static class ServiceProviderExtensions
 
         if (!viewModel.IsInitialized)
         {
-            viewModel.Initialize(viewModel.GetViewModelConfigurator(featureName));
+            viewModel.Initialize(viewModel.GetViewModelConfigurator(featureName), data);
             postConfigure?.Invoke(viewModel);
         }
 
         return viewModel;
     }
 
-    public static IViewModel ResolveViewModel(this IServiceProvider serviceProvider, Type vmType, FeatureName featureName, Action<IViewModel>? postConfigure = null)
+    public static IViewModel ResolveViewModel(this IServiceProvider serviceProvider, Type vmType, FeatureName featureName, Action<IViewModel>? postConfigure = null, object? data = null)
     {
         var viewModel = serviceProvider.GetRequiredService(vmType) as IViewModel;
 
@@ -29,7 +29,7 @@ public static class ServiceProviderExtensions
 
         if (!viewModel!.IsInitialized)
         {
-            viewModel!.Initialize(viewModel.GetViewModelConfigurator(featureName));
+            viewModel!.Initialize(viewModel.GetViewModelConfigurator(featureName), data);
             postConfigure?.Invoke(viewModel);
         }
 

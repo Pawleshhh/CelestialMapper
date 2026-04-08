@@ -4,16 +4,16 @@
 public class OverlayToolHelper
 {
 
-    private Action<FeatureName?>? setOverlayTool;
+    private Action<FeatureName?, object?>? setOverlayTool;
 
-    public void Setup(Action<FeatureName?> setOverlayTool)
+    public void Setup(Action<FeatureName?, object?> setOverlayTool)
     {
         this.setOverlayTool = setOverlayTool;
     }
 
-    public void SetActiveOverlayTool(FeatureName? featureName)
+    public void SetActiveOverlayTool(FeatureName? featureName, object? data = null)
     {
-        this.setOverlayTool?.Invoke(featureName);
+        this.setOverlayTool?.Invoke(featureName, data);
     }
 
 }

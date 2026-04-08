@@ -23,6 +23,10 @@ public class FactoryView : ContentControl
 
     private static void OnFeatureNameChanged(FactoryView d, DependencyPropertyChangedEventArgs<FeatureName> e)
     {
+        if (!d.IsInitialized || !d.IsLoaded)
+        {
+            return;
+        }
         Initialize(d);
     }
 
@@ -35,6 +39,25 @@ public class FactoryView : ContentControl
     public static readonly DependencyProperty DoNotInitializeViewModelProperty =
         Register(nameof(DoNotInitializeViewModel), new PlatformPropertyMetadata<FactoryView, bool>(false));
 
+    public object? DataForViewModel
+    {
+        get { return (object?)GetValue(DataForViewModelProperty); }
+        set { SetValue(DataForViewModelProperty, value); }
+    }
+
+    public static readonly DependencyProperty DataForViewModelProperty =
+        Register(nameof(DataForViewModel), new PlatformPropertyMetadata<FactoryView, object?>(OnDataForViewModelChanged));
+
+    private static void OnDataForViewModelChanged(FactoryView d, DependencyPropertyChangedEventArgs<object?> e)
+    {
+        if (d.RequiresData)
+        {
+            Initialize(d);
+        }
+    }
+
+    public bool RequiresData { get; set; }
+
     protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
@@ -44,6 +67,11 @@ public class FactoryView : ContentControl
 
     private static void Initialize(FactoryView factoryView)
     {
+        if (factoryView.RequiresData && factoryView.DataForViewModel is null)
+        {
+            return;
+        }
+
         if (factoryView?.FeatureName is null)
         {
             return;
@@ -63,7 +91,9 @@ public class FactoryView : ContentControl
             return;
         }
 
+        view.DataForViewModel = factoryView.DataForViewModel;
         view.DoNotInitializeViewModel = factoryView.DoNotInitializeViewModel;
+        view.FeatureName = factoryView.FeatureName;
 
         factoryView.Content = view;
     }

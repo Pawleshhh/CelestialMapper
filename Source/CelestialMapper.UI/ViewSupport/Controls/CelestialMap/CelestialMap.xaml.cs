@@ -24,9 +24,23 @@ public partial class CelestialMap : PlatformUserControl
         UpdateAzimuthLines();
         UpdateAltitudeLines();
 
+        DataContextChanged += CelestialMap_DataContextChanged;
+        Unloaded += CelestialMap_Unloaded;
+
 #if DEBUG
         InitializeDebug();
 #endif
+    }
+
+    private void CelestialMap_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        UpdateCelestialObjects();
+        UpdateConstellations();
+    }
+
+    private void CelestialMap_Unloaded(object sender, RoutedEventArgs e)
+    {
+        DataContextChanged -= CelestialMap_DataContextChanged;
     }
 
     #region Debug
@@ -180,6 +194,11 @@ public partial class CelestialMap : PlatformUserControl
 
     public void UpdateCelestialObjects()
     {
+        if (CelestialObjects is null)
+        {
+            return;
+        }
+
         this.celestialObjectCanvas.Children.Clear();
 
         var mapDiameter = Diameter;
@@ -228,6 +247,11 @@ public partial class CelestialMap : PlatformUserControl
 
     public void UpdateConstellations()
     {
+        if (Constellations is null)
+        {
+            return;
+        }
+
         this.constellationCanvas.Children.Clear();
 
         var mapDiameter = Diameter;

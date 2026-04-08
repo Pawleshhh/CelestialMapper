@@ -48,6 +48,11 @@ public abstract class ViewModelBase : NotifyPropertyChangedBase, IViewModel
         IsInitialized = true;
     }
 
+    public virtual void Initialize(IViewModelConfigurator configurator, object? data)
+    {
+        Initialize(configurator);
+    }
+
     public virtual void Unitilialize()
     {
         UnsubscribeFromEvents();

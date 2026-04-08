@@ -10,7 +10,7 @@ public interface IViewModel : INotifyPropertyChanged
     public FeatureName FeatureName { get; }
     public string Name { get; }
 
-    public void Initialize(IViewModelConfigurator configurator);
+    public void Initialize(IViewModelConfigurator configurator, object? data);
 
     public void Unitilialize();
 

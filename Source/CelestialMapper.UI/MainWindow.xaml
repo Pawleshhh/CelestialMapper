@@ -15,7 +15,7 @@
     mc:Ignorable="d">
 
     <Grid>
-        <local:OverlayToolLayout DataContext="{Binding .}" Visibility="{Binding OverlayTool, Converter={x:Static local:Converters.NullMakesMeCollapsed}}" />
-        <local:MainLayout DataContext="{Binding .}" Visibility="{Binding OverlayTool, Converter={x:Static local:Converters.NullMakesMeVisible}}" />
+        <local:OverlayToolLayout DataContext="{Binding .}" Visibility="{Binding OverlayToolData.IsActive, Converter={x:Static local:Converters.FalseMakesMeCollapsed}}" />
+        <local:MainLayout DataContext="{Binding .}" Visibility="{Binding OverlayToolData.IsNotActive, Converter={x:Static local:Converters.FalseMakesMeCollapsed}}" />
     </Grid>
 </Window>

@@ -11,11 +11,16 @@ public class MapEditorViewModel : ViewModelBase
 
     #region Fields
 
+    private readonly IMapManager mapManager;
+    private readonly TimeLocationHelper timeLocationHelper;
+
     #endregion
 
     #region Constructors
 
     public MapEditorViewModel(
+        IMapManager mapManager,
+        TimeLocationHelper timeLocationHelper,
         IViewModelSupport viewModelSupport) : base(viewModelSupport)
     {
     }
@@ -26,9 +31,11 @@ public class MapEditorViewModel : ViewModelBase
 
     public override FeatureName DefaultFeatureName => FeatureNames.MapEditor;
 
-    public override void Initialize(IViewModelConfigurator configurator)
+    public override void Initialize(IViewModelConfigurator configurator, object? data)
     {
-        base.Initialize(configurator);
+        base.Initialize(configurator, data);
+
+        MapVM = (MapViewModel)data!;
     }
 
     #endregion
@@ -39,6 +46,7 @@ public class MapEditorViewModel : ViewModelBase
 
     #region Properties
 
+    public MapViewModel MapVM { get; set; }
 
     #endregion
 

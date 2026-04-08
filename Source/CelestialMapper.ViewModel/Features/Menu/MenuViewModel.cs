@@ -30,13 +30,19 @@ public class MenuViewModel : ViewModelBase
         return new()
         {
             [DefaultFeatureName] = IViewModelConfigurator.Create(DefaultFeatureName, GetPropertiesSubMenuViewModels),
-            [FeatureNames.ToolboxMenu] = IViewModelConfigurator.Create(FeatureNames.ToolboxMenu, GetToolboxSubMenuViewModels)
+            [FeatureNames.ToolboxMenu] = IViewModelConfigurator.Create(FeatureNames.ToolboxMenu, GetToolboxSubMenuViewModels),
+            [FeatureNames.MapEditorMenu] = IViewModelConfigurator.Create(FeatureNames.MapEditorMenu, GetMapEditorSubMenuViewModels)
         };
 
         IEnumerable<IViewModel> GetPropertiesSubMenuViewModels()
         {
             yield return this.ioCManager.ServiceProvider.ResolveViewModel<PaperEditorMenuViewModel>(FeatureNames.PaperEditorMenu);
             yield return this.ioCManager.ServiceProvider.ResolveViewModel<ExportMenuViewModel>(FeatureNames.ExportMenu);
+        }
+
+        IEnumerable<IViewModel> GetMapEditorSubMenuViewModels()
+        {
+            yield return this.ioCManager.ServiceProvider.ResolveViewModel<PaperEditorMenuViewModel>(FeatureNames.PaperEditorMenu);
         }
 
         IEnumerable<IViewModel> GetToolboxSubMenuViewModels()

@@ -25,17 +25,7 @@ public class ShellViewModel : ViewModelBase
 
     #region OverlayTool
 
-    public FeatureName? OverlayTool
-    {
-        get => GetPropertyValue<FeatureName>();
-        set => SetPropertyValue(value);
-    }
-
-    private ICommand exitOverlayCommand;
-    public ICommand ExitOverlayCommand => this.exitOverlayCommand ?? new RelayCommand(o =>
-    {
-        OverlayTool = null;
-    });
+    public OverlayToolData OverlayToolData { get; } = new();
 
     #endregion
 
@@ -47,7 +37,7 @@ public class ShellViewModel : ViewModelBase
     {
         base.Initialize(configurator);
 
-        this.overlayToolHelper.Setup(f => OverlayTool = f);
+        this.overlayToolHelper.Setup((f, d) => OverlayToolData.SetTool(true, f, d));
     }
 
     #endregion

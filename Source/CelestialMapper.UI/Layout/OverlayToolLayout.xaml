@@ -13,26 +13,27 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <Grid>
-        <Border>
-            <Grid>
-                <Button
-                    Width="32"
-                    Height="32"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Command="{Binding ExitOverlayCommand}"
-                    ToolTip="Back">
 
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="18"
-                        Text="←" />
-                </Button>
+    <DockPanel>
+        <Button
+            Width="32"
+            Height="32"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding OverlayToolData.ExitOverlayCommand}"
+            DockPanel.Dock="Top"
+            ToolTip="Back">
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="18"
+                Text="←" />
+        </Button>
 
-                <local:FactoryView DoNotInitializeViewModel="False" FeatureName="{Binding OverlayTool}" />
-            </Grid>
-        </Border>
-    </Grid>
+        <local:FactoryView
+            DataForViewModel="{Binding OverlayToolData.Data}"
+            DoNotInitializeViewModel="False"
+            FeatureName="{Binding OverlayToolData.OverlayTool}"
+            RequiresData="True" />
+    </DockPanel>
 </local:PlatformUserControl>

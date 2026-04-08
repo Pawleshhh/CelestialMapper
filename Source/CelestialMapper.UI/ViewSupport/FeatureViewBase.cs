@@ -24,6 +24,8 @@ public abstract class FeatureViewBase : PlatformUserControl
 
     protected abstract Type ViewModelType { get; }
 
+    public object? DataForViewModel { get; set; }
+
     public abstract FeatureName DefaultFeatureName { get; }
 
     public FeatureName FeatureName
@@ -76,7 +78,8 @@ public abstract class FeatureViewBase : PlatformUserControl
             ViewModelType,
             FeatureName.IsUnknown()
             ? DefaultFeatureName
-            : FeatureName);
+            : FeatureName,
+            data: DataForViewModel);
     }
 
 }

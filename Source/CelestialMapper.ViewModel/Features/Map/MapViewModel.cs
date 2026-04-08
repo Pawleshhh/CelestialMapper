@@ -56,7 +56,7 @@ public class MapViewModel : PaperItemBaseViewModel
         });
         EditMapCommand.Value = new RelayCommand(o =>
         {
-            this.overlayToolHelper.SetActiveOverlayTool(FeatureNames.MapEditor);
+            this.overlayToolHelper.SetActiveOverlayTool(FeatureNames.MapEditor, this);
         });
         GenerateMapCommand = new RelayCommand(o => GenerateMap(o));
     }
