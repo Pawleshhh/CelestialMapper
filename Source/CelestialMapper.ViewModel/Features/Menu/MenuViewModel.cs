@@ -42,7 +42,7 @@ public class MenuViewModel : ViewModelBase
 
         IEnumerable<IViewModel> GetMapEditorSubMenuViewModels()
         {
-            yield return this.ioCManager.ServiceProvider.ResolveViewModel<PaperEditorMenuViewModel>(FeatureNames.PaperEditorMenu);
+            yield return this.ioCManager.ServiceProvider.ResolveViewModel<MapEditorPropertiesViewModel>(FeatureNames.MapEditorProperties);
         }
 
         IEnumerable<IViewModel> GetToolboxSubMenuViewModels()

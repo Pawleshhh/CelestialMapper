@@ -1,9 +1,11 @@
-﻿namespace CelestialMapper.ViewModel;
+﻿using System.Runtime.CompilerServices;
+
+namespace CelestialMapper.ViewModel;
 
 public record FeatureName
 {
 
-    public static FeatureName Unknown { get; } = new(nameof(Unknown));
+    public static FeatureName Unknown { get; } = new();
 
     public bool IsUnknown() => ReferenceEquals(this, Unknown);
 
@@ -11,7 +13,7 @@ public record FeatureName
 
     public string ViewName { get; }
 
-    public FeatureName(string name)
+    public FeatureName([CallerMemberName]string name = "")
     {
         Name = name;
         ViewName = name + "View";
@@ -31,28 +33,30 @@ public record FeatureName
 public class FeatureNames
 {
 
-    public static FeatureName Shell { get; } = new(nameof(Shell));
+    public static FeatureName Shell { get; } = new();
 
-    public static FeatureName Map { get; } = new(nameof(Map));
+    public static FeatureName Map { get; } = new();
 
-    public static FeatureName MapEditor { get; } = new(nameof(MapEditor));
+    public static FeatureName MapEditor { get; } = new();
 
-    public static FeatureName MapEditorMenu { get; } = new(nameof(MapEditorMenu));
+    public static FeatureName MapEditorMenu { get; } = new();
 
-    public static FeatureName TimeMachine { get; } = new(nameof(TimeMachine));
+    public static FeatureName MapEditorProperties { get; } = new();
 
-    public static FeatureName ToolboxMenu { get; } = new(nameof(ToolboxMenu));
+    public static FeatureName TimeMachine { get; } = new();
 
-    public static FeatureName PaperItemsCollection { get; } = new(nameof(PaperItemsCollection));
+    public static FeatureName ToolboxMenu { get; } = new();
 
-    public static FeatureName PropertiesMenu { get; } = new(nameof(PropertiesMenu));
+    public static FeatureName PaperItemsCollection { get; } = new();
 
-    public static FeatureName ExportMenu { get; } = new(nameof(ExportMenu));
+    public static FeatureName PropertiesMenu { get; } = new();
 
-    public static FeatureName Paper { get; } = new(nameof(Paper));
+    public static FeatureName ExportMenu { get; } = new();
+
+    public static FeatureName Paper { get; } = new();
     
-    public static FeatureName PaperEditorMenu { get; } = new(nameof(PaperEditorMenu));
+    public static FeatureName PaperEditorMenu { get; } = new();
 
-    public static FeatureName TextItem { get; } = new(nameof(TextItem));
+    public static FeatureName TextItem { get; } = new();
 
 }

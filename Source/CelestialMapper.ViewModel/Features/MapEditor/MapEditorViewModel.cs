@@ -36,6 +36,7 @@ public class MapEditorViewModel : ViewModelBase
         base.Initialize(configurator, data);
 
         MapVM = (MapViewModel)data!;
+        MapEditorMenuVM = GetViewModel<MapEditorPropertiesViewModel>(FeatureNames.MapEditorMenu, vm => vm.MapVM = MapVM);
     }
 
     #endregion
@@ -46,7 +47,17 @@ public class MapEditorViewModel : ViewModelBase
 
     #region Properties
 
-    public MapViewModel MapVM { get; set; }
+    public MapViewModel MapVM
+    {
+        get => GetPropertyValue<MapViewModel>()!;
+        set => SetPropertyValue(value);
+    }
+
+    public MapEditorPropertiesViewModel MapEditorMenuVM
+    {
+        get => GetPropertyValue<MapEditorPropertiesViewModel>()!;
+        set => SetPropertyValue(value);
+    }
 
     #endregion
 
