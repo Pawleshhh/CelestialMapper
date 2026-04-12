@@ -16,16 +16,86 @@
             <ColumnDefinition Width="7*" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
+        <!--  Map View Controls  -->
+        <Border
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Padding="10"
+            Panel.ZIndex="10"
+            Background="#F5F5F5"
+            BorderBrush="#E0E0E0"
+            BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal">
+                <!--  Zoom Level Control  -->
+                <StackPanel Margin="0,0,15,0" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="Zoom:" />
+                    <TextBox
+                        Width="60"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="{Binding CurrentZoomLevel.Value, StringFormat='0.00', UpdateSourceTrigger=LostFocus}" />
+                    <Slider
+                        Width="150"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Maximum="{Binding MaxZoomLevel.Value}"
+                        Minimum="{Binding MinZoomLevel.Value}"
+                        Value="{Binding CurrentZoomLevel.Value}" />
+                </StackPanel>
+
+                <!--  Pan X Control  -->
+                <StackPanel Margin="0,0,15,0" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="Pan X:" />
+                    <TextBox
+                        Width="60"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="{Binding PanX.Value, StringFormat='0.00', UpdateSourceTrigger=LostFocus}" />
+                </StackPanel>
+
+                <!--  Pan Y Control  -->
+                <StackPanel Margin="0,0,15,0" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="Pan Y:" />
+                    <TextBox
+                        Width="60"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="{Binding PanY.Value, StringFormat='0.00', UpdateSourceTrigger=LostFocus}" />
+                </StackPanel>
+
+                <!--  Reset Button  -->
+                <Button
+                    Margin="0,0,0,0"
+                    Padding="10,5"
+                    Command="{Binding ResetMapViewCommand}"
+                    Content="Reset View" />
+            </StackPanel>
+        </Border>
+
+        <!--  Map and Menu  -->
         <local:CelestialMap
             x:Name="celestialMap"
+            Grid.Row="1"
+            Grid.Column="0"
             CelestialObjects="{Binding MapVM.CelestialObjects, UpdateSourceTrigger=PropertyChanged}"
             Constellations="{Binding MapVM.Constellations, UpdateSourceTrigger=PropertyChanged}"
+            CurrentZoomLevel="{Binding CurrentZoomLevel.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             IsPanEnabled="True"
-            IsZoomEnabled="True" />
+            IsZoomEnabled="True"
+            MaxZoomLevel="{Binding MaxZoomLevel.Value}"
+            MinZoomLevel="{Binding MinZoomLevel.Value}"
+            PanX="{Binding PanX.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            PanY="{Binding PanY.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <local:MenuView
             x:Name="PropertiesMenu"
+            Grid.Row="1"
             Grid.Column="1"
             HorizontalAlignment="Stretch"
             FeatureName="{x:Static vm:FeatureNames.MapEditorMenu}" />

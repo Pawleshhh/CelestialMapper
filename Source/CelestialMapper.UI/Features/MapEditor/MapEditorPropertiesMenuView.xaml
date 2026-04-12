@@ -12,6 +12,6 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <local:PropertyEditor Properties="{Binding MapVM.Properties}" />
+        <local:PropertyEditor Properties="{Binding MapProperties}" />
     </Grid>
 </local:FeatureViewBase>

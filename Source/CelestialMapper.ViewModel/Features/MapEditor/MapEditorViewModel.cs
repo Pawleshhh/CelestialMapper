@@ -45,6 +45,8 @@ public class MapEditorViewModel : ViewModelBase
 
     #region Commands
 
+    public ICommand ResetMapViewCommand => new UICommand(_ => ResetMapView());
+
     #endregion
 
     #region Properties
@@ -61,9 +63,26 @@ public class MapEditorViewModel : ViewModelBase
         set => SetPropertyValue(value);
     }
 
+    public PropertyWrapper<double> CurrentZoomLevel { get; } = new(1.0d, nameof(CurrentZoomLevel));
+
+    public PropertyWrapper<double> MinZoomLevel { get; } = new(1.0d, nameof(MinZoomLevel));
+
+    public PropertyWrapper<double> MaxZoomLevel { get; } = new(3.0d, nameof(MaxZoomLevel));
+
+    public PropertyWrapper<double> PanX { get; } = new(0.0d, nameof(PanX));
+
+    public PropertyWrapper<double> PanY { get; } = new(0.0d, nameof(PanY));
+
     #endregion
 
     #region Methods
+
+    private void ResetMapView()
+    {
+        CurrentZoomLevel.Value = MinZoomLevel.Value;
+        PanX.Value = 0;
+        PanY.Value = 0;
+    }
 
     #endregion
 

@@ -14,14 +14,18 @@
     mc:Ignorable="d">
 
 
-    <DockPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <Button
+            Grid.Row="0"
             Width="32"
             Height="32"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Command="{Binding OverlayToolData.ExitOverlayCommand}"
-            DockPanel.Dock="Top"
             ToolTip="Back">
             <TextBlock
                 HorizontalAlignment="Center"
@@ -30,6 +34,9 @@
                 Text="←" />
         </Button>
 
-        <local:FactoryView DoNotInitializeViewModel="False" FeatureName="{Binding OverlayToolData.OverlayTool}" />
-    </DockPanel>
+        <local:FactoryView
+            Grid.RowSpan="2"
+            DoNotInitializeViewModel="False"
+            FeatureName="{Binding OverlayToolData.OverlayTool}" />
+    </Grid>
 </local:PlatformUserControl>
