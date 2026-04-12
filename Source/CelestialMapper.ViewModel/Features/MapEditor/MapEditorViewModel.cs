@@ -13,6 +13,7 @@ public class MapEditorViewModel : ViewModelBase
 
     private readonly IMapManager mapManager;
     private readonly TimeLocationHelper timeLocationHelper;
+    private readonly MapEditorHelper mapEditorHelper;
 
     #endregion
 
@@ -21,8 +22,10 @@ public class MapEditorViewModel : ViewModelBase
     public MapEditorViewModel(
         IMapManager mapManager,
         TimeLocationHelper timeLocationHelper,
+        MapEditorHelper mapEditorHelper,
         IViewModelSupport viewModelSupport) : base(viewModelSupport)
     {
+        this.mapEditorHelper = mapEditorHelper;
     }
 
     #endregion
@@ -35,8 +38,7 @@ public class MapEditorViewModel : ViewModelBase
     {
         base.Initialize(configurator, data);
 
-        MapVM = (MapViewModel)data!;
-        MapEditorMenuVM = GetViewModel<MapEditorPropertiesViewModel>(FeatureNames.MapEditorMenu, vm => vm.MapVM = MapVM);
+        MapVM = this.mapEditorHelper.MapToEdit ?? throw new InvalidOperationException("Expected active map to edit");
     }
 
     #endregion
@@ -53,9 +55,9 @@ public class MapEditorViewModel : ViewModelBase
         set => SetPropertyValue(value);
     }
 
-    public MapEditorPropertiesViewModel MapEditorMenuVM
+    public MapEditorPropertiesMenuViewModel MapEditorMenuVM
     {
-        get => GetPropertyValue<MapEditorPropertiesViewModel>()!;
+        get => GetPropertyValue<MapEditorPropertiesMenuViewModel>()!;
         set => SetPropertyValue(value);
     }
 

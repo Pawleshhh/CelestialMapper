@@ -15,6 +15,7 @@ public class MapViewModel : PaperItemBaseViewModel
     private readonly IMapManager mapManager;
     private readonly TimeLocationHelper timeLocationHelper;
     private readonly OverlayToolHelper overlayToolHelper;
+    private readonly MapEditorHelper mapEditorHelper;
 
     private IMap map = default!;
 
@@ -26,11 +27,13 @@ public class MapViewModel : PaperItemBaseViewModel
         IMapManager mapManager,
         IViewModelSupport viewModelSupport,
         TimeLocationHelper timeLocationHelper,
-        OverlayToolHelper overlayToolHelper) : base(viewModelSupport)
+        OverlayToolHelper overlayToolHelper,
+        MapEditorHelper mapEditorHelper) : base(viewModelSupport)
     {
         this.mapManager = mapManager;
         this.timeLocationHelper = timeLocationHelper;
         this.overlayToolHelper = overlayToolHelper;
+        this.mapEditorHelper = mapEditorHelper;
 
         Id = Guid.NewGuid();
     }
@@ -56,7 +59,8 @@ public class MapViewModel : PaperItemBaseViewModel
         });
         EditMapCommand.Value = new RelayCommand(o =>
         {
-            this.overlayToolHelper.SetActiveOverlayTool(FeatureNames.MapEditor, this);
+            this.mapEditorHelper.MapToEdit = this;
+            this.overlayToolHelper.SetActiveOverlayTool(FeatureNames.MapEditor);
         });
         GenerateMapCommand = new RelayCommand(o => GenerateMap(o));
     }

@@ -41,7 +41,7 @@ public class FeatureNames
 
     public static FeatureName MapEditorMenu { get; } = new();
 
-    public static FeatureName MapEditorProperties { get; } = new();
+    public static FeatureName MapEditorPropertiesMenu { get; } = new();
 
     public static FeatureName TimeMachine { get; } = new();
 

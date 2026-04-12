@@ -13,8 +13,8 @@
     mc:Ignorable="d">
     <Grid ShowGridLines="True">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="7*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
 
         <local:CelestialMap

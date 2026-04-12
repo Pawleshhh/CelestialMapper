@@ -30,10 +30,6 @@
                 Text="←" />
         </Button>
 
-        <local:FactoryView
-            DataForViewModel="{Binding OverlayToolData.Data}"
-            DoNotInitializeViewModel="False"
-            FeatureName="{Binding OverlayToolData.OverlayTool}"
-            RequiresData="True" />
+        <local:FactoryView DoNotInitializeViewModel="False" FeatureName="{Binding OverlayToolData.OverlayTool}" />
     </DockPanel>
 </local:PlatformUserControl>
