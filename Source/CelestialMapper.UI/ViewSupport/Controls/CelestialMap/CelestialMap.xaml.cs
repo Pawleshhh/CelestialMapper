@@ -15,6 +15,9 @@ public partial class CelestialMap : PlatformUserControl
 
     #region Fields
 
+    private bool isPanning = false;
+    private Point lastMousePosition = new();
+
     #endregion
 
     public CelestialMap()
@@ -26,6 +29,10 @@ public partial class CelestialMap : PlatformUserControl
 
         DataContextChanged += CelestialMap_DataContextChanged;
         Unloaded += CelestialMap_Unloaded;
+        PreviewMouseWheel += CelestialMap_PreviewMouseWheel;
+        MouseLeftButtonDown += CelestialMap_MouseLeftButtonDown;
+        MouseLeftButtonUp += CelestialMap_MouseLeftButtonUp;
+        MouseMove += CelestialMap_MouseMove;
 
 #if DEBUG
         InitializeDebug();
@@ -41,6 +48,84 @@ public partial class CelestialMap : PlatformUserControl
     private void CelestialMap_Unloaded(object sender, RoutedEventArgs e)
     {
         DataContextChanged -= CelestialMap_DataContextChanged;
+        PreviewMouseWheel -= CelestialMap_PreviewMouseWheel;
+        MouseLeftButtonDown -= CelestialMap_MouseLeftButtonDown;
+        MouseLeftButtonUp -= CelestialMap_MouseLeftButtonUp;
+        MouseMove -= CelestialMap_MouseMove;
+    }
+
+    private void CelestialMap_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+    {
+        if (!IsZoomEnabled)
+        {
+            return;
+        }
+
+        e.Handled = true;
+
+        var zoomDirection = e.Delta > 0 ? 1 : -1;
+        var newZoomLevel = CurrentZoomLevel + (ZoomSensitivity * zoomDirection);
+        newZoomLevel = Math.Clamp(newZoomLevel, MinZoomLevel, MaxZoomLevel);
+
+        if (Math.Abs(newZoomLevel - CurrentZoomLevel) < 0.001d)
+        {
+            return;
+        }
+
+        CurrentZoomLevel = newZoomLevel;
+        UpdateMainGridTransform();
+
+        // Reset pan position when zoom returns to 1.0
+        if (Math.Abs(CurrentZoomLevel - 1.0d) < 0.001d)
+        {
+            ResetPanPosition();
+        }
+    }
+
+    private void CelestialMap_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (!IsPanEnabled || CurrentZoomLevel <= 1.0d)
+        {
+            return;
+        }
+
+        this.isPanning = true;
+        this.lastMousePosition = e.GetPosition(this);
+        this.CaptureMouse();
+    }
+
+    private void CelestialMap_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        this.isPanning = false;
+        this.ReleaseMouseCapture();
+    }
+
+    private void CelestialMap_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+    {
+        if (!this.isPanning)
+        {
+            return;
+        }
+
+        var currentMousePosition = e.GetPosition(this);
+        var delta = currentMousePosition - this.lastMousePosition;
+
+        PanX += delta.X;
+        PanY += delta.Y;
+
+        this.lastMousePosition = currentMousePosition;
+    }
+
+    private void UpdateMainGridTransform()
+    {
+        this.scaleTransform.ScaleX = -CurrentZoomLevel;
+        this.scaleTransform.ScaleY = -CurrentZoomLevel;
+    }
+
+    private void ResetPanPosition()
+    {
+        PanX = 0;
+        PanY = 0;
     }
 
     #region Debug
@@ -101,6 +186,111 @@ public partial class CelestialMap : PlatformUserControl
     #region Properties
 
     public double Diameter => (double)GetResource("Double.Map.Diameter");
+
+    public double CurrentZoomLevel
+    {
+        get { return this.GetValue<double>(CurrentZoomLevelProperty); }
+        set { SetValue(CurrentZoomLevelProperty, value); }
+    }
+
+    public static readonly DependencyProperty CurrentZoomLevelProperty =
+        Register(
+            nameof(CurrentZoomLevel),
+            new PlatformPropertyMetadata<CelestialMap, double>(1.0d, OnCurrentZoomLevelChanged));
+
+    private static void OnCurrentZoomLevelChanged(CelestialMap celestialMap, DependencyPropertyChangedEventArgs<double> e)
+    {
+        celestialMap.UpdateMainGridTransform();
+    }
+
+    public double MinZoomLevel
+    {
+        get { return this.GetValue<double>(MinZoomLevelProperty); }
+        set { SetValue(MinZoomLevelProperty, value); }
+    }
+
+    public static readonly DependencyProperty MinZoomLevelProperty =
+        Register(
+            nameof(MinZoomLevel),
+            new PlatformPropertyMetadata<CelestialMap, double>(1.0d));
+
+    public double MaxZoomLevel
+    {
+        get { return this.GetValue<double>(MaxZoomLevelProperty); }
+        set { SetValue(MaxZoomLevelProperty, value); }
+    }
+
+    public static readonly DependencyProperty MaxZoomLevelProperty =
+        Register(
+            nameof(MaxZoomLevel),
+            new PlatformPropertyMetadata<CelestialMap, double>(3.0d));
+
+    public double ZoomSensitivity
+    {
+        get { return this.GetValue<double>(ZoomSensitivityProperty); }
+        set { SetValue(ZoomSensitivityProperty, value); }
+    }
+
+    public static readonly DependencyProperty ZoomSensitivityProperty =
+        Register(
+            nameof(ZoomSensitivity),
+            new PlatformPropertyMetadata<CelestialMap, double>(0.1d));
+
+    public bool IsZoomEnabled
+    {
+        get { return this.GetValue<bool>(IsZoomEnabledProperty); }
+        set { SetValue(IsZoomEnabledProperty, value); }
+    }
+
+    public static readonly DependencyProperty IsZoomEnabledProperty =
+        Register(
+            nameof(IsZoomEnabled),
+            new PlatformPropertyMetadata<CelestialMap, bool>(false));
+
+    public bool IsPanEnabled
+    {
+        get { return this.GetValue<bool>(IsPanEnabledProperty); }
+        set { SetValue(IsPanEnabledProperty, value); }
+    }
+
+    public static readonly DependencyProperty IsPanEnabledProperty =
+        Register(
+            nameof(IsPanEnabled),
+            new PlatformPropertyMetadata<CelestialMap, bool>(false));
+
+    public double PanX
+    {
+        get { return this.GetValue<double>(PanXProperty); }
+        set { SetValue(PanXProperty, value); }
+    }
+
+    public static readonly DependencyProperty PanXProperty =
+        Register(
+            nameof(PanX),
+            new PlatformPropertyMetadata<CelestialMap, double>(0.0d, OnPanXChanged));
+
+    private static void OnPanXChanged(CelestialMap celestialMap, DependencyPropertyChangedEventArgs<double> e)
+    {
+        var translateTransform = (TranslateTransform)celestialMap.translateTransform;
+        translateTransform.X = e.NewValue;
+    }
+
+    public double PanY
+    {
+        get { return this.GetValue<double>(PanYProperty); }
+        set { SetValue(PanYProperty, value); }
+    }
+
+    public static readonly DependencyProperty PanYProperty =
+        Register(
+            nameof(PanY),
+            new PlatformPropertyMetadata<CelestialMap, double>(0.0d, OnPanYChanged));
+
+    private static void OnPanYChanged(CelestialMap celestialMap, DependencyPropertyChangedEventArgs<double> e)
+    {
+        var translateTransform = (TranslateTransform)celestialMap.translateTransform;
+        translateTransform.Y = e.NewValue;
+    }
 
     #endregion
 

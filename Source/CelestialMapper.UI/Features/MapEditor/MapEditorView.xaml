@@ -20,7 +20,9 @@
         <local:CelestialMap
             x:Name="celestialMap"
             CelestialObjects="{Binding MapVM.CelestialObjects, UpdateSourceTrigger=PropertyChanged}"
-            Constellations="{Binding MapVM.Constellations, UpdateSourceTrigger=PropertyChanged}" />
+            Constellations="{Binding MapVM.Constellations, UpdateSourceTrigger=PropertyChanged}"
+            IsPanEnabled="True"
+            IsZoomEnabled="True" />
 
         <local:MenuView
             x:Name="PropertiesMenu"
