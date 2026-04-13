@@ -1,15 +1,25 @@
-﻿namespace CelestialMapper.UI;
+﻿using System.Windows.Input;
 
-public abstract class CelestialUIObject<T> : FrameworkElement
+namespace CelestialMapper.UI;
+
+public interface ICelestialUIObject
+{
+    public CelestialObjectVisualData VisualData { get; }
+}
+
+public abstract class CelestialUIObject<T> : FrameworkElement, ICelestialUIObject
     where T : CelestialObjectVisualData
 {
 
     public T VisualData { get; }
 
+    CelestialObjectVisualData ICelestialUIObject.VisualData => VisualData;
+
     protected CelestialUIObject(T visualData)
     {
         VisualData = visualData;
         Loaded += CelestialObjectUiObject_Loaded;
+
     }
 
     private void CelestialObjectUiObject_Loaded(object sender, RoutedEventArgs e)

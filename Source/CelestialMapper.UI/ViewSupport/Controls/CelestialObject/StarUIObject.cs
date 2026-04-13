@@ -13,6 +13,8 @@ public class StarUIObject : CelestialUIObject<VisualStarData>
 
     public required Point Position { get; set; }
 
+    public CelestialUIObjectSelectionHelper? SelectionHelper { get; set; }
+
     public double Size => CelestialObjectHelper.GetSizeBasedOnMagnitude(VisualData.Width.Value);
 
     public string Color => VisualData.BackgroundColor.Value ?? Brushes.Transparent.ToString();

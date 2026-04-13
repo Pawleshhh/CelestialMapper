@@ -81,6 +81,8 @@ public class MapViewModel : PaperItemBaseViewModel
 
     public override PaperItemType ItemType => PaperItemType.Map;
 
+    public PropertyWrapper<CelestialObjectVisualData?> SelectedCelestialObject { get; } = new(nameof(SelectedCelestialObject));
+
     public PropertyWrapper<ICommand?> ApplyCommand { get; private set; } = new(nameof(ApplyCommand));
 
     public PropertyWrapper<ICommand?> EditMapCommand { get; private set; } = new(nameof(EditMapCommand));

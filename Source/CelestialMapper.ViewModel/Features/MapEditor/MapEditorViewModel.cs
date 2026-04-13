@@ -57,12 +57,6 @@ public class MapEditorViewModel : ViewModelBase
         set => SetPropertyValue(value);
     }
 
-    public MapEditorPropertiesMenuViewModel MapEditorMenuVM
-    {
-        get => GetPropertyValue<MapEditorPropertiesMenuViewModel>()!;
-        set => SetPropertyValue(value);
-    }
-
     public PropertyWrapper<double> CurrentZoomLevel { get; } = new(1.0d, nameof(CurrentZoomLevel));
 
     public PropertyWrapper<double> MinZoomLevel { get; } = new(1.0d, nameof(MinZoomLevel));

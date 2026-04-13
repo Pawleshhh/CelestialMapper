@@ -19,6 +19,7 @@
                 <ResourceDictionary Source="Resources/Spacing/MarginsAndPaddings.xaml" />
 
                 <ResourceDictionary Source="Resources/Styles/AcordeonStyles/AcordeonStyles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Layout/LayoutStyles.xaml" />
                 <ResourceDictionary Source="Resources/Styles/MenuStyles/MenuStyles.xaml" />
                 <ResourceDictionary Source="Resources/Styles/PaperStyles/PaperEditorMenuStyles.xaml" />
                 <ResourceDictionary Source="/Resources/Styles/Other/PropertyListStyles.xaml" />

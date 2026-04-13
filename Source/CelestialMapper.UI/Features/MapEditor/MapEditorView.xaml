@@ -13,6 +13,7 @@
     mc:Ignorable="d">
     <Grid ShowGridLines="True">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{StaticResource GridLength.Overlay.BackButton.Width}" />
             <ColumnDefinition Width="7*" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
@@ -24,7 +25,7 @@
         <!--  Map View Controls  -->
         <Border
             Grid.Row="0"
-            Grid.Column="0"
+            Grid.Column="1"
             Grid.ColumnSpan="2"
             Padding="10"
             Panel.ZIndex="10"
@@ -83,6 +84,7 @@
             x:Name="celestialMap"
             Grid.Row="1"
             Grid.Column="0"
+            Grid.ColumnSpan="2"
             CelestialObjects="{Binding MapVM.CelestialObjects, UpdateSourceTrigger=PropertyChanged}"
             Constellations="{Binding MapVM.Constellations, UpdateSourceTrigger=PropertyChanged}"
             CurrentZoomLevel="{Binding CurrentZoomLevel.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -96,7 +98,7 @@
         <local:MenuView
             x:Name="PropertiesMenu"
             Grid.Row="1"
-            Grid.Column="1"
+            Grid.Column="2"
             HorizontalAlignment="Stretch"
             FeatureName="{x:Static vm:FeatureNames.MapEditorMenu}" />
     </Grid>

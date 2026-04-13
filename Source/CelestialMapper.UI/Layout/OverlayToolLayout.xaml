@@ -21,10 +21,11 @@
         </Grid.RowDefinitions>
         <Button
             Grid.Row="0"
-            Width="32"
-            Height="32"
+            Width="{StaticResource Double.Overlay.BackButton.Width}"
+            Height="{StaticResource Double.Overlay.BackButton.Height}"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            Panel.ZIndex="100"
             Command="{Binding OverlayToolData.ExitOverlayCommand}"
             ToolTip="Back">
             <TextBlock

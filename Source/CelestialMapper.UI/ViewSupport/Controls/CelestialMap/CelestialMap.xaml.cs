@@ -18,11 +18,15 @@ public partial class CelestialMap : PlatformUserControl
     private bool isPanning = false;
     private Point lastMousePosition = new();
 
+    private readonly CelestialUIObjectSelectionHelper selectionHelper;
+
     #endregion
 
     public CelestialMap()
     {
         InitializeComponent();
+
+        this.selectionHelper = new(OnSelectionChanged);
 
         UpdateAzimuthLines();
         UpdateAltitudeLines();
@@ -455,6 +459,29 @@ public partial class CelestialMap : PlatformUserControl
 
             this.constellationCanvas.Children.Add(constellationUIElement);
         }
+    }
+
+    #endregion
+
+    #region Selection
+
+    public ICelestialUIObject? SelectedObject
+    {
+        get { return (ICelestialUIObject?)GetValue(SelectedObjectProperty); }
+        set { SetValue(SelectedObjectProperty, value); }
+    }
+
+    public static readonly DependencyProperty SelectedObjectProperty =
+        Register(nameof(SelectedObject), new PlatformPropertyMetadata<CelestialMap, ICelestialUIObject?>(null, OnSelectedObjectChanged));
+
+    private static void OnSelectedObjectChanged(CelestialMap d, DependencyPropertyChangedEventArgs<ICelestialUIObject?> e)
+    {
+
+    }
+
+    private void OnSelectionChanged()
+    {
+        SelectedObject = this.selectionHelper.SelectedObject;
     }
 
     #endregion

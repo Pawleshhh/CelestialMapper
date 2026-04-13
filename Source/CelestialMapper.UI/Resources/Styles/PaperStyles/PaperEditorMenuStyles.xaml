@@ -9,9 +9,7 @@
         <ResourceDictionary Source="../Other/PropertyListStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <DataTemplate x:Key="Private.DataTemplate.PaperEditorMenuStyles.TextItem.Settings" DataType="{x:Type vm:TextItem}">
-
-    </DataTemplate>
+    <DataTemplate x:Key="Private.DataTemplate.PaperEditorMenuStyles.TextItem.Settings" DataType="{x:Type vm:TextItem}" />
 
     <DataTemplate x:Key="Private.DataTemplate.PaperEditorMenuStyles.Map.Settings" DataType="{x:Type vm:MapViewModel}">
         <StackPanel Background="{DynamicResource Brush.ToolBackground}" Orientation="Vertical">
